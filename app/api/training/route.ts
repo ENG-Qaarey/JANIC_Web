@@ -3,23 +3,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { TrainingService } from "@/services/training/training.service";
 import { requireAuth } from "@/lib/permissions/roles";
-import { Role, ContentStatus } from "@prisma/client";
+import { ContentStatus } from "@prisma/client";
 
 const trainingSchema = z.object({
   title: z.string().min(2, "Title is required"),
-  category: z.string().min(2, "Category is required"),
-  summary: z.string().min(10, "Summary is required"),
+  category: z.string().min(1, "Category is required"),
+  summary: z.string().optional().nullable(),
   description: z.string().min(10, "Description is required"),
-  level: z.string().default("All Levels"),
-  duration: z.string().min(2, "Duration is required"),
-  schedule: z.string().min(2, "Schedule is required"),
+  level: z.string().default("Intermediate"),
+  duration: z.string().optional().nullable(),
+  schedule: z.string().optional().nullable(),
+  startDate: z.string().optional().nullable(),
+  endDate: z.string().optional().nullable(),
   mode: z.string().default("On-Campus"),
   certification: z.string().optional().nullable(),
   status: z.nativeEnum(ContentStatus).default(ContentStatus.DRAFT),
-  isFeatured: z.boolean().default(false),
+  isFeatured: z.preprocess((val) => Boolean(val), z.boolean().default(false)),
   coverImage: z.string().optional().nullable(),
-  maxSeats: z.number().optional().nullable(),
+  maxSeats: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? null : Number(val)),
+    z.number().nullable().optional()
+  ),
   syllabus: z.string().optional().nullable(),
+  trainers: z.any().optional().nullable(),
+  allowComments: z.preprocess((val) => (val === undefined ? true : Boolean(val)), z.boolean().default(true)),
+  allowInteractions: z.preprocess((val) => (val === undefined ? true : Boolean(val)), z.boolean().default(true)),
 });
 
 export async function GET() {
@@ -34,7 +42,11 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    await requireAuth(null, "training:update");
+    try {
+      await requireAuth(null, "training:create");
+    } catch {
+      await requireAuth(null, "training:update");
+    }
     const body = await req.json();
     const parsed = trainingSchema.safeParse(body);
 
@@ -53,3 +65,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: msg }, { status });
   }
 }
+

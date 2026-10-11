@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { ResearchService } from "@/services/research/research.service";
 import { requireAuth } from "@/lib/permissions/roles";
-import { Role } from "@prisma/client";
 
 export async function PUT(
   req: NextRequest,

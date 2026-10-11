@@ -136,7 +136,7 @@ export default async function HomePage() {
                   <span className="text-xs sm:text-sm font-bold text-slate-400 dark:text-slate-400 tracking-wider uppercase">FUNCTIONS</span>
                 </div>
                 <div className="flex-1 min-w-[140px] flex items-baseline justify-center gap-2.5 px-3 py-1">
-                  <span className="text-2xl sm:text-3xl font-black text-[#08245C] dark:text-white">1</span>
+                  <span className="text-2xl sm:text-3xl font-black text-[#08245C] dark:text-white">2</span>
                   <span className="text-xs sm:text-sm font-bold text-slate-400 dark:text-slate-400 tracking-wider uppercase">HUB</span>
                 </div>
                 <div className="flex-1 min-w-[140px] flex items-baseline justify-center gap-2.5 px-3 py-1">
@@ -451,39 +451,39 @@ export default async function HomePage() {
               slug: string;
               videoUrl?: string | null;
             }[] = [
-              {
-                title: "MAAL HUB",
-                summary: "Integrated financial management system for micro enterprises.",
-                category: "FINTECH",
-                heroImage: "/images/maal-hub.jpg",
-                slug: "maal-hub",
-                videoUrl: null,
-              },
-              {
-                title: "Robot Car Cleaner",
-                summary: "Autonomous cleaning solutions for urban environments.",
-                category: "ROBOTICS",
-                heroImage: "/images/robot-car-cleaner.jpg",
-                slug: "robot-car-cleaner",
-                videoUrl: null,
-              },
-              {
-                title: "SAHAL SACCO",
-                summary: "Automating credit and savings operations.",
-                category: "SAAS",
-                heroImage: "/images/sahal-sacco.jpg",
-                slug: "sahal-sacco",
-                videoUrl: null,
-              },
-              {
-                title: "BADBAADO Platform",
-                summary: "Digital coordination for emergency health services.",
-                category: "SAFETY TECH",
-                heroImage: "/images/badbaado-safety.jpg",
-                slug: "badbaado",
-                videoUrl: null,
-              },
-            ];
+                {
+                  title: "MAAL HUB",
+                  summary: "Integrated financial management system for micro enterprises.",
+                  category: "FINTECH",
+                  heroImage: "/images/maal-hub.jpg",
+                  slug: "maal-hub",
+                  videoUrl: null,
+                },
+                {
+                  title: "Robot Car Cleaner",
+                  summary: "Autonomous cleaning solutions for urban environments.",
+                  category: "ROBOTICS",
+                  heroImage: "/images/robot-car-cleaner.jpg",
+                  slug: "robot-car-cleaner",
+                  videoUrl: null,
+                },
+                {
+                  title: "SAHAL SACCO",
+                  summary: "Automating credit and savings operations.",
+                  category: "SAAS",
+                  heroImage: "/images/sahal-sacco.jpg",
+                  slug: "sahal-sacco",
+                  videoUrl: null,
+                },
+                {
+                  title: "BADBAADO Platform",
+                  summary: "Digital coordination for emergency health services.",
+                  category: "SAFETY TECH",
+                  heroImage: "/images/badbaado-safety.jpg",
+                  slug: "badbaado",
+                  videoUrl: null,
+                },
+              ];
 
             const defaultSpotlight = {
               title: "BADBAADO Healthcare Coordination Platform",
@@ -566,8 +566,8 @@ export default async function HomePage() {
                 dbSpotlight?.title && dbSpotlight.title.toLowerCase().includes("healthcare")
                   ? dbSpotlight.title
                   : (dbSpotlight?.title
-                      ? `${dbSpotlight.title} Healthcare Coordination Platform`
-                      : defaultSpotlight.title),
+                    ? `${dbSpotlight.title} Healthcare Coordination Platform`
+                    : defaultSpotlight.title),
               summary: dbSpotlight?.summary || defaultSpotlight.summary,
               heroImage:
                 dbSpotlight?.heroImage && !dbSpotlight.heroImage.includes("unsplash")
@@ -806,8 +806,8 @@ export default async function HomePage() {
                     event.coverImage && event.coverImage.startsWith("/")
                       ? event.coverImage
                       : event.coverImage && event.coverImage.startsWith("http")
-                      ? event.coverImage
-                      : null;
+                        ? event.coverImage
+                        : null;
                   return (
                     <Link
                       key={event.id}

@@ -71,7 +71,7 @@ export default function WhatWeDoPage() {
                   </div>
                   <div className="bg-white rounded-2xl p-5 border border-blue-100/80 shadow-sm">
                     <div className="text-2xl sm:text-3xl font-extrabold text-[#08245C]">
-                      35+
+                      18+
                     </div>
                     <div className="text-xs text-slate-500 font-medium mt-1">
                       Active Projects
@@ -79,7 +79,7 @@ export default function WhatWeDoPage() {
                   </div>
                   <div className="bg-white rounded-2xl p-5 border border-blue-100/80 shadow-sm">
                     <div className="text-2xl sm:text-3xl font-extrabold text-[#08245C]">
-                      18+
+                      7+
                     </div>
                     <div className="text-xs text-slate-500 font-medium mt-1">
                       Industry Partners

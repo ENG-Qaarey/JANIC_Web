@@ -39,9 +39,9 @@ export function FileUploadChoice({
   helperText,
   source = "project",
 }: FileUploadChoiceProps) {
-  // If the value is a local upload path, default mode to "upload"; otherwise "url"
+  // Default mode to upload from device unless an external http URL is provided
   const [mode, setMode] = useState<"url" | "upload">(
-    value?.startsWith("/uploads/") ? "upload" : "url"
+    value?.startsWith("http") ? "url" : "upload"
   );
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -202,21 +202,6 @@ export function FileUploadChoice({
           <button
             type="button"
             onClick={() => {
-              setMode("url");
-              setUploadError(null);
-            }}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md transition cursor-pointer ${
-              mode === "url"
-                ? "bg-white text-blue-700 shadow-xs font-bold dark:bg-slate-800 dark:text-blue-300"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Link2 className="w-3 h-3" />
-            {typeConfig.linkText}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
               setMode("upload");
               setUploadError(null);
             }}
@@ -227,7 +212,22 @@ export function FileUploadChoice({
             }`}
           >
             <UploadCloud className="w-3 h-3" />
-            {typeConfig.uploadText}
+            Upload from Device
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMode("url");
+              setUploadError(null);
+            }}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md transition cursor-pointer ${
+              mode === "url"
+                ? "bg-white text-blue-700 shadow-xs font-bold dark:bg-slate-800 dark:text-blue-300"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Link2 className="w-3 h-3" />
+            Paste URL
           </button>
         </div>
       </div>
