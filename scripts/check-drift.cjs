@@ -19,6 +19,9 @@ for (const m of models) {
 }
 
 (async () => {
+  const missingTables = [];
+  const missingCols = [];
+
   for (const name of Object.keys(parsed)) {
     const table = name.toLowerCase();
     let res;
@@ -29,13 +32,39 @@ for (const m of models) {
     } catch (e) {
       continue;
     }
-    if (res.length === 0) continue;
+
+    // Table entirely absent — previously skipped by the column-only check.
+    if (res.length === 0) {
+      missingTables.push({ model: name, table, cols: parsed[name] });
+      continue;
+    }
+
     const have = new Set(res.map((r) => r.COLUMN_NAME));
     const missing = parsed[name].filter((f) => !have.has(f.col));
-    if (missing.length) {
-      console.log(`${name} MISSING:`);
-      missing.forEach((f) => console.log(`   ${f.col} ${f.type}${f.optional ? "?" : ""}`));
+    if (missing.length) missingCols.push({ model: name, table, missing });
+  }
+
+  if (missingTables.length === 0 && missingCols.length === 0) {
+    console.log("No drift: all tables and columns present.");
+  }
+
+  if (missingTables.length) {
+    console.log("\nMISSING TABLES:");
+    for (const t of missingTables) {
+      console.log(`  ${t.model}  (${t.table}) — ${t.cols.length} columns`);
     }
   }
+
+  if (missingCols.length) {
+    console.log("\nMISSING COLUMNS:");
+    for (const c of missingCols) {
+      console.log(`  ${c.model}:`);
+      c.missing.forEach((f) => console.log(`     ${f.col} ${f.type}${f.optional ? "?" : ""}`));
+    }
+  }
+
+  console.log(
+    `\nsummary: ${missingTables.length} missing table(s), ${missingCols.length} table(s) with missing columns`
+  );
   await p.$disconnect();
 })();
