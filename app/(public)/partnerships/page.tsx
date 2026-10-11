@@ -45,83 +45,7 @@ export default function PartnershipsPage() {
         breadcrumbs={[{ label: "Partnerships" }]}
       />
 
-      {/* 2. PARTNERSHIPS BENTO CANVAS - FADE LEFT */}
-      <section className="py-8 sm:py-14 bg-white overflow-hidden">
-        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollReveal animation="fade-left" duration={850}>
-            <div className="bg-[#F0F6FE] rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-14 border border-blue-100/70 shadow-sm">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                {/* Left Column: Why Partner (6 cols) */}
-                <div className="lg:col-span-6 space-y-8">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
-                      Collaboration Framework
-                    </span>
-                    <h2 className="text-3xl sm:text-4xl font-black text-[#08245C] tracking-tight leading-tight">
-                      Why Partner with JANIC?
-                    </h2>
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mt-2.5">
-                      As the innovation arm of Faculty of Computer Science &amp; IT at Jazeera University, JANIC serves as the premier bridge between academic capability and regional market execution.
-                    </p>
-                  </div>
-
-                  <div className="space-y-4">
-                    {benefits.map((b) => {
-                      const Icon = b.icon;
-                      return (
-                        <div
-                          key={b.title}
-                          className="bg-white p-6 rounded-2xl border border-blue-100/80 flex items-start gap-4 shadow-sm hover:shadow-md transition-all group"
-                        >
-                          <div className="w-11 h-11 rounded-xl bg-blue-50 text-[#0875D1] flex items-center justify-center font-bold shrink-0 group-hover:scale-105 transition-transform">
-                            <Icon className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-bold text-[#08245C] tracking-tight">
-                              {b.title}
-                            </h4>
-                            <p className="text-xs text-slate-500 leading-relaxed mt-1">
-                              {b.desc}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="p-7 rounded-2xl bg-[#0A224E] text-white space-y-2 border border-blue-900/60 shadow-lg">
-                    <div className="flex items-center gap-2 text-xs font-bold text-cyan-300 uppercase tracking-wider">
-                      <ShieldCheck className="w-4 h-4" /> Institutional Integrity
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      All partnerships are governed under formal Memorandums of Understanding (MoU) with the Senate and Dean of Faculty at Jazeera University.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right Column: Partnership Form (6 cols) */}
-                <div className="lg:col-span-6 bg-white p-8 sm:p-10 rounded-2xl border border-blue-100/80 shadow-md space-y-6">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
-                      Partnership Inquiries
-                    </span>
-                    <h3 className="text-2xl font-bold text-[#08245C] tracking-tight">
-                      Start a Collaboration
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      Tell us about your organization and how we can work together.
-                    </p>
-                  </div>
-
-                  <PartnershipForm />
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* 3. TRUSTED BY SECTION - HORIZONTAL SCROLL SLIDER */}
+      {/* 2. TRUSTED BY SECTION - HORIZONTAL SCROLL SLIDER */}
       <section className="relative py-12 sm:py-16 bg-gradient-to-b from-white via-[#F8FBFF] to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
         <div className="relative max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-down" duration={850}>
@@ -179,6 +103,80 @@ export default function PartnershipsPage() {
             </div>
           </div>
         </ScrollReveal>
+      </section>
+
+      {/* 3. PARTNERSHIPS BENTO CANVAS - FADE LEFT */}
+      <section className="py-8 sm:py-14 bg-white overflow-hidden">
+        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal animation="fade-left" duration={850}>
+            <div className="bg-[#F0F6FE] rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-14 border border-blue-100/70 shadow-sm">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                <div className="lg:col-span-6 space-y-8">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
+                      Collaboration Framework
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-black text-[#08245C] tracking-tight leading-tight">
+                      Why Partner with JANIC?
+                    </h2>
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mt-2.5">
+                      As the innovation arm of Faculty of Computer Science &amp; IT at Jazeera University, JANIC serves as the premier bridge between academic capability and regional market execution.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    {benefits.map((b) => {
+                      const Icon = b.icon;
+                      return (
+                        <div
+                          key={b.title}
+                          className="bg-white p-6 rounded-2xl border border-blue-100/80 flex items-start gap-4 shadow-sm hover:shadow-md transition-all group"
+                        >
+                          <div className="w-11 h-11 rounded-xl bg-blue-50 text-[#0875D1] flex items-center justify-center font-bold shrink-0 group-hover:scale-105 transition-transform">
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-[#08245C] tracking-tight">
+                              {b.title}
+                            </h4>
+                            <p className="text-xs text-slate-500 leading-relaxed mt-1">
+                              {b.desc}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="p-7 rounded-2xl bg-[#0A224E] text-white space-y-2 border border-blue-900/60 shadow-lg">
+                    <div className="flex items-center gap-2 text-xs font-bold text-cyan-300 uppercase tracking-wider">
+                      <ShieldCheck className="w-4 h-4" /> Institutional Integrity
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      All partnerships are governed under formal Memorandums of Understanding (MoU) with the Senate and Dean of Faculty at Jazeera University.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 bg-white p-8 sm:p-10 rounded-2xl border border-blue-100/80 shadow-md space-y-6">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
+                      Partnership Inquiries
+                    </span>
+                    <h3 className="text-2xl font-bold text-[#08245C] tracking-tight">
+                      Start a Collaboration
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                      Tell us about your organization and how we can work together.
+                    </p>
+                  </div>
+
+                  <PartnershipForm />
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* 4. CALL TO ACTION (MATCHING HOME PAGE) - ZOOM IN */}
