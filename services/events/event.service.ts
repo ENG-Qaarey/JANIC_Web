@@ -2,6 +2,16 @@ import { EventRepository } from "@/repositories/event.repository";
 import { slugify } from "@/lib/utils";
 import { ContentStatus, Prisma } from "@prisma/client";
 
+function serializeJson(val: any): string | null {
+  if (val === null || val === undefined) return null;
+  if (typeof val === "string") return val;
+  try {
+    return JSON.stringify(val);
+  } catch {
+    return null;
+  }
+}
+
 export class EventService {
   static async getUpcomingEvents(limit = 4) {
     return EventRepository.findPublished({ upcomingOnly: true, limit });
@@ -30,7 +40,7 @@ export class EventService {
     description: string;
     category: string;
     eventDate: Date;
-    endDate?: Date;
+    endDate?: Date | null;
     location: string;
     isVirtual?: boolean;
     registrationUrl?: string | null;
@@ -56,27 +66,32 @@ export class EventService {
       description: data.description,
       category: data.category,
       eventDate: data.eventDate,
-      endDate: data.endDate,
+      endDate: data.endDate || null,
       location: data.location,
       isVirtual: !!data.isVirtual,
-      registrationUrl: data.registrationUrl,
+      registrationUrl: data.registrationUrl || null,
       capacity: data.capacity,
       status: data.status || ContentStatus.DRAFT,
       isFeatured: !!data.isFeatured,
-      coverImage: data.coverImage,
-      videoUrl: data.videoUrl,
+      coverImage: data.coverImage || null,
+      videoUrl: data.videoUrl || null,
       attendeesCount: data.attendeesCount,
-      gallery: data.gallery,
-      guests: data.guests,
-      agenda: data.agenda,
-      keyHighlights: data.keyHighlights,
+      gallery: serializeJson(data.gallery),
+      guests: serializeJson(data.guests),
+      agenda: serializeJson(data.agenda),
+      keyHighlights: serializeJson(data.keyHighlights),
     };
 
     return EventRepository.create(createInput);
   }
 
-  static async updateEvent(id: string, data: Prisma.EventUpdateInput) {
-    return EventRepository.update(id, data);
+  static async updateEvent(id: string, data: any) {
+    const updateInput: any = { ...data };
+    if ("gallery" in data) updateInput.gallery = serializeJson(data.gallery);
+    if ("guests" in data) updateInput.guests = serializeJson(data.guests);
+    if ("agenda" in data) updateInput.agenda = serializeJson(data.agenda);
+    if ("keyHighlights" in data) updateInput.keyHighlights = serializeJson(data.keyHighlights);
+    return EventRepository.update(id, updateInput);
   }
 
   static async deleteEvent(id: string) {

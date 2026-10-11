@@ -13,7 +13,11 @@ export async function PUT(
     const body = await req.json();
 
     if (body.eventDate) body.eventDate = new Date(body.eventDate);
-    if (body.endDate) body.endDate = new Date(body.endDate);
+    if (body.endDate) {
+      body.endDate = new Date(body.endDate);
+    } else {
+      body.endDate = null;
+    }
 
     const updated = await EventService.updateEvent(id, body);
     return NextResponse.json({ success: true, item: updated });
