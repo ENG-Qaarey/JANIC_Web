@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { NotificationBell } from "@/components/admin/NotificationBell";
 
 interface AdminHeaderProps {
   user: AuthUser | null;
@@ -79,16 +80,7 @@ export function AdminHeader({ user, onMenu, notifCount = 0 }: AdminHeaderProps) 
           <span className="text-sm hidden sm:inline">Export</span>
         </Button>
 
-        <span className="relative inline-flex">
-          <Button variant="ghost" size="sm" className="px-2">
-            <Bell className="w-4 h-4" />
-          </Button>
-          {notifCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
-              {notifCount}
-            </span>
-          )}
-        </span>
+        <NotificationBell initialCount={notifCount} basePath="/admin" />
 
         <ThemeModeDropdown />
 

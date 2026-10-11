@@ -20,10 +20,11 @@ export default async function StaffLayout({
     redirect("/login");
   }
 
-  const [pendingSubmissions] = await Promise.all([
+  const [pendingSubmissions, unreadMessages] = await Promise.all([
     prisma.innovationSubmission.count({ where: { status: "PENDING" } }),
+    prisma.contactMessage.count({ where: { status: "UNREAD" } }),
   ]);
-  const notifCount = pendingSubmissions;
+  const notifCount = pendingSubmissions + unreadMessages;
 
   return <StaffShell user={user} notifCount={notifCount}>{children}</StaffShell>;
 }
