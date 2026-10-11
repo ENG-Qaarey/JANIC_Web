@@ -100,50 +100,146 @@ model ProjectGalleryItem {
 }
 
 model TrainingProgram {
-  id            String        @id @default(cuid())
+  id            String            @id @default(cuid())
   title         String
-  slug          String        @unique
-  summary       String        @db.Text
-  description   String        @db.Text
+  slug          String            @unique
+  summary       String            @db.Text
+  description   String            @db.Text
   category      String
-  level         String        @default("All Levels")
+  level         String            @default("Intermediate")
   duration      String
   schedule      String
-  mode          String        @default("On-Campus")
+  startDate     DateTime?
+  endDate       DateTime?
+  mode          String            @default("On-Campus")
   certification String?
-  status        ContentStatus @default(DRAFT)
-  isFeatured    Boolean       @default(false)
-  coverImage    String?
+  status        ContentStatus     @default(DRAFT)
+  isFeatured    Boolean           @default(false)
+  coverImage    String?           @db.Text
   maxSeats      Int?
-  syllabus      String?       @db.Text
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  syllabus      String?           @db.Text
+  trainers      String?           @db.Text
+  allowComments Boolean           @default(true)
+  allowInteractions Boolean       @default(true)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  comments      TrainingComment[]
+  likes         TrainingLike[]
+  ratings       TrainingRating[]
 
   @@index([status, isFeatured])
   @@index([category])
   @@index([slug])
 }
 
+model TrainingComment {
+  id         String          @id @default(cuid())
+  trainingId String
+  userId     String
+  userName   String
+  userAvatar String?         @db.Text
+  message    String          @db.Text
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  training   TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@index([trainingId])
+  @@index([userId])
+}
+
+model TrainingLike {
+  id         String          @id @default(cuid())
+  trainingId String
+  userId     String
+  createdAt  DateTime        @default(now())
+  training   TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@unique([trainingId, userId])
+  @@index([trainingId])
+}
+
+model TrainingRating {
+  id         String          @id @default(cuid())
+  trainingId String
+  userId     String
+  stars      Int             @default(5)
+  feedback   String?         @db.Text
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  training   TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+
+  @@unique([trainingId, userId])
+  @@index([trainingId])
+}
+
 model ResearchPaper {
-  id                  String        @id @default(cuid())
+  id                  String            @id @default(cuid())
   title               String
-  slug                String        @unique
-  abstract            String        @db.Text
-  content             String?       @db.Text
-  authors             String
+  slug                String            @unique
+  abstract            String            @db.Text
+  content             String?           @db.Text
+  authors             String            @db.Text
+  authorsData         String?           @db.Text
   category            String
   publicationDate     DateTime?
   journalOrConference String?
   doi                 String?
-  pdfUrl              String?
-  status              ContentStatus @default(DRAFT)
-  isFeatured          Boolean       @default(false)
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
+  pdfUrl              String?           @db.Text
+  status              ContentStatus     @default(DRAFT)
+  isFeatured          Boolean           @default(false)
+  allowComments       Boolean           @default(true)
+  allowInteractions   Boolean           @default(true)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  comments            ResearchComment[]
+  likes               ResearchLike[]
+  ratings             ResearchRating[]
 
   @@index([status, isFeatured])
   @@index([category])
   @@index([slug])
+}
+
+model ResearchComment {
+  id         String        @id @default(cuid())
+  paperId    String
+  userId     String
+  userName   String
+  userAvatar String?       @db.Text
+  message    String        @db.Text
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  paper      ResearchPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@index([paperId])
+  @@index([userId])
+}
+
+model ResearchLike {
+  id        String        @id @default(cuid())
+  paperId   String
+  userId    String
+  createdAt DateTime      @default(now())
+  paper     ResearchPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@unique([paperId, userId])
+  @@index([paperId])
+}
+
+model ResearchRating {
+  id        String        @id @default(cuid())
+  paperId   String
+  userId    String
+  stars     Int           @default(5)
+  feedback  String?       @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  paper     ResearchPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@unique([paperId, userId])
+  @@index([paperId])
 }
 
 model Event {
@@ -157,12 +253,12 @@ model Event {
   endDate         DateTime?
   location        String
   isVirtual       Boolean       @default(false)
-  registrationUrl String?
+  registrationUrl String?       @db.Text
   capacity        Int?
   status          ContentStatus @default(DRAFT)
   isFeatured      Boolean       @default(false)
-  coverImage      String?
-  videoUrl        String?
+  coverImage      String?       @db.Text
+  videoUrl        String?       @db.Text
   attendeesCount  Int?
   gallery         String?       @db.Text
   guests          String?       @db.Text
@@ -326,3 +422,15 @@ model SiteSetting {
 
   @@index([key])
 }
+
+model CommentReaction {
+  id        String   @id @default(cuid())
+  commentId String
+  visitorId String
+  emoji     String   @db.VarChar(32)
+  createdAt DateTime @default(now())
+
+  @@unique([commentId, visitorId, emoji], map: "uq_comment_visitor_emoji")
+  @@index([commentId], map: "idx_commentId")
+}
+

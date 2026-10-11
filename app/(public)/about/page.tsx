@@ -254,7 +254,7 @@ export default async function AboutPage() {
                           department: founder.department,
                           bio: founder.bio,
                           avatar: founder.avatar,
-                          isFounder: Boolean(founder.isFounder),
+                          isFounder: Boolean((founder as any).isFounder),
                         }
                       : null
                   }

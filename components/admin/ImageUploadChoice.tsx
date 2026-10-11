@@ -31,9 +31,9 @@ export function ImageUploadChoice({
   required = false,
   source = "project",
 }: ImageUploadChoiceProps) {
-  // Determine initial mode: If value starts with "/uploads/", prefer upload mode; otherwise default to "url" or "upload"
+  // Determine initial mode: Default to Upload from Device unless an external http URL is provided
   const [mode, setMode] = useState<"url" | "upload">(
-    value?.startsWith("/uploads/") ? "upload" : "url"
+    value?.startsWith("http") ? "url" : "upload"
   );
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -139,21 +139,6 @@ export function ImageUploadChoice({
           <button
             type="button"
             onClick={() => {
-              setMode("url");
-              setUploadError(null);
-            }}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md transition cursor-pointer ${
-              mode === "url"
-                ? "bg-white text-blue-700 shadow-xs font-bold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Link2 className="w-3 h-3" />
-            Image Link / URL
-          </button>
-          <button
-            type="button"
-            onClick={() => {
               setMode("upload");
               setUploadError(null);
             }}
@@ -163,8 +148,23 @@ export function ImageUploadChoice({
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <UploadCloud className="w-3 h-3" />
-            Upload File
+            <UploadCloud className="w-3.5 h-3.5" />
+            Upload from Device
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMode("url");
+              setUploadError(null);
+            }}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md transition cursor-pointer ${
+              mode === "url"
+                ? "bg-white text-blue-700 shadow-xs font-bold"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Link2 className="w-3.5 h-3.5" />
+            Paste Link
           </button>
         </div>
       </div>

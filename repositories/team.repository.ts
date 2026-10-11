@@ -17,7 +17,7 @@ export class TeamRepository {
         isFounder: founderMap.get(item.id) ?? (item as any).isFounder ?? false,
       }));
     } catch {
-      return items;
+      return items.map((item) => ({ ...item, isFounder: false }));
     }
   }
 
@@ -35,7 +35,7 @@ export class TeamRepository {
         isFounder: founderMap.get(item.id) ?? (item as any).isFounder ?? false,
       }));
     } catch {
-      return items;
+      return items.map((item) => ({ ...item, isFounder: false }));
     }
   }
 

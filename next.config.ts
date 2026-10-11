@@ -1,10 +1,19 @@
 import type { NextConfig } from "next";
 
-// Updated to reload server configuration with latest schema definitions
+// Reloaded to recognize newly installed @clerk packages in node_modules
 const nextConfig: NextConfig = {
   devIndicators: false,
   async redirects() {
-    return [{ source: "/gallery", destination: "/posts", permanent: true }];
+    return [
+      { source: "/gallery", destination: "/posts", permanent: true },
+      { source: "/project-member", destination: "/project-members", permanent: false },
+    ];
+  },
+  async rewrites() {
+    return [
+      { source: "/project-member", destination: "/project-members" },
+      { source: "/project%20member", destination: "/project-members" },
+    ];
   },
   images: {
     remotePatterns: [
