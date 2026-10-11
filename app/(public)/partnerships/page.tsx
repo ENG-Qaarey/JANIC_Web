@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
 import { PartnershipForm } from "@/components/forms/PartnershipForm";
-import { Handshake, Building2, Globe2, Rocket, Award, ShieldCheck, ArrowRight } from "lucide-react";
+import { Handshake, Building2, Globe2, Rocket, Award, ShieldCheck } from "lucide-react";
 
 export const metadata = {
   title: "Partnerships & Collaboration",
@@ -11,7 +11,9 @@ export const metadata = {
     "Partner with JANIC at Jazeera University. Collaborative research, student incubators, hardware lab sponsorships, and IT certifications.",
 };
 
-export default function PartnershipsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PartnershipsPage() {
   const benefits = [
     {
       title: "Direct Access to Top Tech Talent",
@@ -35,9 +37,19 @@ export default function PartnershipsPage() {
     },
   ];
 
+  const coreSectors = [
+    { title: "SMEs & Startups", desc: "Scaling with digital solutions & tech talent" },
+    { title: "Women-Owned Businesses", desc: "Empowering with technology & mentorship" },
+    { title: "Universities & Education", desc: "Research, curriculum & student programs" },
+    { title: "NGOs & Development Organizations", desc: "Digital transformation & community tech" },
+    { title: "Government Institutions", desc: "Digital governance & public innovation" },
+    { title: "Technology Companies", desc: "R&D, talent & co-development" },
+    { title: "Researchers & Professionals", desc: "Joint publications & applied research" },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-x-clip">
-      {/* 1. HERO SECTION (ROUNDED CARD HERO) */}
+      {/* 1. HERO SECTION */}
       <SectionHero
         badge="Strategic Alliances"
         title="Let's Build the Future Together"
@@ -45,7 +57,7 @@ export default function PartnershipsPage() {
         breadcrumbs={[{ label: "Partnerships" }]}
       />
 
-      {/* 2. TRUSTED BY SECTION - HORIZONTAL SCROLL SLIDER */}
+      {/* 2. TRUSTED BY SECTION - HORIZONTAL SCROLL SLIDER (EXACT 7 SECTORS ONLY) */}
       <section className="relative py-12 sm:py-16 bg-gradient-to-b from-white via-[#F8FBFF] to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
         <div className="relative max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-down" duration={850}>
@@ -73,15 +85,7 @@ export default function PartnershipsPage() {
               <div className="flex w-max gap-4 sm:gap-5 animate-marquee group-hover:[animation-play-state:paused]">
                 {[...Array(2)].map((_, setIndex) => (
                   <div key={setIndex} className="flex gap-4 sm:gap-5 shrink-0">
-                    {[
-                      { title: "SMEs & Startups", desc: "Scaling with digital solutions & tech talent" },
-                      { title: "Women-Owned Businesses", desc: "Empowering with technology & mentorship" },
-                      { title: "Universities & Education", desc: "Research, curriculum & student programs" },
-                      { title: "NGOs & Development Orgs", desc: "Digital transformation & community tech" },
-                      { title: "Government Institutions", desc: "Digital governance & public innovation" },
-                      { title: "Technology Companies", desc: "R&D, talent & co-development" },
-                      { title: "Researchers & Professionals", desc: "Joint publications & applied research" },
-                    ].map((org, orgIndex) => (
+                    {coreSectors.map((org, orgIndex) => (
                       <div
                         key={`${setIndex}-${org.title}`}
                         className="shrink-0 w-[260px] sm:w-[280px] bg-white dark:bg-slate-900 p-5 rounded-2xl border border-blue-100/80 dark:border-slate-700/60 shadow-sm dark:shadow-slate-950/30 hover:shadow-lg hover:border-[#0875D1]/40 dark:hover:border-[#0875D1]/50 hover:-translate-y-1 transition-all duration-300 ease-out group/card"
@@ -105,7 +109,7 @@ export default function PartnershipsPage() {
         </ScrollReveal>
       </section>
 
-      {/* 3. PARTNERSHIPS BENTO CANVAS - FADE LEFT */}
+      {/* 3. PARTNERSHIPS BENTO CANVAS */}
       <section className="py-8 sm:py-14 bg-white overflow-hidden">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-left" duration={850}>
@@ -179,7 +183,7 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      {/* 4. CALL TO ACTION (MATCHING HOME PAGE) - ZOOM IN */}
+      {/* 4. CALL TO ACTION */}
       <section className="pt-8 pb-20 sm:pt-12 sm:pb-28 bg-white text-center overflow-hidden">
         <ScrollReveal animation="zoom-in" duration={800}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3.5">

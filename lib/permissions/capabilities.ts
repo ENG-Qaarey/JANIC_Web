@@ -34,10 +34,12 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<Role | "USER" | string, Permission
     "research:create", "research:read", "research:update", "research:delete",
     "events:create", "events:read", "events:update", "events:delete",
     "media:create", "media:read", "media:update", "media:delete",
-    "submissions:read", "submissions:update"
+    "submissions:read", "submissions:update",
+    "partnerships:create", "partnerships:read", "partnerships:update", "partnerships:delete"
   ],
   STAFF: [
-    "projects:read", "training:read", "research:read", "events:read", "media:read", "submissions:read"
+    "projects:read", "training:read", "research:read", "events:read", "media:read", "submissions:read",
+    "partnerships:read", "partnerships:update"
   ],
   USER: [],
 };

@@ -12,11 +12,7 @@ export async function PUT(
     const { id } = await params;
     const body = await req.json();
 
-    const updated = await PartnershipService.updateStatus(
-      id,
-      body.status as PartnershipStatus,
-      body.adminNotes
-    );
+    const updated = await PartnershipService.updateInquiry(id, body);
 
     return NextResponse.json({ success: true, item: updated });
   } catch (err: unknown) {

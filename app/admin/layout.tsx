@@ -27,7 +27,7 @@ export default async function AdminLayout({
   const [unreadMessages, pendingSubmissions, newPartnerships, rolePermSetting] = await Promise.all([
     prisma.contactMessage.count({ where: { status: "UNREAD" } }),
     prisma.innovationSubmission.count({ where: { status: "PENDING" } }),
-    prisma.partnershipInquiry.count({ where: { status: "NEW" } }),
+    (prisma.partnershipInquiry as any).count({ where: { isApproved: false, isRejected: false } }),
     SettingService.getByKey("role_permissions"),
   ]);
   const notifCount = unreadMessages + pendingSubmissions + newPartnerships;

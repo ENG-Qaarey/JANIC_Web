@@ -1,5 +1,4 @@
 import { PartnershipRepository } from "@/repositories/partnership.repository";
-import { PartnershipStatus } from "@prisma/client";
 
 export class PartnershipService {
   static async submitInquiry(data: {
@@ -19,19 +18,65 @@ export class PartnershipService {
       phone: data.phone,
       collaborationArea: data.collaborationArea,
       proposalDetails: data.proposalDetails,
-      status: PartnershipStatus.NEW,
+      isApproved: false,
+      isRejected: false,
     });
   }
 
-  static async getAllAdmin(options?: { status?: PartnershipStatus; search?: string }) {
+  static async getAllAdmin(options?: { search?: string }) {
     return PartnershipRepository.findAllAdmin(options);
   }
 
-  static async updateStatus(id: string, status: PartnershipStatus, adminNotes?: string) {
-    return PartnershipRepository.updateStatus(id, status, adminNotes);
+  static async getAllPublic() {
+    return PartnershipRepository.findAllPublic();
+  }
+
+  static async updateApproval(id: string, isApproved: boolean, isRejected: boolean, adminNotes?: string) {
+    return PartnershipRepository.updateApproval(id, isApproved, isRejected, adminNotes);
+  }
+
+  static async updateInquiry(id: string, data: {
+    organizationName?: string;
+    organizationType?: string;
+    contactName?: string;
+    email?: string;
+    phone?: string;
+    collaborationArea?: string;
+    proposalDetails?: string;
+    isApproved?: boolean;
+    isRejected?: boolean;
+    adminNotes?: string;
+  }) {
+    return PartnershipRepository.update(id, data);
   }
 
   static async deleteInquiry(id: string) {
     return PartnershipRepository.delete(id);
+  }
+
+  static async createByAdmin(data: {
+    organizationName: string;
+    organizationType: string;
+    contactName: string;
+    email: string;
+    phone?: string;
+    collaborationArea: string;
+    proposalDetails: string;
+    isApproved?: boolean;
+    isRejected?: boolean;
+    adminNotes?: string;
+  }) {
+    return PartnershipRepository.create({
+      organizationName: data.organizationName,
+      organizationType: data.organizationType,
+      contactName: data.contactName,
+      email: data.email,
+      phone: data.phone,
+      collaborationArea: data.collaborationArea,
+      proposalDetails: data.proposalDetails,
+      isApproved: data.isApproved ?? true,
+      isRejected: data.isRejected ?? false,
+      adminNotes: data.adminNotes,
+    });
   }
 }
