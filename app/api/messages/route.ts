@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { MessageService } from "@/services/messages/message.service";
 import { isEnabled } from "@/lib/settings";
+import { notifyNewContactMessage } from "@/lib/mailer";
 
 const messageSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -27,6 +28,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Contact form is currently disabled" }, { status: 403 });
     }
     const message = await MessageService.submitMessage(parsed.data);
+
+    // Notification is best-effort: never let mail delivery affect a saved submission.
+    void notifyNewContactMessage({
+      id: message.id,
+      name: message.name,
+      email: message.email,
+      phone: message.phone,
+      subject: message.subject,
+      message: message.message,
+    });
 
     return NextResponse.json({
       success: true,

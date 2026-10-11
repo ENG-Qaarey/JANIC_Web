@@ -11,6 +11,7 @@ export const MODULES = [
   "messages",
   "team",
   "media",
+  "community_services",
   "settings",
   "users"
 ] as const;
@@ -35,20 +36,13 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<Role | "USER" | string, Permission
     "events:create", "events:read", "events:update", "events:delete",
     "media:create", "media:read", "media:update", "media:delete",
     "submissions:read", "submissions:update",
-    "partnerships:create", "partnerships:read", "partnerships:update", "partnerships:delete"
+    "partnerships:create", "partnerships:read", "partnerships:update", "partnerships:delete",
+    "community_services:read", "community_services:create", "community_services:update", "community_services:delete"
   ],
   STAFF: [
-<<<<<<< HEAD
     "projects:read", "training:read", "research:read", "events:read", "media:read", "submissions:read",
-    "partnerships:read", "partnerships:update"
-=======
-    "projects:create", "projects:read", "projects:update", "projects:delete",
-    "training:create", "training:read", "training:update", "training:delete",
-    "research:create", "research:read", "research:update", "research:delete",
-    "events:create", "events:read", "events:update", "events:delete",
-    "media:create", "media:read", "media:update", "media:delete",
-    "submissions:read", "submissions:update"
->>>>>>> 03baa7c355a1931ffbdd9f3bc18c2b9524c9f43c
+    "partnerships:read", "partnerships:update",
+    "community_services:read"
   ],
   USER: [],
 };

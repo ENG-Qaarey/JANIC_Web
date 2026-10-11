@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { PartnershipService } from "@/services/partnerships/partnership.service";
+import { notifyNewPartnershipInquiry } from "@/lib/mailer";
 
 const partnershipSchema = z.object({
   organizationName: z.string().min(2, "Organization name is required"),
@@ -25,6 +26,18 @@ export async function POST(req: NextRequest) {
     }
 
     const inquiry = await PartnershipService.submitInquiry(parsed.data);
+
+    // Notification is best-effort: never let mail delivery affect a saved submission.
+    void notifyNewPartnershipInquiry({
+      id: inquiry.id,
+      organizationName: inquiry.organizationName,
+      organizationType: inquiry.organizationType,
+      contactName: inquiry.contactName,
+      email: inquiry.email,
+      phone: inquiry.phone,
+      collaborationArea: inquiry.collaborationArea,
+      proposalDetails: inquiry.proposalDetails,
+    });
 
     return NextResponse.json({
       success: true,

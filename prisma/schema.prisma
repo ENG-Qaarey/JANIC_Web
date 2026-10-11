@@ -427,14 +427,13 @@ model SiteSetting {
   @@index([key])
 }
 
-<<<<<<< HEAD
 model OrganizationType {
   id        String   @id @default(cuid())
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-=======
+
 model CommentReaction {
   id        String   @id @default(cuid())
   commentId String
@@ -446,4 +445,168 @@ model CommentReaction {
   @@index([commentId], map: "idx_commentId")
 }
 
->>>>>>> 03baa7c355a1931ffbdd9f3bc18c2b9524c9f43c
+enum OrgType {
+  FOR_PROFIT
+  NONPROFIT
+}
+
+enum OrganizationCategory {
+  PRIVATE_COMPANY
+  STARTUP_SMALL_BUSINESS
+  NGO
+  COMMUNITY_BASED_ORGANIZATION
+  EDUCATIONAL_INSTITUTION
+  FOUNDATION_CHARITY
+  YOUTH_ORGANIZATION
+  OTHER
+}
+
+enum FundingStatus {
+  FUNDED
+  PARTIALLY_FUNDED
+  SEEKING_FUNDING
+  NOT_YET_DETERMINED
+}
+
+enum ServiceRequestStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ADDITIONAL_INFO_REQUIRED
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+enum ServiceRequestPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model ServiceCategory {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?    @db.Text
+  icon        String?
+  order       Int        @default(0)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  services    Service[]
+  requests    ServiceRequest[] @relation("ServiceRequestCategory")
+
+  @@index([isActive, order])
+}
+
+model Service {
+  id          String          @id @default(cuid())
+  categoryId  String
+  name        String
+  description String?         @db.Text
+  order       Int             @default(0)
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  category    ServiceCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  requests    ServiceRequest[] @relation("ServiceRequestService")
+
+  @@index([categoryId, isActive, order])
+}
+
+model ServiceRequest {
+  id                        String              @id @default(cuid())
+  requestNumber             String              @unique
+  organizationName          String
+  organizationType          OrgType
+  organizationCategory      OrganizationCategory
+  contactPerson             String
+  email                     String
+  phone                     String
+  website                   String?
+  country                   String
+  city                      String
+  address                   String?
+  serviceCategoryId         String              @map("serviceCategoryId")
+  serviceId                 String              @map("serviceId")
+  requestTitle              String
+  description               String              @db.Text
+  expectedOutcomes          String?             @db.Text
+  beneficiaries             String?             @db.Text
+  startDate                 DateTime?
+  preferredCompletionDate   DateTime?
+  budget                    String?
+  preferredContactMethod    String              @default("EMAIL")
+  businessSector            String?
+  businessOutcome           String?             @db.Text
+  isExistingBusiness        Boolean?
+  commercialRequirements    String?             @db.Text
+  organizationMission       String?             @db.Text
+  socialProblem             String?             @db.Text
+  targetBeneficiaries       String?             @db.Text
+  socialImpact              String?             @db.Text
+  fundingStatus             FundingStatus?
+  isExistingCommunityProject Boolean?
+  additionalNotes           String?             @db.Text
+  status                    ServiceRequestStatus @default(SUBMITTED)
+  priority                  ServiceRequestPriority @default(MEDIUM)
+  rejectionReason           String?             @db.Text
+  submittedById             String?
+  assignedToId              String?
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
+  reviewedAt                DateTime?
+  completedAt               DateTime?
+  serviceCategoryRef        ServiceCategory     @relation("ServiceRequestCategory", fields: [serviceCategoryId], references: [id])
+  serviceRef                Service             @relation("ServiceRequestService", fields: [serviceId], references: [id])
+  notes                     ServiceRequestNote[]
+  attachments               ServiceRequestAttachment[]
+  history                   ServiceRequestHistory[]
+
+  @@index([status, createdAt])
+  @@index([organizationType, status])
+  @@index([serviceCategoryId, status])
+  @@index([assignedToId, status])
+  @@index([requestNumber])
+}
+
+model ServiceRequestNote {
+  id         String   @id @default(cuid())
+  requestId  String
+  authorId   String
+  content    String   @db.Text
+  createdAt  DateTime @default(now())
+  request    ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+}
+
+model ServiceRequestAttachment {
+  id           String   @id @default(cuid())
+  requestId    String
+  fileName     String
+  fileUrl      String
+  fileSize     Int
+  mimeType     String
+  uploadedById String
+  createdAt    DateTime @default(now())
+  request      ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+}
+
+model ServiceRequestHistory {
+  id          String              @id @default(cuid())
+  requestId   String
+  action      String
+  fromStatus  ServiceRequestStatus?
+  toStatus    ServiceRequestStatus?
+  actorId     String
+  notes       String?             @db.Text
+  createdAt   DateTime            @default(now())
+  request     ServiceRequest     @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId, createdAt])
+}

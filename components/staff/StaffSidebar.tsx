@@ -19,6 +19,8 @@ import {
   UserCircle,
   ExternalLink,
   X,
+  Heart,
+  Package,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -54,6 +56,8 @@ const allNavGroups: { label: string; items: NavItem[] }[] = [
     label: "Engagement",
     items: [
       { title: "Partnerships", href: "/staff/partnerships", icon: Handshake, capability: "partnerships:read" },
+      { title: "Community Services", href: "/staff/community-services", icon: Heart, capability: "community_services:read" },
+      { title: "Service Catalog", href: "/staff/community-services/catalog", icon: Package, capability: "community_services:create" },
       { title: "Messages", href: "/staff/messages", icon: MessageSquare, capability: "messages:read" },
     ],
   },
@@ -102,22 +106,22 @@ export function StaffSidebar({ open, onClose, user }: StaffSidebarProps) {
       >
         <div className="flex h-14 items-center justify-between border-b border-border px-4 shrink-0">
           <Link href="/staff/dashboard" className="flex items-center gap-2" onClick={onClose}>
-            <div className="relative w-32 h-8">
+            <div className="relative w-[150px] h-9">
               <Image
-                src="/images/janic-logo-blue.png"
+                src="/images/janic-with-jazeera-blue.png"
                 alt="JANIC Staff"
                 fill
                 className="object-contain object-left dark:hidden"
                 priority
-                sizes="128px"
+                sizes="150px"
               />
               <Image
-                src="/images/janic-logo-white.png"
+                src="/images/janic-with-jazeera-white.png"
                 alt="JANIC Staff"
                 fill
                 className="object-contain object-left hidden dark:block"
                 priority
-                sizes="128px"
+                sizes="150px"
               />
             </div>
           </Link>

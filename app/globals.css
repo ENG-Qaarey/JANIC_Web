@@ -637,3 +637,83 @@ button[aria-label*="Next.js"] {
 }
 
 
+
+/* ============================================================================
+   JANIC toast / alert system
+   Styling for the shared <Toaster /> in components/ui/sonner.tsx
+   ========================================================================== */
+
+.janic-toast {
+  border-radius: calc(var(--radius) * 1.1) !important;
+  border-width: 1px !important;
+  font-family: inherit !important;
+  box-shadow: 0 8px 30px -12px rgba(8, 36, 92, 0.28) !important;
+  backdrop-filter: blur(12px);
+}
+
+.janic-toast-title {
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+  font-size: 0.8125rem !important;
+}
+
+.janic-toast-description {
+  font-size: 0.75rem !important;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.janic-toast-action {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border-radius: 0.5rem !important;
+  font-weight: 700 !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: filter 150ms ease;
+}
+
+.janic-toast-action:hover {
+  filter: brightness(0.93);
+}
+
+.janic-toast-cancel {
+  background: var(--muted) !important;
+  color: var(--muted-foreground) !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.6875rem !important;
+}
+
+.janic-toast-close {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted-foreground) !important;
+}
+
+/* Brand-tinted accent stripe down the leading edge of each toast. */
+.janic-toast[data-type="success"] {
+  border-left: 3px solid #10b981 !important;
+}
+.janic-toast[data-type="error"] {
+  border-left: 3px solid #ef4444 !important;
+}
+.janic-toast[data-type="warning"] {
+  border-left: 3px solid #f59e0b !important;
+}
+.janic-toast[data-type="info"] {
+  border-left: 3px solid var(--primary) !important;
+}
+.janic-toast[data-type="loading"] {
+  border-left: 3px solid var(--muted-foreground) !important;
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .janic-toast,
+  .janic-toast * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

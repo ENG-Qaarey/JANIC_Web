@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, LogIn, UserPlus, LayoutDashboard, LogOut, ChevronDown, FolderKanban, Users, UserCircle } from "lucide-react";
+import { Menu, X, LogIn, UserPlus, LayoutDashboard, LogOut, ChevronDown, FolderKanban, Users, UserCircle, HandHeart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeModeDropdown } from "@/components/theme/ThemeModeDropdown";
 import { useUser, useClerk } from "@clerk/nextjs";
@@ -158,6 +158,7 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
+  const [partnershipsDropdownOpen, setPartnershipsDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const { user: clerkUser, isSignedIn: isClerkSignedIn } = useUser();
@@ -359,6 +360,90 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
               );
             }
 
+            if (link.name === "PARTNERSHIPS") {
+              const isPartnershipsActive =
+                pathname === "/partnerships" || pathname.startsWith("/partnerships/");
+
+              return (
+                <div
+                  key={link.name}
+                  className="relative group py-2"
+                  onMouseEnter={() => setPartnershipsDropdownOpen(true)}
+                  onMouseLeave={() => setPartnershipsDropdownOpen(false)}
+                >
+                  <Link
+                    href="/partnerships"
+                    className={cn(
+                      "inline-flex items-center gap-1 text-[10px] xl:text-[11px] font-bold tracking-wide transition-colors uppercase whitespace-nowrap",
+                      isPartnershipsActive
+                        ? "text-[#0875D1]"
+                        : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300"
+                    )}
+                  >
+                    <span>{link.name}</span>
+                    <ChevronDown
+                      className={cn(
+                        "w-3 h-3 transition-transform duration-200",
+                        partnershipsDropdownOpen ? "rotate-180 text-[#0875D1]" : "text-slate-400 group-hover:text-[#0875D1]"
+                      )}
+                    />
+                  </Link>
+
+                  <div
+                    className={cn(
+                      "absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64 transition-all duration-200 z-50",
+                      partnershipsDropdownOpen
+                        ? "opacity-100 visible translate-y-0"
+                        : "opacity-0 invisible -translate-y-1 pointer-events-none"
+                    )}
+                  >
+                    <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800 p-2 shadow-[0_12px_36px_-10px_rgba(8,36,92,0.22)] dark:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.6)] space-y-1">
+                      <Link
+                        href="/partnerships"
+                        onClick={() => setPartnershipsDropdownOpen(false)}
+                        className={cn(
+                          "flex items-start gap-3 p-2.5 rounded-xl transition-all group/item",
+                          isPartnershipsActive
+                            ? "bg-blue-50/80 dark:bg-blue-950/60 text-[#0875D1]"
+                            : "hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
+                        )}
+                      >
+                        <div className="p-2 rounded-lg bg-blue-100/70 dark:bg-blue-900/40 text-[#0875D1] shrink-0 mt-0.5 group-hover/item:scale-105 transition-transform">
+                          <Users className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold leading-tight">
+                            <span>Partnership</span>
+                          </div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
+                            Our partners & collaborators
+                          </div>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/community-services"
+                        onClick={() => setPartnershipsDropdownOpen(false)}
+                        className="flex items-start gap-3 p-2.5 rounded-xl transition-all group/item hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
+                      >
+                        <div className="p-2 rounded-lg bg-purple-100/70 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5 group-hover/item:scale-105 transition-transform">
+                          <HandHeart className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold leading-tight">
+                            <span>Community Service</span>
+                          </div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
+                            Technology &amp; support for organizations
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.name}
@@ -501,6 +586,37 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
                       <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 font-black">
                         TEAMS
                       </span>
+                    </Link>
+                  </React.Fragment>
+                );
+              }
+
+              if (link.name === "PARTNERSHIPS") {
+                const isPartnershipsActive =
+                  pathname === "/partnerships" || pathname.startsWith("/partnerships/");
+
+                return (
+                  <React.Fragment key={link.name}>
+                    <Link
+                      href="/partnerships"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        "px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900 flex items-center gap-2",
+                        isPartnershipsActive
+                          ? "text-[#0875D1] bg-blue-50/80 dark:bg-blue-950/50"
+                          : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
+                      )}
+                    >
+                      <Users className="w-3.5 h-3.5 text-[#0875D1]" />
+                      <span>Partnership</span>
+                    </Link>
+                    <Link
+                      href="/community-services"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900 flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
+                    >
+                      <HandHeart className="w-3.5 h-3.5 text-purple-500" />
+                      <span>Community Service</span>
                     </Link>
                   </React.Fragment>
                 );
