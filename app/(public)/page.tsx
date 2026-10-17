@@ -139,10 +139,6 @@ export default async function HomePage() {
                   <span className="text-2xl sm:text-3xl font-black text-[#08245C] dark:text-white">2</span>
                   <span className="text-xs sm:text-sm font-bold text-slate-400 dark:text-slate-400 tracking-wider uppercase">HUB</span>
                 </div>
-                <div className="flex-1 min-w-[140px] flex items-baseline justify-center gap-2.5 px-3 py-1">
-                  <span className="text-2xl sm:text-3xl font-black text-[#08245C] dark:text-white">∞</span>
-                  <span className="text-xs sm:text-sm font-bold text-slate-400 dark:text-slate-400 tracking-wider uppercase">IDEAS</span>
-                </div>
               </div>
             </div>
           </ScrollReveal>

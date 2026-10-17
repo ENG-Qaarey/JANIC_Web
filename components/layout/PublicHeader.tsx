@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, LogIn, UserPlus, LayoutDashboard, LogOut, ChevronDown, FolderKanban, Users, UserCircle, HandHeart } from "lucide-react";
+import { Menu, X, LayoutDashboard, LogOut, ChevronDown, UserCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeModeDropdown } from "@/components/theme/ThemeModeDropdown";
 import { useUser, useClerk } from "@clerk/nextjs";
@@ -19,15 +19,63 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const defaultNavLinks = [
-  { name: "ABOUT", href: "/about" },
-  { name: "WHAT WE DO", href: "/what-we-do" },
-  { name: "INNOVATION HUB", href: "/innovation-hub" },
-  { name: "PROJECTS", href: "/projects" },
-  { name: "TRAINING", href: "/training" },
-  { name: "RESEARCH", href: "/research" },
-  { name: "EVENTS", href: "/events" },
-  { name: "PARTNERSHIPS", href: "/partnerships" },
+export interface SubNavItem {
+  name: string;
+  href: string;
+}
+
+export interface NavItem {
+  id: string;
+  name: string;
+  href: string;
+  subLinks?: SubNavItem[];
+}
+
+export const defaultNavStructure: NavItem[] = [
+  {
+    id: "innovation",
+    name: "INNOVATION",
+    href: "/innovation-hub",
+    subLinks: [
+      { name: "Innovation Hub", href: "/innovation-hub" },
+      { name: "Projects", href: "/projects" },
+      { name: "Team Members", href: "/team" },
+      { name: "Project Members", href: "/project-members" },
+    ],
+  },
+  {
+    id: "research",
+    name: "RESEARCH",
+    href: "/research",
+    subLinks: [
+      { name: "Training", href: "/training" },
+      { name: "Research", href: "/research" },
+      { name: "Events", href: "/events" },
+    ],
+  },
+  {
+    id: "about",
+    name: "ABOUT",
+    href: "/about",
+    subLinks: [
+      { name: "About JANIC", href: "/about" },
+      { name: "What We Do", href: "/what-we-do" },
+    ],
+  },
+  {
+    id: "partnerships",
+    name: "PARTNERSHIPS",
+    href: "/partnerships",
+    subLinks: [
+      { name: "Partnerships", href: "/partnerships" },
+      { name: "Community Service", href: "/community-services" },
+    ],
+  },
+  {
+    id: "contact",
+    name: "CONTACT",
+    href: "/contact",
+  },
 ];
 
 interface PublicHeaderProps {
@@ -152,13 +200,17 @@ function UserAvatarMenu({ user, loggingOut, onLogout }: UserAvatarMenuProps) {
   );
 }
 
-export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
-  const links = navLinks && navLinks.length > 0 ? navLinks : defaultNavLinks;
+export function PublicHeader({ currentUser }: PublicHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
-  const [partnershipsDropdownOpen, setPartnershipsDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileExpandedSections, setMobileExpandedSections] = useState<Record<string, boolean>>({
+    about: true,
+    innovation: true,
+    research: true,
+    partnerships: true,
+  });
   const [scrolled, setScrolled] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const { user: clerkUser, isSignedIn: isClerkSignedIn } = useUser();
@@ -205,6 +257,7 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
     setMobileMenuOpen(false);
+    setOpenDropdown(null);
   }
 
   const handleLogout = async () => {
@@ -223,6 +276,30 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
     }
   };
 
+  const isLinkActive = (href: string) => {
+    if (href === "/projects") {
+      return (
+        pathname === "/projects" ||
+        (pathname.startsWith("/projects/") && !pathname.includes("/members"))
+      );
+    }
+    if (href === "/project-members") {
+      return (
+        pathname === "/project-members" ||
+        pathname.startsWith("/project-members") ||
+        pathname === "/projects/members"
+      );
+    }
+    return pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+  };
+
+  const isNavGroupActive = (item: NavItem) => {
+    if (item.subLinks && item.subLinks.length > 0) {
+      return item.subLinks.some((sub) => isLinkActive(sub.href));
+    }
+    return isLinkActive(item.href);
+  };
+
   return (
     <header
       className={cn(
@@ -231,7 +308,7 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
       )}
     >
       <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand Logo with exact image */}
+        {/* Brand Logo */}
         <Link href="/" className="flex items-center shrink-0 group">
           <div className="relative h-9 sm:h-10 w-40 sm:w-48 xl:w-56 transition-transform group-hover:scale-[1.02]">
             <Image
@@ -253,191 +330,68 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 2xl:gap-6">
-          {links.map((link) => {
-            const isProjects = link.name === "PROJECTS";
-            const isProjectsActive =
-              pathname === "/projects" ||
-              (pathname.startsWith("/projects/") && !pathname.includes("/members")) ||
-              pathname === "/project-members" ||
-              pathname.startsWith("/project-members") ||
-              pathname === "/projects/members";
-            const isActive = isProjects
-              ? isProjectsActive
-              : pathname === link.href || pathname.startsWith(link.href + "/");
+        {/* Desktop Navigation Links (Clean single-word names, non-rounded dropdowns) */}
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-6 2xl:gap-8">
+          {defaultNavStructure.map((item) => {
+            const isGroupActive = isNavGroupActive(item);
+            const hasSubLinks = Boolean(item.subLinks && item.subLinks.length > 0);
 
-            if (isProjects) {
+            if (hasSubLinks && item.subLinks) {
               return (
                 <div
-                  key={link.name}
+                  key={item.id}
                   className="relative group py-2"
-                  onMouseEnter={() => setProjectsDropdownOpen(true)}
-                  onMouseLeave={() => setProjectsDropdownOpen(false)}
+                  onMouseEnter={() => setOpenDropdown(item.id)}
+                  onMouseLeave={() => setOpenDropdown(null)}
                 >
                   <Link
-                    href="/projects"
+                    href={item.href}
                     className={cn(
-                      "inline-flex items-center gap-1 text-[10px] xl:text-[11px] font-bold tracking-wide transition-colors uppercase whitespace-nowrap",
-                      isActive
-                        ? "text-[#0875D1]"
-                        : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300"
+                      "inline-flex items-center gap-1.5 text-[11px] xl:text-xs font-bold tracking-wider uppercase transition-colors whitespace-nowrap py-1",
+                      isGroupActive
+                        ? "text-[#0875D1] dark:text-sky-400"
+                        : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300 dark:hover:text-sky-400"
                     )}
                   >
-                    <span>{link.name}</span>
+                    <span>{item.name}</span>
                     <ChevronDown
                       className={cn(
-                        "w-3 h-3 transition-transform duration-200",
-                        projectsDropdownOpen ? "rotate-180 text-[#0875D1]" : "text-slate-400 group-hover:text-[#0875D1]"
+                        "w-3.5 h-3.5 transition-transform duration-200",
+                        openDropdown === item.id
+                          ? "rotate-180 text-[#0875D1] dark:text-sky-400"
+                          : "text-slate-400 dark:text-slate-500 group-hover:text-[#0875D1] dark:group-hover:text-sky-400"
                       )}
                     />
                   </Link>
 
-                  {/* Dropdown Menu Card */}
+                  {/* Dropdown Menu - Simple, non-rounded / straight edges, without any icons */}
                   <div
                     className={cn(
-                      "absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64 transition-all duration-200 z-50",
-                      projectsDropdownOpen
+                      "absolute top-full left-0 pt-2 min-w-[190px] xl:min-w-[210px] transition-all duration-150 z-50",
+                      openDropdown === item.id
                         ? "opacity-100 visible translate-y-0"
                         : "opacity-0 invisible -translate-y-1 pointer-events-none"
                     )}
                   >
-                    <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800 p-2 shadow-[0_12px_36px_-10px_rgba(8,36,92,0.22)] dark:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.6)] space-y-1">
-                      <Link
-                        href="/projects"
-                        onClick={() => setProjectsDropdownOpen(false)}
-                        className={cn(
-                          "flex items-start gap-3 p-2.5 rounded-xl transition-all group/item",
-                          pathname === "/projects" || (pathname.startsWith("/projects/") && !pathname.includes("/members"))
-                            ? "bg-blue-50/80 dark:bg-blue-950/60 text-[#0875D1]"
-                            : "hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
-                        )}
-                      >
-                        <div className="p-2 rounded-lg bg-blue-100/70 dark:bg-blue-900/40 text-[#0875D1] shrink-0 mt-0.5 group-hover/item:scale-105 transition-transform">
-                          <FolderKanban className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold leading-tight flex items-center gap-1.5">
-                            <span>All Projects</span>
-                            <span className="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-blue-100 text-[#0875D1] dark:bg-blue-900/60 dark:text-sky-300">
-                              15
-                            </span>
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                            Explore 15 innovation prototypes
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/project-members"
-                        onClick={() => setProjectsDropdownOpen(false)}
-                        className={cn(
-                          "flex items-start gap-3 p-2.5 rounded-xl transition-all group/item",
-                          pathname === "/project-members" || pathname.startsWith("/project-members") || pathname === "/projects/members"
-                            ? "bg-blue-50/80 dark:bg-blue-950/60 text-[#0875D1]"
-                            : "hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
-                        )}
-                      >
-                        <div className="p-2 rounded-lg bg-emerald-100/70 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5 group-hover/item:scale-105 transition-transform">
-                          <Users className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold leading-tight flex items-center gap-1.5">
-                            <span>Project Members</span>
-                            <span className="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
-                              Teams
-                            </span>
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                            Meet student engineers & leads
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-
-            if (link.name === "PARTNERSHIPS") {
-              const isPartnershipsActive =
-                pathname === "/partnerships" || pathname.startsWith("/partnerships/");
-
-              return (
-                <div
-                  key={link.name}
-                  className="relative group py-2"
-                  onMouseEnter={() => setPartnershipsDropdownOpen(true)}
-                  onMouseLeave={() => setPartnershipsDropdownOpen(false)}
-                >
-                  <Link
-                    href="/partnerships"
-                    className={cn(
-                      "inline-flex items-center gap-1 text-[10px] xl:text-[11px] font-bold tracking-wide transition-colors uppercase whitespace-nowrap",
-                      isPartnershipsActive
-                        ? "text-[#0875D1]"
-                        : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300"
-                    )}
-                  >
-                    <span>{link.name}</span>
-                    <ChevronDown
-                      className={cn(
-                        "w-3 h-3 transition-transform duration-200",
-                        partnershipsDropdownOpen ? "rotate-180 text-[#0875D1]" : "text-slate-400 group-hover:text-[#0875D1]"
-                      )}
-                    />
-                  </Link>
-
-                  <div
-                    className={cn(
-                      "absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64 transition-all duration-200 z-50",
-                      partnershipsDropdownOpen
-                        ? "opacity-100 visible translate-y-0"
-                        : "opacity-0 invisible -translate-y-1 pointer-events-none"
-                    )}
-                  >
-                    <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800 p-2 shadow-[0_12px_36px_-10px_rgba(8,36,92,0.22)] dark:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.6)] space-y-1">
-                      <Link
-                        href="/partnerships"
-                        onClick={() => setPartnershipsDropdownOpen(false)}
-                        className={cn(
-                          "flex items-start gap-3 p-2.5 rounded-xl transition-all group/item",
-                          isPartnershipsActive
-                            ? "bg-blue-50/80 dark:bg-blue-950/60 text-[#0875D1]"
-                            : "hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
-                        )}
-                      >
-                        <div className="p-2 rounded-lg bg-blue-100/70 dark:bg-blue-900/40 text-[#0875D1] shrink-0 mt-0.5 group-hover/item:scale-105 transition-transform">
-                          <Users className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold leading-tight">
-                            <span>Partnership</span>
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                            Our partners & collaborators
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/community-services"
-                        onClick={() => setPartnershipsDropdownOpen(false)}
-                        className="flex items-start gap-3 p-2.5 rounded-xl transition-all group/item hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
-                      >
-                        <div className="p-2 rounded-lg bg-purple-100/70 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5 group-hover/item:scale-105 transition-transform">
-                          <HandHeart className="w-4 h-4" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold leading-tight">
-                            <span>Community Service</span>
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                            Technology &amp; support for organizations
-                          </div>
-                        </div>
-                      </Link>
+                    <div className="bg-white dark:bg-slate-900 rounded-none border border-slate-200 dark:border-slate-800 p-1 shadow-lg space-y-0.5">
+                      {item.subLinks.map((sub) => {
+                        const isSubActive = isLinkActive(sub.href);
+                        return (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => setOpenDropdown(null)}
+                            className={cn(
+                              "block px-3.5 py-2.5 rounded-none text-xs font-semibold tracking-wide transition-colors whitespace-nowrap",
+                              isSubActive
+                                ? "bg-sky-50 dark:bg-sky-950/70 text-sky-600 dark:text-sky-400 font-bold"
+                                : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
+                            )}
+                          >
+                            {sub.name}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -446,51 +400,35 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
 
             return (
               <Link
-                key={link.name}
-                href={link.href}
+                key={item.id}
+                href={item.href}
                 className={cn(
-                  "text-[10px] xl:text-[11px] font-bold tracking-wide transition-colors uppercase whitespace-nowrap",
-                  isActive
-                    ? "text-[#0875D1]"
-                    : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300"
+                  "text-[11px] xl:text-xs font-bold tracking-wider uppercase transition-colors whitespace-nowrap py-1",
+                  isGroupActive
+                    ? "text-[#0875D1] dark:text-sky-400"
+                    : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300 dark:hover:text-sky-400"
                 )}
               >
-                {link.name}
+                {item.name}
               </Link>
             );
           })}
         </nav>
 
-        {/* Right Action: Desktop */}
-        <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-slate-600 hover:text-[#0875D1] dark:text-slate-300 font-bold text-[10px] xl:text-xs tracking-wider uppercase transition rounded-full hover:bg-slate-50 dark:hover:bg-slate-900"
-          >
-            Contact
-          </Link>
+        {/* Right Action: Desktop (Theme & Sky Blue Rounded Login Button) */}
+        <div className="hidden lg:flex items-center gap-2.5 xl:gap-3.5 shrink-0">
           <ThemeModeDropdown />
           {isLoggedIn ? (
             activeUser ? (
               <UserAvatarMenu user={activeUser} loggingOut={loggingOut} onLogout={handleLogout} />
             ) : null
           ) : (
-            <>
-              <Link
-                href="/login"
-                className="inline-flex items-center gap-1.5 px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-full border border-slate-200 dark:border-slate-800 text-[#08245C] dark:text-slate-200 hover:border-[#08245C] dark:hover:border-slate-600 hover:bg-[#08245C] hover:text-white font-bold text-[10px] xl:text-xs tracking-wider uppercase transition"
-              >
-                <LogIn className="w-3.5 h-3.5" />
-                Login
-              </Link>
-              <Link
-                href="/register"
-                className="inline-flex items-center gap-1.5 px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-full bg-gradient-to-r from-[#0875D1] to-[#0aa5e8] hover:from-[#0660ab] hover:to-[#0891c7] text-white font-bold text-[10px] xl:text-xs tracking-wider uppercase shadow-md shadow-blue-500/25 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-              >
-                <UserPlus className="w-3.5 h-3.5" />
-                Join Us
-              </Link>
-            </>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-sm hover:shadow active:scale-95"
+            >
+              Login
+            </Link>
           )}
         </div>
 
@@ -506,15 +444,15 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-4 pb-6 space-y-2 shadow-xl animate-in slide-in-from-top-2 duration-200">
-          <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="lg:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-4 pb-6 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center justify-between gap-3 pb-2 border-b border-slate-100 dark:border-slate-800">
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Theme</p>
             <ThemeModeDropdown />
           </div>
 
           {/* Logged-in user card (mobile) */}
           {isLoggedIn && activeUser && (
-            <div className="mb-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-[#F5F9FF] to-white dark:from-slate-900 dark:to-slate-950 p-4 flex items-center gap-3 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_25px_-15px_rgba(8,117,209,0.35)]">
+            <div className="rounded-xl border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-[#F5F9FF] to-white dark:from-slate-900 dark:to-slate-950 p-4 flex items-center gap-3 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_25px_-15px_rgba(8,117,209,0.35)]">
               <Avatar className="h-11 w-11 shrink-0">
                 {activeUser.avatar ? (
                   <AvatarImage src={activeUser.avatar} alt={activeUser.name} />
@@ -544,117 +482,97 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 mb-4">
-            {links.map((link) => {
-              if (link.name === "PROJECTS") {
-                const isProjectsActive =
-                  pathname === "/projects" ||
-                  (pathname.startsWith("/projects/") && !pathname.includes("/members"));
-                const isMembersActive =
-                  pathname === "/project-members" ||
-                  pathname.startsWith("/project-members") ||
-                  pathname === "/projects/members";
+          {/* Mobile Navigation Links (Non-rounded dropdowns, without icons) */}
+          <div className="space-y-1.5">
+            {defaultNavStructure.map((item) => {
+              if (item.subLinks && item.subLinks.length > 0) {
+                const isExpanded = mobileExpandedSections[item.id] ?? false;
+                const isGroupActive = isNavGroupActive(item);
 
                 return (
-                  <React.Fragment key={link.name}>
-                    <Link
-                      href="/projects"
-                      onClick={() => setMobileMenuOpen(false)}
+                  <div
+                    key={item.id}
+                    className="rounded-none border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50/60 dark:bg-slate-900/40"
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileExpandedSections((prev) => ({
+                          ...prev,
+                          [item.id]: !prev[item.id],
+                        }))
+                      }
                       className={cn(
-                        "px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900 flex items-center justify-between",
-                        isProjectsActive
-                          ? "text-[#0875D1] bg-blue-50/80 dark:bg-blue-950/50"
-                          : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
+                        "w-full px-3.5 py-2.5 flex items-center justify-between text-xs font-bold uppercase tracking-wider transition-colors",
+                        isGroupActive
+                          ? "text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40"
+                          : "text-slate-800 dark:text-slate-200"
                       )}
                     >
-                      <span>PROJECTS</span>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-[#0875D1] font-black">
-                        15
-                      </span>
-                    </Link>
-                    <Link
-                      href="/project-members"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={cn(
-                        "px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900 flex items-center justify-between",
-                        isMembersActive
-                          ? "text-[#0875D1] bg-blue-50/80 dark:bg-blue-950/50"
-                          : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
-                      )}
-                    >
-                      <span>PROJECT MEMBERS</span>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 font-black">
-                        TEAMS
-                      </span>
-                    </Link>
-                  </React.Fragment>
+                      <span>{item.name}</span>
+                      <ChevronDown
+                        className={cn(
+                          "w-4 h-4 text-slate-400 transition-transform duration-200",
+                          isExpanded ? "rotate-180 text-sky-500" : ""
+                        )}
+                      />
+                    </button>
+
+                    {isExpanded && (
+                      <div className="px-2 pb-2 pt-0.5 space-y-1 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                        {item.subLinks.map((sub) => {
+                          const isSubActive = isLinkActive(sub.href);
+                          return (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className={cn(
+                                "block px-3 py-2 rounded-none text-xs font-medium transition-colors",
+                                isSubActive
+                                  ? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 font-bold"
+                                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-sky-600"
+                              )}
+                            >
+                              {sub.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 );
               }
 
-              if (link.name === "PARTNERSHIPS") {
-                const isPartnershipsActive =
-                  pathname === "/partnerships" || pathname.startsWith("/partnerships/");
-
-                return (
-                  <React.Fragment key={link.name}>
-                    <Link
-                      href="/partnerships"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={cn(
-                        "px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900 flex items-center gap-2",
-                        isPartnershipsActive
-                          ? "text-[#0875D1] bg-blue-50/80 dark:bg-blue-950/50"
-                          : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
-                      )}
-                    >
-                      <Users className="w-3.5 h-3.5 text-[#0875D1]" />
-                      <span>Partnership</span>
-                    </Link>
-                    <Link
-                      href="/community-services"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900 flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
-                    >
-                      <HandHeart className="w-3.5 h-3.5 text-purple-500" />
-                      <span>Community Service</span>
-                    </Link>
-                  </React.Fragment>
-                );
-              }
-
-              const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+              const isActive = pathname === item.href || (item.href && pathname.startsWith(item.href + "/"));
 
               return (
                 <Link
-                  key={link.name}
-                  href={link.href}
+                  key={item.id}
+                  href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition dark:hover:bg-slate-900",
+                    "block px-3.5 py-2.5 rounded-none text-xs font-bold uppercase tracking-wider transition-colors",
                     isActive
-                      ? "text-[#0875D1] bg-blue-50/80 dark:bg-blue-950/50"
-                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[#0875D1]"
+                      ? "text-sky-600 bg-sky-50 dark:bg-sky-950/50"
+                      : "text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-sky-600"
                   )}
                 >
-                  {link.name}
+                  {item.name}
                 </Link>
               );
             })}
           </div>
 
+          {/* Mobile Actions: Sky Blue Rounded Login Button */}
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
-            <Link
-              href="/contact"
-              className="w-full py-2.5 px-4 rounded-full border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs text-center"
-            >
-              Contact Us
-            </Link>
             {isLoggedIn ? (
               <>
                 {(currentUser?.role as string) !== "USER" && (
                   <>
                     <Link
                       href={currentUser?.role === "STAFF" ? "/staff/profile" : "/admin/profile"}
+                      onClick={() => setMobileMenuOpen(false)}
                       className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#0875D1] to-[#0aa5e8] text-white font-semibold text-xs text-center shadow-md flex items-center justify-center gap-1.5"
                     >
                       <UserCircle className="w-3.5 h-3.5" />
@@ -662,6 +580,7 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
                     </Link>
                     <Link
                       href={currentUser?.role === "STAFF" ? "/staff/dashboard" : "/admin/dashboard"}
+                      onClick={() => setMobileMenuOpen(false)}
                       className="w-full py-2.5 px-4 rounded-full border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs text-center flex items-center justify-center gap-1.5"
                     >
                       <LayoutDashboard className="w-3.5 h-3.5" />
@@ -680,25 +599,17 @@ export function PublicHeader({ navLinks, currentUser }: PublicHeaderProps) {
                 </button>
               </>
             ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="w-full py-2.5 px-4 rounded-full border border-[#08245C] text-[#08245C] font-semibold text-xs text-center flex items-center justify-center gap-1.5"
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#0875D1] to-[#0aa5e8] text-white font-semibold text-xs text-center shadow-md flex items-center justify-center gap-1.5"
-                >
-                  <UserPlus className="w-3.5 h-3.5" />
-                  Join Us
-                </Link>
-              </>
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-2.5 px-4 rounded-full bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white font-bold text-xs text-center transition block shadow-sm"
+              >
+                Login
+              </Link>
             )}
             <Link
               href="/submit-innovation"
+              onClick={() => setMobileMenuOpen(false)}
               className="w-full py-2.5 px-4 rounded-full bg-[#08245C] text-white font-semibold text-xs text-center shadow-sm"
             >
               Submit Innovation Idea
