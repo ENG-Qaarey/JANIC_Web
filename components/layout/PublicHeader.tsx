@@ -309,10 +309,10 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
     >
       <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center shrink-0 group">
+        <Link href="/" aria-label="JANIC homepage" className="flex items-center shrink-0 group">
           <div className="relative h-9 sm:h-10 w-40 sm:w-48 xl:w-56 transition-transform group-hover:scale-[1.02]">
             <Image
-              src="/images/janic-with-jazeera-blue.png"
+              src="/images/janic-new-with-jazeera-blue.png"
               alt="JANIC — Jazeera Nexus Innovation Center"
               fill
               className="object-contain object-left dark:hidden"
@@ -320,7 +320,7 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
               sizes="(max-width: 640px) 160px, (max-width: 1280px) 192px, 224px"
             />
             <Image
-              src="/images/janic-with-jazeera-white.png"
+              src="/images/janic-new-with-jazeera-white.png"
               alt="JANIC — Jazeera Nexus Innovation Center"
               fill
               className="object-contain object-left hidden dark:block"

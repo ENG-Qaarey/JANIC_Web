@@ -1,0 +1,7 @@
+﻿JANIC hero background
+
+Asset: public/images/janic-glass-office.png
+Generated with the built-in image_gen tool. This is a reference-inspired background; text, cards, buttons and statistics are live HTML.
+
+Final prompt:
+Create a photorealistic website background photograph only, wide landscape 16:9. Bright modern university innovation hub interior with floor-to-ceiling glass office partitions on the right, white desks, subtle indoor plants, glossy pale floors, ceiling panels and daylight. Architectural perspective recedes toward center-left. Cool icy blue and white palette, airy sophisticated clean institutional technology environment. Left 45 percent is very bright almost white and softly faded with minimal details for dark headline overlay; right side has realistic glass reflections and blue-tinted architectural detail. No text, logos, cards, icons, buttons or interface. This will be the background behind a live responsive HTML hero matching a light blue glass office reference.

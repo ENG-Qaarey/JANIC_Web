@@ -27,7 +27,7 @@ export async function PublicFooter() {
             <Link href="/" className="inline-block group">
               <div className="relative w-48 h-12 transition-transform group-hover:scale-[1.02]">
                 <Image
-                  src="/images/janic-logo-white.png"
+                  src="/images/janic-new-with-jazeera-white.png"
                   alt="JANIC Logo"
                   fill
                   className="object-contain object-left"

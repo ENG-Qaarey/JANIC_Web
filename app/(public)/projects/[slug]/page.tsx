@@ -163,6 +163,7 @@ export default async function ProjectDetailPage({
         </div>
       )}
       <SectionHero
+        image={project.heroImage}
         badge={project.category}
         title={project.title}
         description={project.summary}
