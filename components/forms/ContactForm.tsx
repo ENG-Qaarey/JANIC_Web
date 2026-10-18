@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle2, AlertCircle, Loader2, Send } from "lucide-react";
+import { CheckCircle2, AlertCircle, Loader2, Send, UserRound, Mail, Phone, FileText, MessageCircle, ArrowRight } from "lucide-react";
+import styles from "./ContactForm.module.css";
 
 interface FormErrors {
   name?: string;
@@ -136,150 +137,59 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
     );
   }
 
+  const fields = [
+    { name: "name", label: "Your Full Name *", type: "text", placeholder: "Eng. Ahmed Mohamed", autoComplete: "name", icon: UserRound },
+    { name: "email", label: "Email Address *", type: "email", placeholder: "ahmed@example.com", autoComplete: "email", icon: Mail },
+    { name: "phone", label: "Phone Number (Optional)", type: "tel", placeholder: "+252 61...", autoComplete: "tel", icon: Phone },
+    { name: "subject", label: "Subject *", type: "text", placeholder: "e.g. Training Inquiry, General Question", autoComplete: "off", icon: FileText },
+  ] as const;
+
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-4">
-      {error && (
-        <div className="p-3 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/50 rounded-xl text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Your Full Name *
-          </label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => handleInputChange("name", e.target.value)}
-            placeholder="Eng. Ahmed Mohamed"
-            className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-              errors.name
-                ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
-                : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
-            }`}
-          />
-          {errors.name && (
-            <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{errors.name}</span>
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Email Address *
-          </label>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => handleInputChange("email", e.target.value)}
-            placeholder="ahmed@example.com"
-            className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-              errors.email
-                ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
-                : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
-            }`}
-          />
-          {errors.email && (
-            <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{errors.email}</span>
-            </p>
-          )}
-        </div>
+    <form onSubmit={handleSubmit} noValidate className={styles.form}>
+      {error && <div role="alert" className={styles.errorBanner}><AlertCircle size={18} aria-hidden="true" /><span>{error}</span></div>}
+      <div className={styles.fields}>
+        {fields.map(({ name, label, type, placeholder, autoComplete, icon: Icon }) => (
+          <div key={name} className={styles.field}>
+            <label htmlFor={`contact-${name}`}>{label}</label>
+            <div className={styles.control}>
+              <Icon className={styles.inputIcon} size={18} strokeWidth={1.7} aria-hidden="true" />
+              <input
+                id={`contact-${name}`}
+                name={name}
+                type={type}
+                autoComplete={autoComplete}
+                value={formData[name]}
+                onChange={(e) => handleInputChange(name, e.target.value)}
+                placeholder={placeholder}
+                aria-invalid={Boolean(errors[name])}
+                aria-describedby={errors[name] ? `contact-${name}-error` : undefined}
+                className={errors[name] ? styles.invalid : undefined}
+              />
+            </div>
+            {errors[name] && <p id={`contact-${name}-error`} className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{errors[name]}</span></p>}
+          </div>
+        ))}
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Phone Number (Optional)
-          </label>
-          <input
-            type="tel"
-            value={formData.phone}
-            onChange={(e) => handleInputChange("phone", e.target.value)}
-            placeholder="+252 61..."
-            className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-              errors.phone
-                ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
-                : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
-            }`}
+      <div className={styles.field}>
+        <label htmlFor="contact-message">Your Message *</label>
+        <div className={styles.control}>
+          <MessageCircle className={styles.messageIcon} size={19} strokeWidth={1.7} aria-hidden="true" />
+          <textarea
+            id="contact-message"
+            name="message"
+            rows={5}
+            value={formData.message}
+            onChange={(e) => handleInputChange("message", e.target.value)}
+            placeholder="How can JANIC assist you? Please write your query here..."
+            aria-invalid={Boolean(errors.message)}
+            aria-describedby={errors.message ? "contact-message-error" : undefined}
+            className={errors.message ? styles.invalid : undefined}
           />
-          {errors.phone && (
-            <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{errors.phone}</span>
-            </p>
-          )}
         </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Subject *
-          </label>
-          <input
-            type="text"
-            value={formData.subject}
-            onChange={(e) => handleInputChange("subject", e.target.value)}
-            placeholder="e.g. Training Inquiry, General Question"
-            className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-              errors.subject
-                ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
-                : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
-            }`}
-          />
-          {errors.subject && (
-            <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{errors.subject}</span>
-            </p>
-          )}
-        </div>
+        {errors.message && <p id="contact-message-error" className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{errors.message}</span></p>}
       </div>
-
-      <div>
-        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-          Your Message *
-        </label>
-        <textarea
-          rows={5}
-          value={formData.message}
-          onChange={(e) => handleInputChange("message", e.target.value)}
-          placeholder="How can JANIC assist you? Please write your query here..."
-          className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-            errors.message
-              ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
-              : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
-          }`}
-        />
-        {errors.message && (
-          <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
-            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-            <span>{errors.message}</span>
-          </p>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full py-3.5 px-4 bg-[#0875D1] hover:bg-[#065ea8] text-white font-semibold rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
-      >
-        {loading ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Sending Message...
-          </>
-        ) : (
-          <>
-            <Send className="w-4 h-4" />
-            Send Message to JANIC
-          </>
-        )}
+      <button type="submit" disabled={loading} className={styles.sendButton}>
+        {loading ? <><Loader2 size={19} className="animate-spin" aria-hidden="true" />Sending Message...</> : <><Send size={20} aria-hidden="true" />Send Message to JANIC<ArrowRight size={22} className={styles.sendArrow} aria-hidden="true" /></>}
       </button>
     </form>
   );

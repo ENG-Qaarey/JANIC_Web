@@ -1,0 +1,35 @@
+.form { display: flex; flex-direction: column; gap: 20px; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; }
+.field { min-width: 0; }
+.field label { display: block; font-size: 12px; line-height: 1.5; font-weight: 650; color: #081a4c; margin-bottom: 7px; }
+.control { position: relative; }
+.inputIcon, .messageIcon { position: absolute; left: 16px; color: #0075ff; pointer-events: none; }
+.inputIcon { top: 15px; }
+.messageIcon { top: 16px; }
+.control input, .control textarea { width: 100%; min-width: 0; padding: 12px 14px 12px 44px; border: 1px solid #cfe1fd; border-radius: 12px; background: #f8fbff; color: #102342; font-size: 13px; line-height: 1.55; outline: none; transition: border-color .25s ease-out, box-shadow .25s ease-out, background .25s ease-out; }
+.control input { min-height: 48px; }
+.control textarea { display: block; min-height: 120px; resize: vertical; }
+.control input::placeholder, .control textarea::placeholder { color: #92a9cd; }
+.control input:focus, .control textarea:focus { border-color: #0075ff; box-shadow: 0 0 0 3px rgb(0 117 255 / 11%); background: #fff; }
+.control input.invalid, .control textarea.invalid { border-color: #e44b5d; }
+.control input.invalid:focus, .control textarea.invalid:focus { box-shadow: 0 0 0 3px rgb(228 75 93 / 12%); }
+.fieldError { display: flex; align-items: flex-start; gap: 5px; margin-top: 7px; font-size: 12px; line-height: 1.5; color: #c32c42; }
+.fieldError svg { margin-top: 2px; flex-shrink: 0; }
+.errorBanner { display: flex; align-items: flex-start; gap: 9px; padding: 12px; border: 1px solid #f5bdc5; border-radius: 12px; background: #fff0f2; color: #ac243b; font-size: 12px; line-height: 1.6; }
+.errorBanner svg { flex-shrink: 0; margin-top: 1px; }
+.sendButton { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; min-height: 54px; width: 100%; border-radius: 16px; border: 1px solid #0875ed; background: linear-gradient(110deg, #007aff, #0069ed); color: #fff; font-size: 15px; font-weight: 750; padding: 14px 18px; box-shadow: 0 5px 12px rgb(0 99 223 / 15%); cursor: pointer; transition: transform .6s ease-out, box-shadow .6s ease-out, filter .6s ease-out; }
+.sendButton:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgb(0 99 223 / 24%); filter: brightness(1.05); }
+.sendButton:focus-visible { outline: 3px solid #80bdff; outline-offset: 4px; }
+.sendButton:disabled { opacity: .6; cursor: wait; }
+.sendArrow { transition: transform .6s ease-out; }
+.sendButton:hover .sendArrow { transform: translateX(4px); }
+:global(.dark) .field label { color: #e6f0ff; }
+:global(.dark) .control input, :global(.dark) .control textarea { background: #11233b; border-color: #355375; color: #f1f5fb; }
+:global(.dark) .control input::placeholder, :global(.dark) .control textarea::placeholder { color: #8ba6c9; }
+:global(.dark) .inputIcon, :global(.dark) .messageIcon { color: #80c2ff; }
+:global(.dark) .control input:focus, :global(.dark) .control textarea:focus { border-color: #68b2ff; background: #152b47; box-shadow: 0 0 0 3px rgb(104 178 255 / 12%); }
+:global(.dark) .control input.invalid, :global(.dark) .control textarea.invalid { border-color: #ff8291; }
+:global(.dark) .fieldError { color: #ff9daa; }
+:global(.dark) .errorBanner { background: #381c2a; color: #ffb5c0; border-color: #70384b; }
+@media (max-width: 639px) { .fields { grid-template-columns: minmax(0, 1fr); gap: 18px; } .form { gap: 18px; } .sendButton { font-size: 13px; gap: 9px; padding-inline: 12px; } .sendArrow { width: 18px; } }
+@media (prefers-reduced-motion: reduce) { .form *, .form *::before, .form *::after { transition: none !important; animation: none !important; } }

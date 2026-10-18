@@ -1,8 +1,8 @@
-import React from "react";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { MapPin, Mail, Phone, Clock, Building, Globe, ShieldCheck } from "lucide-react";
+import { MapPin, Mail, Phone, Clock, ShieldCheck } from "lucide-react";
+import styles from "./ContactSection.module.css";
 
 export const metadata = {
   title: "Contact JANIC",
@@ -28,109 +28,57 @@ export default async function ContactPage({
         breadcrumbs={[{ label: "Contact" }]}
       />
 
-      {/* 2. CONTACT BENTO CANVAS - FADE UP */}
-      <section className="py-8 sm:py-14 bg-white overflow-hidden">
-        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollReveal animation="fade-up" duration={850}>
-            <div className="bg-[#F0F6FE] rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-14 border border-blue-100/70 shadow-sm">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                {/* Contact Details (5 cols) */}
-                <div className="lg:col-span-5 space-y-6">
-                  <div className="bg-white p-8 rounded-2xl border border-blue-100/80 shadow-sm space-y-6">
+      <section className={styles.section} aria-label="Contact information and message form">
+        <div className={styles.container}>
+          <div className={styles.card}>
+            <ScrollReveal animation="fade-right" duration={850} rootMargin="0px" className={styles.infoEntrance}>
+              <aside className={styles.infoPanel} aria-labelledby="contact-information-title">
+                <header>
+                  <p className={styles.eyebrow}>Contact Information</p>
+                  <h2 id="contact-information-title">Jazeera University Main Campus</h2>
+                  <p className={styles.campus}>Faculty of Computer Science &amp; IT, 2nd Floor Innovation Wing</p>
+                </header>
+                <dl className={styles.details}>
+                  <div className={styles.detail}>
+                    <span className={styles.icon}><MapPin size={23} strokeWidth={1.8} aria-hidden="true" /></span>
+                    <div><dt>Address</dt><dd>KM4 District, Airport Road, Mogadishu, Somalia</dd></div>
+                  </div>
+                  <div className={styles.detail}>
+                    <span className={styles.icon}><Mail size={23} strokeWidth={1.8} aria-hidden="true" /></span>
+                    <div><dt>Email</dt><dd><a href="mailto:info@janic.edu.so">info@janic.edu.so</a></dd></div>
+                  </div>
+                  <div className={styles.detail}>
+                    <span className={styles.icon}><Phone size={23} strokeWidth={1.8} aria-hidden="true" /></span>
+                    <div><dt>Telephone</dt><dd>+252 61 555 1234 / +252 61 987 6543</dd></div>
+                  </div>
+                  <div className={styles.detail}>
+                    <span className={styles.icon}><Clock size={23} strokeWidth={1.8} aria-hidden="true" /></span>
+                    <div><dt>Office Hours</dt><dd>Saturday – Thursday: 8:00 AM – 5:00 PM<br />Friday: Closed</dd></div>
+                  </div>
+                </dl>
+                <div className={styles.affiliationWrap}>
+                  <div className={styles.affiliation}>
+                    <ShieldCheck size={23} strokeWidth={1.8} aria-hidden="true" />
                     <div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
-                        Campus Location
-                      </span>
-                      <h3 className="text-xl font-bold text-[#08245C] tracking-tight">
-                        Jazeera University Main Campus
-                      </h3>
-                      <p className="text-xs text-slate-500 mt-0.5">
-                        Faculty of Computer Science &amp; IT, 2nd Floor Innovation Wing
-                      </p>
+                      <h3>Academic Affiliation</h3>
+                      <h4>Jazeera University</h4>
+                      <p>Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.</p>
                     </div>
-
-                    <div className="space-y-4 text-xs text-slate-600">
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0875D1] flex items-center justify-center shrink-0">
-                          <MapPin className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <strong className="text-[#08245C]">Address:</strong>
-                          <p>KM4 District, Airport Road, Mogadishu, Somalia</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0875D1] flex items-center justify-center shrink-0">
-                          <Mail className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <strong className="text-[#08245C]">Email:</strong>
-                          <p>
-                            <a
-                              href="mailto:info@janic.edu.so"
-                              className="text-[#0875D1] font-semibold hover:underline"
-                            >
-                              info@janic.edu.so
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0875D1] flex items-center justify-center shrink-0">
-                          <Phone className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <strong className="text-[#08245C]">Telephone:</strong>
-                          <p>+252 61 555 1234 / +252 61 987 6543</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0875D1] flex items-center justify-center shrink-0">
-                          <Clock className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <strong className="text-[#08245C]">Office Hours:</strong>
-                          <p>Saturday – Thursday: 8:00 AM – 5:00 PM</p>
-                          <p className="text-[11px] text-slate-400">Friday: Closed</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Institution Accreditation Card (Dark Navy) */}
-                  <div className="bg-[#0A224E] text-white p-7 sm:p-8 rounded-2xl space-y-2 shadow-lg border border-blue-900/60">
-                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-300">
-                      <ShieldCheck className="w-4 h-4" /> Academic Affiliation
-                    </div>
-                    <h4 className="text-base font-bold text-white">Jazeera University</h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.
-                    </p>
                   </div>
                 </div>
-
-                {/* Contact Form (7 cols) */}
-                <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-2xl border border-blue-100/80 shadow-md space-y-6">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
-                      Send a Message
-                    </span>
-                    <h2 className="text-2xl font-bold text-[#08245C] tracking-tight">
-                      How Can We Collaborate?
-                    </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      Complete the form below. A JANIC department coordinator will respond within 1–2 business days.
-                    </p>
-                  </div>
-
-                  <ContactForm initialSubject={initialSubject} />
-                </div>
+              </aside>
+            </ScrollReveal>
+            <ScrollReveal animation="fade-left" duration={850} delay={120} rootMargin="0px" className={styles.formEntrance}>
+              <div className={styles.formPanel}>
+                <header className={styles.formHeader}>
+                  <p className={styles.eyebrow}>Send a Message</p>
+                  <h2>How Can We Collaborate?</h2>
+                  <p>Complete the form below. A JANIC department coordinator will respond within 1–2 business days.</p>
+                </header>
+                <ContactForm initialSubject={initialSubject} />
               </div>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
     </div>
