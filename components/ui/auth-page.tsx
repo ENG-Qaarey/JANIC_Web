@@ -215,7 +215,7 @@ export function AuthPage() {
 					<div className="z-10 flex items-center gap-3">
 						<div className="relative h-10 w-36">
 							<Image
-								src="/images/janic-logo-blue.png"
+								src="/images/janic-new-with-jazeera-blue.png"
 								alt="JANIC — Jazeera Nexus Innovation Center"
 								fill
 								className="object-contain object-left dark:hidden"
@@ -223,7 +223,7 @@ export function AuthPage() {
 								sizes="144px"
 							/>
 							<Image
-								src="/images/janic-logo-white.png"
+								src="/images/janic-new-with-jazeera-white.png"
 								alt="JANIC — Jazeera Nexus Innovation Center"
 								fill
 								className="object-contain object-left hidden dark:block"
@@ -254,7 +254,7 @@ export function AuthPage() {
 						<div className="flex items-center gap-2 lg:hidden">
 							<div className="relative h-8 w-28">
 								<Image
-									src="/images/janic-logo-blue.png"
+									src="/images/janic-new-with-jazeera-blue.png"
 									alt="JANIC logo"
 									fill
 									className="object-contain object-left dark:hidden"
@@ -262,7 +262,7 @@ export function AuthPage() {
 									sizes="112px"
 								/>
 								<Image
-									src="/images/janic-logo-white.png"
+									src="/images/janic-new-with-jazeera-white.png"
 									alt="JANIC logo"
 									fill
 									className="object-contain object-left hidden dark:block"

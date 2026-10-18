@@ -108,7 +108,7 @@ export function AdminSidebar({ open, onClose, user }: AdminSidebarProps) {
           <Link href="/admin/dashboard" className="flex items-center gap-2" onClick={onClose}>
             <div className="relative w-[150px] h-9">
               <Image
-                src="/images/janic-with-jazeera-blue.png"
+                src="/images/janic-new-with-jazeera-blue.png"
                 alt="JANIC Admin"
                 fill
                 className="object-contain object-left dark:hidden"
@@ -116,7 +116,7 @@ export function AdminSidebar({ open, onClose, user }: AdminSidebarProps) {
                 sizes="150px"
               />
               <Image
-                src="/images/janic-with-jazeera-white.png"
+                src="/images/janic-new-with-jazeera-white.png"
                 alt="JANIC Admin"
                 fill
                 className="object-contain object-left hidden dark:block"
