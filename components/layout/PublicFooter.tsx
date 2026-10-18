@@ -88,6 +88,11 @@ export async function PublicFooter() {
               <li>
                 <Link href="/search" className="hover:text-white transition">Search</Link>
               </li>
+              <li>
+                <a href="https://juictgirls.org/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+                  JU ICT Girls<span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </li>
             </ul>
           </div>
 
