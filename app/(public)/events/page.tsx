@@ -1,10 +1,10 @@
 import React from "react";
-import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
+import { JanicCta } from "@/components/public/JanicCta";
 import { EventService } from "@/services/events/event.service";
 import { EventsDirectory } from "@/components/public/EventsDirectory";
-import { Sparkles, CalendarCheck } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
 
 export const metadata = {
   title: "Events Hosted by JANIC | Innovation, Hackathons & Tech Summits",
@@ -36,37 +36,13 @@ export default async function EventsPage() {
         </div>
       </section>
 
-      {/* 3. CALL TO ACTION */}
-      <section className="pt-10 pb-20 sm:pt-16 sm:pb-28 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 text-center overflow-hidden transition-colors">
-        <ScrollReveal animation="zoom-in" duration={800}>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900">
-              <Sparkles className="w-3.5 h-3.5" />
-              Collaborate With JANIC
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#08245C] dark:text-white tracking-tight leading-tight">
-              Have an Idea? Let&apos;s Turn It Into Innovation.
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-normal tracking-wide max-w-xl mx-auto leading-relaxed">
-              Join our vibrant ecosystem of developers, researchers, and visionaries at Jazeera University. Propose a project or partner on our next major hackathon.
-            </p>
-            <div className="pt-3 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/submit-innovation"
-                className="inline-flex items-center px-8 py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-blue-500/30 hover:shadow-lg transition-all"
-              >
-                Submit Innovation
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center px-7 py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-bold transition-all"
-              >
-                Learn About JANIC
-              </Link>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
+      {/* 3. CALL TO ACTION — shared Home "Get Involved" section */}
+      <JanicCta
+        eyebrow="Collaborate With JANIC"
+        description="Join our vibrant ecosystem of developers, researchers, and visionaries at Jazeera University. Propose a project or partner on our next major hackathon."
+        primary={{ href: "/submit-innovation", label: "Submit Innovation" }}
+        secondary={{ href: "/about", label: "Learn About JANIC" }}
+      />
     </div>
   );
 }

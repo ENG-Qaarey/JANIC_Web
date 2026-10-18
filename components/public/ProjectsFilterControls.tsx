@@ -100,23 +100,23 @@ export function ProjectsFilterControls({
     currentCategory !== "all" || currentYear !== "all" || !!searchQuery;
 
   return (
-    <div className="bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-6 mb-12">
+    <div className="space-y-5 mb-10 sm:mb-12">
       {/* Top Search & Category Dropdown Bar */}
-      <div className="flex flex-col md:flex-row items-center gap-3.5">
+      <div className="flex flex-col md:flex-row items-center gap-3">
         {/* Search Bar */}
         <form
           onSubmit={handleSearchSubmit}
           className="relative flex-1 w-full"
         >
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-            <Search className="w-4 h-4 text-[#0875D1]" />
+          <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+            <Search className="w-4 h-4 text-[#0075ff] dark:text-[#80c2ff]" />
           </div>
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search projects by title, problem, or technology (e.g. Next.js, Arduino, AI)..."
-            className="w-full pl-11 pr-24 py-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0875D1] focus:bg-white dark:focus:bg-slate-800 transition"
+            className="w-full pl-12 pr-28 py-4 bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] rounded-full text-sm text-[#08245C] dark:text-white placeholder:text-[#8a9bbd] shadow-[0_10px_28px_rgb(46_114_187/8%)] focus:outline-none focus:ring-2 focus:ring-[#0075ff]/60 transition"
           />
           {searchTerm && (
             <button
@@ -125,14 +125,15 @@ export function ProjectsFilterControls({
                 setSearchTerm("");
                 updateFilters({ q: "" });
               }}
-              className="absolute inset-y-0 right-20 pr-2 flex items-center text-slate-400 hover:text-slate-600"
+              className="absolute inset-y-0 right-24 pr-2 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              aria-label="Clear search"
             >
               <X className="w-4 h-4" />
             </button>
           )}
           <button
             type="submit"
-            className="absolute inset-y-1.5 right-1.5 px-5 bg-[#0875D1] hover:bg-[#0660ac] text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer"
+            className="absolute inset-y-1.5 right-1.5 px-6 bg-[#0075ff] hover:bg-[#0064dd] dark:bg-[#0869db] dark:hover:bg-[#1478ed] text-white font-bold text-sm rounded-full transition-colors cursor-pointer"
           >
             Search
           </button>
@@ -143,23 +144,24 @@ export function ProjectsFilterControls({
           <button
             type="button"
             onClick={() => setCategoryOpen(!categoryOpen)}
-            className="w-full flex items-center justify-between gap-3 px-4 py-3.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl text-xs sm:text-sm font-semibold text-[#08245C] dark:text-white transition cursor-pointer"
+            aria-expanded={categoryOpen}
+            className="w-full flex items-center justify-between gap-3 px-5 py-4 bg-white dark:bg-[#0f1e35] hover:bg-[#f7fbff] dark:hover:bg-[#13253f] border border-white dark:border-[#273b56] rounded-full text-sm font-semibold text-[#08245C] dark:text-white shadow-[0_10px_28px_rgb(46_114_187/8%)] transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-2 truncate">
-              <Filter className="w-4 h-4 text-[#0875D1] shrink-0" />
+              <Filter className="w-4 h-4 text-[#0075ff] dark:text-[#80c2ff] shrink-0" />
               <span className="truncate">{selectedCategoryLabel}</span>
             </div>
             <ChevronDown
               className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-                categoryOpen ? "rotate-180 text-[#0875D1]" : ""
+                categoryOpen ? "rotate-180 text-[#0075ff]" : ""
               }`}
             />
           </button>
 
           {/* Animated Dropdown Menu */}
           {categoryOpen && (
-            <div className="absolute right-0 top-full mt-2 w-full sm:w-80 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-150 max-h-80 overflow-y-auto">
-              <div className="p-2 border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="absolute right-0 top-full mt-2 w-full sm:w-80 bg-white dark:bg-[#0f1e35] rounded-2xl shadow-[0_20px_45px_rgb(28_94_165/18%)] border border-[#e2edf8] dark:border-[#273b56] p-2 z-50 animate-in fade-in zoom-in-95 duration-150 max-h-80 overflow-y-auto">
+              <div className="p-2 border-b border-slate-100 dark:border-[#273b56] text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                 Select Innovation Field
               </div>
 
@@ -172,8 +174,8 @@ export function ProjectsFilterControls({
                 }}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
                   currentCategory === "all"
-                    ? "bg-[#08245C] text-white font-bold"
-                    : "text-slate-700 hover:bg-slate-50"
+                    ? "bg-[#0075ff] text-white font-bold"
+                    : "text-slate-700 dark:text-slate-200 hover:bg-[#f0f6fe] dark:hover:bg-[#152e4f]"
                 }`}
               >
                 <span>All Categories</span>
@@ -193,8 +195,8 @@ export function ProjectsFilterControls({
                     }}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
                       isSelected
-                        ? "bg-[#0875D1] text-white font-bold"
-                        : "text-slate-700 hover:bg-blue-50/60"
+                        ? "bg-[#0075ff] text-white font-bold"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-[#f0f6fe] dark:hover:bg-[#152e4f]"
                     }`}
                   >
                     <span className="truncate pr-2">{cat}</span>
@@ -208,10 +210,10 @@ export function ProjectsFilterControls({
       </div>
 
       {/* Year Filter Bar with 2026 (green dot), 2027, 2028 */}
-      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-1 flex items-center gap-1.5">
-            <Calendar className="w-3.5 h-3.5 text-[#0875D1]" /> Cohort Year:
+          <span className="text-xs font-bold text-[#6b7fa6] dark:text-slate-400 uppercase tracking-[0.08em] mr-1 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 text-[#0075ff] dark:text-[#80c2ff]" /> Cohort Year:
           </span>
 
           {years.map((y) => {
@@ -221,10 +223,11 @@ export function ProjectsFilterControls({
                 key={y.id}
                 type="button"
                 onClick={() => updateFilters({ year: y.id })}
-                className={`relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                aria-pressed={isSelected}
+                className={`relative inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
                   isSelected
-                    ? "bg-[#08245C] text-white shadow-md shadow-slate-900/10 dark:bg-[#0875D1] dark:shadow-blue-500/20"
-                    : "bg-slate-100/80 dark:bg-slate-800/90 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-700/80 border border-slate-200/60 dark:border-slate-700/80"
+                    ? "bg-[#0075ff] text-white shadow-[0_6px_16px_rgb(0_117_255/25%)] dark:bg-[#0869db]"
+                    : "bg-white dark:bg-[#0f1e35] text-[#4a5f86] dark:text-slate-300 hover:text-[#0075ff] dark:hover:text-[#80c2ff] border border-[#e2edf8] dark:border-[#273b56] hover:border-[#b9d9ff]"
                 }`}
               >
                 <span>{y.label}</span>
@@ -243,7 +246,7 @@ export function ProjectsFilterControls({
 
         {/* Reset Filters / Project Count Pill */}
         <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+          <span className="text-sm text-[#6b7fa6] dark:text-slate-400 font-medium">
             Showing <strong className="text-[#08245C] dark:text-white">{totalProjectsCount}</strong> {totalProjectsCount === 1 ? "project" : "projects"}
           </span>
 
@@ -254,7 +257,7 @@ export function ProjectsFilterControls({
                 setSearchTerm("");
                 router.push(pathname);
               }}
-              className="text-xs font-bold text-[#0875D1] hover:underline cursor-pointer"
+              className="text-sm font-bold text-[#0075ff] dark:text-[#80c2ff] hover:underline underline-offset-4 cursor-pointer"
             >
               Reset all
             </button>

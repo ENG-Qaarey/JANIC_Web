@@ -22,6 +22,7 @@ import { formatDate } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/auth/jwt";
 import { ProjectMediaCover } from "@/components/public/ProjectMediaCover";
 import { ProjectSidebarGallery } from "@/components/public/ProjectSidebarGallery";
+import { ScrollReveal } from "@/components/public/ScrollReveal";
 
 export const dynamic = "force-dynamic";
 
@@ -155,8 +156,14 @@ export default async function ProjectDetailPage({
     }
   }
 
+
+  const storySections = [
+    { key: "problem", eyebrow: "The Problem", title: "Challenge & Context", body: project.problem },
+    { key: "solution", eyebrow: "The Solution", title: "Engineered Approach & Architecture", body: project.solution },
+  ];
+
   return (
-    <div>
+    <div className="bg-white dark:bg-slate-950 overflow-x-clip">
       {project.status !== "PUBLISHED" && (
         <div className="bg-amber-500 text-white text-xs font-bold py-2.5 px-4 text-center sticky top-0 z-50 shadow-sm flex items-center justify-center gap-2">
           <span>⚠️ Preview Mode: This project is currently saved as {project.status} (Visible only to Admin/Editor staff)</span>
@@ -178,9 +185,9 @@ export default async function ProjectDetailPage({
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#065ea8] text-white font-semibold text-xs shadow-md shadow-[#0875D1]/20 transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0075ff] hover:bg-[#0064dd] text-white font-bold text-sm shadow-[0_6px_20px_rgb(0_117_255/22%)] hover:-translate-y-0.5 transition-all duration-500"
             >
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink className="w-4 h-4" />
               Live Demo / Website
             </a>
           )}
@@ -189,9 +196,9 @@ export default async function ProjectDetailPage({
               href={project.videoUrl.startsWith("http") ? project.videoUrl : "#video-player"}
               target={project.videoUrl.startsWith("http") ? "_blank" : undefined}
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-[#08245C] dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white font-semibold text-xs border border-slate-300 dark:border-slate-700 shadow-xs transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/60 hover:bg-white/90 text-[#071a4b] dark:bg-[#0f223a]/60 dark:hover:bg-[#1e3d63]/85 dark:text-white font-bold text-sm border border-[#0075ff] dark:border-[#568fc9] hover:-translate-y-0.5 transition-all duration-500"
             >
-              <Video className="w-3.5 h-3.5 text-[#0875D1]" />
+              <Video className="w-4 h-4 text-[#0075ff] dark:text-[#80c2ff]" />
               Watch Video Demo
             </a>
           )}
@@ -200,195 +207,216 @@ export default async function ProjectDetailPage({
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-semibold text-xs border border-slate-900 shadow-md shadow-slate-900/15 transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#08245C] hover:bg-[#051532] text-white font-bold text-sm shadow-[0_6px_20px_rgb(8_36_92/22%)] hover:-translate-y-0.5 transition-all duration-500"
             >
-              <Code2 className="w-3.5 h-3.5 text-emerald-400" />
+              <Code2 className="w-4 h-4 text-[#80c2ff]" />
               GitHub Repository
             </a>
           )}
         </div>
       </SectionHero>
 
-      <div className="py-16 bg-slate-50 dark:bg-slate-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <section className="py-14 sm:py-20">
+        <div className="max-w-[1380px] mx-auto px-5 sm:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14">
             {/* Main Content (8 cols) */}
-            <div className="lg:col-span-8 space-y-10">
+            <div className="lg:col-span-8 min-w-0">
               {/* Hero Media (Video with Voice Volume Control & Timeline Scroll, Hero Image as Fallback) */}
               {(project.videoUrl || project.heroImage) && (
-                <div id="video-player" className="aspect-[16/9] relative rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-xl bg-slate-950">
-                  <ProjectMediaCover
-                    videoUrl={project.videoUrl}
-                    imageUrl={project.heroImage}
-                    alt={project.title}
-                    priority
-                    showControls={true}
-                  />
-                </div>
+                <ScrollReveal animation="fade-up" duration={800}>
+                  <div id="video-player" className="aspect-[16/9] relative rounded-[22px] overflow-hidden bg-slate-950 shadow-[0_20px_45px_rgb(28_94_165/16%)] scroll-mt-28">
+                    <ProjectMediaCover
+                      videoUrl={project.videoUrl}
+                      imageUrl={project.heroImage}
+                      alt={project.title}
+                      priority
+                      showControls={true}
+                    />
+                  </div>
+                </ScrollReveal>
               )}
 
-              {/* The Problem */}
-              <div className="bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-bold uppercase tracking-wider">
-                  The Problem
-                </div>
-                <h2 className="text-2xl font-extrabold text-[#08245C]">
-                  Challenge & Context
-                </h2>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                  {project.problem}
-                </p>
-              </div>
-
-              {/* The Solution */}
-              <div className="bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
-                  The Solution
-                </div>
-                <h2 className="text-2xl font-extrabold text-[#08245C]">
-                  Engineered Approach & Architecture
-                </h2>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                  {project.solution}
-                </p>
-              </div>
+              {/* The Problem & The Solution */}
+              {storySections.map((s, i) => (
+                <ScrollReveal key={s.key} animation="fade-up" duration={800}>
+                  <article className="pt-12 sm:pt-14">
+                    <div className="flex items-start gap-5 sm:gap-7">
+                      <span className="hidden sm:block text-5xl font-extrabold tracking-[-0.05em] leading-none text-[#cfe3ff] dark:text-slate-700 select-none" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="flex items-center gap-3 text-[#0075ff] dark:text-[#80c2ff] text-xs font-bold uppercase tracking-[0.08em]">
+                          <span className="w-8 h-0.5 bg-current" aria-hidden="true" />
+                          {s.eyebrow}
+                        </p>
+                        <h2 className="mt-3 text-2xl sm:text-[32px] font-extrabold leading-tight tracking-[-0.035em] text-[#08245C] dark:text-slate-100">
+                          {s.title}
+                        </h2>
+                        <p className="mt-4 text-base sm:text-[17px] leading-relaxed text-[#5f739a] dark:text-slate-400">
+                          {s.body}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                </ScrollReveal>
+              ))}
 
               {/* Key Innovation */}
               {project.innovation && (
-                <div className="bg-[#08245C] text-white p-8 rounded-2xl border border-blue-900 shadow-xl space-y-3 relative overflow-hidden">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-cyan-300 text-xs font-semibold uppercase tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Key Innovation
-                  </div>
-                  <h2 className="text-2xl font-extrabold text-white">
-                    What Makes This Unique
-                  </h2>
-                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    {project.innovation}
-                  </p>
-                </div>
+                <ScrollReveal animation="fade-up" duration={800}>
+                  <article className="mt-12 sm:mt-14 relative pl-6 sm:pl-8 py-2 border-l-[3px] border-[#0075ff] dark:border-[#80c2ff]">
+                    <p className="inline-flex items-center gap-2 text-[#0075ff] dark:text-[#80c2ff] text-xs font-bold uppercase tracking-[0.08em]">
+                      <Sparkles className="w-4 h-4" />
+                      Key Innovation
+                    </p>
+                    <h2 className="mt-3 text-2xl sm:text-[32px] font-extrabold leading-tight tracking-[-0.035em] text-[#08245C] dark:text-slate-100">
+                      What Makes This <span className="text-[#0765ff] dark:text-[#80c2ff]">Unique</span>
+                    </h2>
+                    <p className="mt-4 text-base sm:text-[17px] leading-relaxed text-[#5f739a] dark:text-slate-400">
+                      {project.innovation}
+                    </p>
+                  </article>
+                </ScrollReveal>
               )}
 
               {/* Outcomes & Impact */}
               {project.outcomes && (
-                <div className="bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0875D1] text-xs font-bold uppercase tracking-wider">
-                    Outcomes & Validation
-                  </div>
-                  <h2 className="text-2xl font-extrabold text-[#08245C]">
-                    Results & Testing Performance
-                  </h2>
-                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                    {project.outcomes}
-                  </p>
-                </div>
+                <ScrollReveal animation="fade-up" duration={800}>
+                  <article className="pt-12 sm:pt-14">
+                    <div className="flex items-start gap-5 sm:gap-7">
+                      <span className="hidden sm:block text-5xl font-extrabold tracking-[-0.05em] leading-none text-[#cfe3ff] dark:text-slate-700 select-none" aria-hidden="true">
+                        03
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="flex items-center gap-3 text-[#0075ff] dark:text-[#80c2ff] text-xs font-bold uppercase tracking-[0.08em]">
+                          <span className="w-8 h-0.5 bg-current" aria-hidden="true" />
+                          Outcomes & Validation
+                        </p>
+                        <h2 className="mt-3 text-2xl sm:text-[32px] font-extrabold leading-tight tracking-[-0.035em] text-[#08245C] dark:text-slate-100">
+                          Results & Testing Performance
+                        </h2>
+                        <p className="mt-4 text-base sm:text-[17px] leading-relaxed text-[#5f739a] dark:text-slate-400">
+                          {project.outcomes}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                </ScrollReveal>
               )}
 
               {/* Student Innovators & Engineering Team */}
               {projectTeam.length > 0 && (
-                <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-6">
-                  <div className="flex items-center justify-between">
+                <ScrollReveal animation="fade-up" duration={800}>
+                  <div className="mt-14 sm:mt-16 pt-12 sm:pt-14 border-t border-[#e2edf8] dark:border-[#273b56] space-y-7">
                     <div>
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-[#0875D1] dark:text-sky-400 text-xs font-bold uppercase tracking-wider">
-                        <Users className="w-3.5 h-3.5" />
+                      <p className="flex items-center gap-3 text-[#0075ff] dark:text-[#80c2ff] text-xs font-bold uppercase tracking-[0.08em]">
+                        <span className="w-8 h-0.5 bg-current" aria-hidden="true" />
                         Student Innovators & Engineering Team
-                      </div>
-                      <h2 className="text-2xl font-black text-[#08245C] dark:text-white mt-2.5">
-                        Built by {projectTeam.length}{" "}
-                        {projectTeam.length === 1 ? "Student Innovator" : "Student Innovators"}
+                      </p>
+                      <h2 className="mt-3 text-2xl sm:text-[32px] font-extrabold leading-tight tracking-[-0.035em] text-[#08245C] dark:text-white">
+                        Built by <span className="text-[#0765ff] dark:text-[#80c2ff]">{projectTeam.length}{" "}
+                        {projectTeam.length === 1 ? "Student Innovator" : "Student Innovators"}</span>
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                      <p className="mt-3 text-base text-[#6b7fa6] dark:text-slate-400">
                         Meet the student inventors, developers, and researchers behind this prototype.
                       </p>
                     </div>
+
+                    <ProjectTeamGrid members={projectTeam} />
                   </div>
-
-                  <ProjectTeamGrid members={projectTeam} />
-                </div>
+                </ScrollReveal>
               )}
-
             </div>
 
             {/* Sidebar (4 cols) */}
-            <div className="lg:col-span-4 space-y-6">
-              {/* Technology Stack Card */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                  <Cpu className="w-4 h-4 text-[#0875D1]" />
-                  Technologies Used
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {techList.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1.5 rounded-lg bg-blue-50 text-[#0875D1] font-semibold text-xs border border-blue-100"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Student Team Card */}
-              {projectTeam.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 shadow-sm space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                    <Users className="w-4 h-4 text-emerald-600" />
-                    Engineering Team
+            <aside className="lg:col-span-4 min-w-0">
+              <div className="space-y-5">
+                {/* Technology Stack */}
+                <ScrollReveal animation="fade-up" duration={750}>
+                  <div className="p-6 rounded-[20px] bg-[#f0f6fe] dark:bg-[#0f1e35] space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[#6b7fa6] dark:text-slate-400">
+                      <Cpu className="w-4 h-4 text-[#0075ff] dark:text-[#80c2ff]" />
+                      Technologies Used
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {techList.map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3.5 py-1.5 rounded-full bg-white dark:bg-[#152e4f] text-[#0075ff] dark:text-[#80c2ff] font-semibold text-xs shadow-[0_4px_12px_rgb(46_114_187/8%)]"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <p className="text-5xl font-black text-[#08245C] dark:text-white leading-none">
-                    {projectTeam.length}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {projectTeam.length === 1 ? "engineer" : "engineers"} built this project
-                  </p>
-                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium pt-1">
-                    {project.teamMembers}
-                  </p>
-                  <p className="text-[11px] text-slate-400 dark:text-slate-500 pt-1">
-                    Faculty of Computer Science & IT, Jazeera University
-                  </p>
-                </div>
-              )}
+                </ScrollReveal>
 
-              {/* Project Meta */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3 text-xs text-slate-500">
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span>Category</span>
-                  <span className="font-semibold text-slate-800">{project.category}</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span>Published Date</span>
-                  <span className="font-semibold text-slate-800">
-                    {formatDate(project.publishedAt || project.createdAt)}
-                  </span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span>Incubation Status</span>
-                  <span className="font-semibold text-emerald-600">Active Lab Prototype</span>
-                </div>
+                {/* Student Team */}
+                {projectTeam.length > 0 && (
+                  <ScrollReveal animation="fade-up" duration={750} delay={80}>
+                    <div className="p-6 rounded-[20px] bg-gradient-to-br from-[#062253] to-[#031331] text-white space-y-3 relative overflow-hidden">
+                      <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[#0075ff]/25 blur-3xl pointer-events-none" aria-hidden="true" />
+                      <div className="relative flex items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[#80c2ff]">
+                        <Users className="w-4 h-4" />
+                        Engineering Team
+                      </div>
+                      <p className="relative text-5xl font-extrabold tracking-[-0.04em] leading-none">
+                        {projectTeam.length}
+                      </p>
+                      <p className="relative text-xs text-slate-300">
+                        {projectTeam.length === 1 ? "engineer" : "engineers"} built this project
+                      </p>
+                      <p className="relative text-sm text-slate-200 leading-relaxed font-medium pt-1">
+                        {project.teamMembers}
+                      </p>
+                      <p className="relative text-[11px] text-slate-400 pt-1">
+                        Faculty of Computer Science & IT, Jazeera University
+                      </p>
+                    </div>
+                  </ScrollReveal>
+                )}
+
+                {/* Project Meta */}
+                <ScrollReveal animation="fade-up" duration={750} delay={160}>
+                  <dl className="px-1 text-sm">
+                    <div className="flex justify-between gap-4 py-3 border-b border-[#e2edf8] dark:border-[#273b56]">
+                      <dt className="text-[#6b7fa6] dark:text-slate-400">Category</dt>
+                      <dd className="font-semibold text-[#08245C] dark:text-slate-100 text-right">{project.category}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4 py-3 border-b border-[#e2edf8] dark:border-[#273b56]">
+                      <dt className="text-[#6b7fa6] dark:text-slate-400">Published Date</dt>
+                      <dd className="font-semibold text-[#08245C] dark:text-slate-100 text-right">
+                        {formatDate(project.publishedAt || project.createdAt)}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-4 py-3 border-b border-[#e2edf8] dark:border-[#273b56]">
+                      <dt className="text-[#6b7fa6] dark:text-slate-400">Incubation Status</dt>
+                      <dd className="font-semibold text-emerald-600 dark:text-emerald-400 text-right">Active Lab Prototype</dd>
+                    </div>
+                  </dl>
+                </ScrollReveal>
+
+                {/* Back to list button */}
+                <Link
+                  href="/projects"
+                  className="group w-full py-3.5 px-4 rounded-full border border-[#0075ff] dark:border-[#568fc9] text-[#0075ff] dark:text-[#80c2ff] hover:bg-[#0075ff] hover:text-white dark:hover:bg-[#0869db] dark:hover:text-white font-bold text-sm flex items-center justify-center gap-2 transition-colors duration-300"
+                >
+                  <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+                  Back to All Projects
+                </Link>
+
+                {/* Project Gallery in the Sidebar Empty Space */}
+                {project.gallery && project.gallery.length > 0 && (
+                  <ProjectSidebarGallery
+                    gallery={project.gallery as any}
+                    projectTitle={project.title}
+                  />
+                )}
               </div>
-
-              {/* Back to list button */}
-              <Link
-                href="/projects"
-                className="w-full py-3 px-4 rounded-xl bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs flex items-center justify-center gap-2 transition"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to All Projects
-              </Link>
-
-              {/* Project Gallery in the Sidebar Empty Space */}
-              {project.gallery && project.gallery.length > 0 && (
-                <ProjectSidebarGallery
-                  gallery={project.gallery as any}
-                  projectTitle={project.title}
-                />
-              )}
-            </div>
+            </aside>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -25,6 +25,7 @@ import {
   Folder,
 } from "lucide-react";
 import { ComingSoonCohort } from "./ComingSoonCohort";
+import { ScrollReveal } from "./ScrollReveal";
 import { cn } from "@/lib/utils";
 
 export interface ProjectData {
@@ -552,26 +553,30 @@ export function ProjectMembersDirectory({
       {/* ============================================================== */}
       {/* 1. TOP HEADER & TABS BAR                                       */}
       {/* ============================================================== */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-7 shadow-xs space-y-6">
-        {/* Top Row: Title Only (Plus icon removed per request) */}
+      <ScrollReveal animation="fade-up" duration={800} className="space-y-6 sm:space-y-7">
+        {/* Top Row: Section heading */}
         <div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#08245C] dark:text-white tracking-tight">
-            Project Members
+          <p className="flex items-center gap-3 text-[#0075ff] dark:text-[#80c2ff] text-xs font-bold uppercase tracking-[0.08em]">
+            <span className="w-8 h-0.5 bg-current" aria-hidden="true" />
+            Student Directory
+          </p>
+          <h2 className="mt-3.5 text-[30px] sm:text-4xl lg:text-[48px] font-extrabold leading-[1.1] tracking-[-0.04em] text-[#08245C] dark:text-white">
+            Project <span className="text-[#0765ff] dark:text-[#80c2ff]">Members</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="mt-3 max-w-2xl text-base sm:text-lg leading-relaxed text-[#6b7fa6] dark:text-slate-400">
             Browse student innovators, software engineers, and hardware builders across all 15 projects.
           </p>
         </div>
 
         {/* Tab Row: All | Group Teams | Individual Projects */}
-        <div className="flex items-center gap-5 sm:gap-8 border-b border-slate-100 dark:border-slate-800 pb-0 text-sm font-bold overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-6 sm:gap-9 border-b border-[#d6e7ff] dark:border-[#273b56] pb-0 text-sm font-bold overflow-x-auto scrollbar-none">
           <button
             type="button"
             onClick={() => setActiveTab("all")}
             className={cn(
               "pb-3.5 relative transition-colors flex items-center gap-2 whitespace-nowrap shrink-0",
               activeTab === "all"
-                ? "text-[#0875D1] dark:text-sky-400 font-extrabold"
+                ? "text-[#0075ff] dark:text-sky-400 font-extrabold"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             )}
           >
@@ -580,14 +585,14 @@ export function ProjectMembersDirectory({
               className={cn(
                 "text-[11px] px-2 py-0.5 rounded-full font-bold",
                 activeTab === "all"
-                  ? "bg-blue-100 dark:bg-blue-900/60 text-[#0875D1] dark:text-sky-300"
+                  ? "bg-blue-100 dark:bg-blue-900/60 text-[#0075ff] dark:text-sky-300"
                   : "bg-slate-100 dark:bg-slate-800 text-slate-500"
               )}
             >
               {totalMembersCount}
             </span>
             {activeTab === "all" && (
-              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0875D1] dark:bg-sky-400 rounded-full" />
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0075ff] dark:bg-sky-400 rounded-full" />
             )}
           </button>
 
@@ -597,7 +602,7 @@ export function ProjectMembersDirectory({
             className={cn(
               "pb-3.5 relative transition-colors flex items-center gap-2 whitespace-nowrap shrink-0",
               activeTab === "group"
-                ? "text-[#0875D1] dark:text-sky-400 font-extrabold"
+                ? "text-[#0075ff] dark:text-sky-400 font-extrabold"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             )}
           >
@@ -607,14 +612,14 @@ export function ProjectMembersDirectory({
               className={cn(
                 "text-[11px] px-2 py-0.5 rounded-full font-bold",
                 activeTab === "group"
-                  ? "bg-blue-100 dark:bg-blue-900/60 text-[#0875D1] dark:text-sky-300"
+                  ? "bg-blue-100 dark:bg-blue-900/60 text-[#0075ff] dark:text-sky-300"
                   : "bg-slate-100 dark:bg-slate-800 text-slate-500"
               )}
             >
               {groupMembersCount}
             </span>
             {activeTab === "group" && (
-              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0875D1] dark:bg-sky-400 rounded-full" />
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0075ff] dark:bg-sky-400 rounded-full" />
             )}
           </button>
 
@@ -624,7 +629,7 @@ export function ProjectMembersDirectory({
             className={cn(
               "pb-3.5 relative transition-colors flex items-center gap-2 whitespace-nowrap shrink-0",
               activeTab === "individual"
-                ? "text-[#0875D1] dark:text-sky-400 font-extrabold"
+                ? "text-[#0075ff] dark:text-sky-400 font-extrabold"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             )}
           >
@@ -641,7 +646,7 @@ export function ProjectMembersDirectory({
               {individualMembersCount}
             </span>
             {activeTab === "individual" && (
-              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0875D1] dark:bg-sky-400 rounded-full" />
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0075ff] dark:bg-sky-400 rounded-full" />
             )}
           </button>
         </div>
@@ -650,23 +655,23 @@ export function ProjectMembersDirectory({
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 pt-1">
           {/* Left: Section Label */}
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-sm sm:text-base font-extrabold text-[#08245C] dark:text-white tracking-tight">
+            <span className="text-base sm:text-lg font-extrabold text-[#08245C] dark:text-white tracking-tight">
               All Members
             </span>
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
+            <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#e7f3ff] dark:bg-[#152e4f] text-[#0075ff] dark:text-[#80c2ff]">
               {filteredMembers.length}
             </span>
           </div>
 
           {/* Search Input */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#0075ff] dark:text-[#80c2ff] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search by Name or Tags..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-9 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/90 dark:border-slate-700/80 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0875D1] transition"
+              className="w-full pl-11 pr-10 py-3 rounded-full bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] text-sm text-[#08245C] dark:text-slate-100 placeholder:text-[#8a9bbd] shadow-[0_10px_28px_rgb(46_114_187/8%)] focus:outline-none focus:ring-2 focus:ring-[#0075ff]/60 transition"
             />
             {searchQuery && (
               <button
@@ -683,14 +688,14 @@ export function ProjectMembersDirectory({
           {/* Right Controls: View Toggle + Sort + Project Select */}
           <div className="flex items-center justify-between md:justify-end gap-2 flex-wrap">
             {/* View Icons */}
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+            <div className="flex items-center bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] p-1 rounded-full shadow-[0_10px_28px_rgb(46_114_187/8%)]">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
                 className={cn(
-                  "p-1.5 rounded-lg transition-all",
+                  "p-2 rounded-full transition-all duration-300",
                   viewMode === "grid"
-                    ? "bg-[#0875D1] text-white shadow-2xs"
+                    ? "bg-[#0075ff] text-white shadow-2xs"
                     : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-200"
                 )}
                 title="Grid View (Influencer Cards)"
@@ -702,9 +707,9 @@ export function ProjectMembersDirectory({
                 type="button"
                 onClick={() => setViewMode("list")}
                 className={cn(
-                  "p-1.5 rounded-lg transition-all",
+                  "p-2 rounded-full transition-all duration-300",
                   viewMode === "list"
-                    ? "bg-[#0875D1] text-white shadow-2xs"
+                    ? "bg-[#0075ff] text-white shadow-2xs"
                     : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-200"
                 )}
                 title="List View"
@@ -716,9 +721,9 @@ export function ProjectMembersDirectory({
                 type="button"
                 onClick={() => setViewMode("teams")}
                 className={cn(
-                  "p-1.5 rounded-lg transition-all",
+                  "p-2 rounded-full transition-all duration-300",
                   viewMode === "teams"
-                    ? "bg-[#0875D1] text-white shadow-2xs"
+                    ? "bg-[#0075ff] text-white shadow-2xs"
                     : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-200"
                 )}
                 title="By Teams (Project View)"
@@ -733,13 +738,13 @@ export function ProjectMembersDirectory({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="appearance-none pl-3 pr-7 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0875D1] cursor-pointer"
+                className="appearance-none pl-4 pr-8 py-3 rounded-full bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] text-xs font-semibold text-[#08245C] dark:text-slate-200 shadow-[0_10px_28px_rgb(46_114_187/8%)] focus:outline-none focus:ring-2 focus:ring-[#0075ff]/60 cursor-pointer"
               >
                 <option value="network">Sort By: Network</option>
                 <option value="project">Sort By: Project Order</option>
                 <option value="name">Sort By: Name (A-Z)</option>
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#0075ff] dark:text-[#80c2ff] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
             {/* Project Filter Selector */}
@@ -747,7 +752,7 @@ export function ProjectMembersDirectory({
               <select
                 value={selectedProjectSlug}
                 onChange={(e) => setSelectedProjectSlug(e.target.value)}
-                className="appearance-none pl-3 pr-7 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0875D1] cursor-pointer max-w-[150px] sm:max-w-[170px] truncate"
+                className="appearance-none pl-4 pr-8 py-3 rounded-full bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] text-xs font-semibold text-[#08245C] dark:text-slate-200 shadow-[0_10px_28px_rgb(46_114_187/8%)] focus:outline-none focus:ring-2 focus:ring-[#0075ff]/60 cursor-pointer max-w-[150px] sm:max-w-[170px] truncate"
               >
                 <option value="all">All 15 Projects</option>
                 <optgroup label="Group Projects">
@@ -769,16 +774,16 @@ export function ProjectMembersDirectory({
                     ))}
                 </optgroup>
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#0075ff] dark:text-[#80c2ff] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
         </div>
 
         {/* Year Filter Bar with 2026 (green dot), 2027, 2028 matching Projects page */}
-        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-1 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#0875D1]" /> Cohort Year:
+            <span className="text-xs font-bold text-[#6b7fa6] dark:text-slate-400 uppercase tracking-[0.08em] mr-1 flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-[#0075ff] dark:text-[#80c2ff]" /> Cohort Year:
             </span>
 
             {years.map((y) => {
@@ -788,11 +793,12 @@ export function ProjectMembersDirectory({
                   key={y.id}
                   type="button"
                   onClick={() => setSelectedYear(y.id)}
+                  aria-pressed={isSelected}
                   className={cn(
-                    "relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
+                    "relative inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer",
                     isSelected
-                      ? "bg-[#08245C] text-white shadow-md shadow-slate-900/10 dark:bg-[#0875D1]"
-                      : "bg-slate-100/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-700/80 border border-slate-200/60 dark:border-slate-700"
+                      ? "bg-[#0075ff] text-white shadow-[0_6px_16px_rgb(0_117_255/25%)] dark:bg-[#0869db]"
+                      : "bg-white dark:bg-[#0f1e35] text-[#4a5f86] dark:text-slate-300 hover:text-[#0075ff] dark:hover:text-[#80c2ff] border border-[#e2edf8] dark:border-[#273b56] hover:border-[#b9d9ff]"
                   )}
                 >
                   <span>{y.label}</span>
@@ -811,7 +817,7 @@ export function ProjectMembersDirectory({
 
           {/* Reset Filters / Member Count */}
           <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+            <span className="text-sm text-[#6b7fa6] dark:text-slate-400 font-medium">
               Showing <strong className="text-[#08245C] dark:text-white">{isFutureCohort ? 0 : filteredMembers.length}</strong> {filteredMembers.length === 1 ? "member" : "members"}
             </span>
 
@@ -824,14 +830,14 @@ export function ProjectMembersDirectory({
                   setSearchQuery("");
                   setActiveTab("all");
                 }}
-                className="text-xs font-bold text-[#0875D1] hover:underline cursor-pointer"
+                className="text-sm font-bold text-[#0075ff] dark:text-[#80c2ff] hover:underline underline-offset-4 cursor-pointer"
               >
                 Reset all
               </button>
             )}
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Copied Link Toast */}
       {copiedId && (
@@ -849,12 +855,14 @@ export function ProjectMembersDirectory({
       ) : viewMode === "grid" ? (
         /* ================= RESPONSIVE INFLUENCER GRID ================= */
         filteredMembers.length === 0 ? (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-12 text-center max-w-lg mx-auto shadow-xs">
-            <Sparkles className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-[#08245C] dark:text-white">
+          <div className="py-16 text-center max-w-lg mx-auto">
+            <span className="grid place-items-center w-16 h-16 mx-auto mb-5 rounded-full bg-gradient-to-br from-[#eff8ff] to-[#dceeff] dark:from-[#1b385a] dark:to-[#122a48] text-[#0075ff] dark:text-[#80c2ff]">
+              <Sparkles className="w-7 h-7" />
+            </span>
+            <h3 className="text-xl font-bold text-[#08245C] dark:text-white">
               No project members match your search
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+            <p className="text-sm text-[#6279a1] dark:text-slate-400 mt-2">
               Try adjusting your query or resetting filter options.
             </p>
             <button
@@ -864,14 +872,14 @@ export function ProjectMembersDirectory({
                 setSelectedProjectSlug("all");
                 setSearchQuery("");
               }}
-              className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0875D1] text-white text-xs font-bold hover:bg-[#065ea8] transition shadow-xs"
+              className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0075ff] text-white text-sm font-bold hover:bg-[#0064dd] shadow-md shadow-blue-500/20 transition-colors"
             >
               Reset Filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-            {paginatedMembers.map((member) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+            {paginatedMembers.map((member, cardIndex) => {
               const isGroup = member.projectType === "group";
               const gradient = getAvatarGradient(member.name);
               const initials = getInitials(member.name);
@@ -884,10 +892,16 @@ export function ProjectMembersDirectory({
                 .filter(Boolean);
 
               return (
-                <div
+                <ScrollReveal
                   key={member.id}
+                  animation="fade-up"
+                  duration={700}
+                  delay={(cardIndex % 4) * 90}
+                  className={cn("flex min-w-0", isMenuOpen && "relative z-20")}
+                >
+                <div
                   id={member.id}
-                  className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group"
+                  className="w-full min-w-0 bg-white dark:bg-[#0f1e35] rounded-[20px] border border-white dark:border-[#273b56] p-5 flex flex-col justify-between shadow-[0_10px_30px_rgb(61_128_191/7%)] hover:shadow-[0_20px_40px_rgb(30_104_175/16%)] hover:-translate-y-1.5 transition-all duration-500 ease-out relative group scroll-mt-28"
                 >
                   <div>
                     {/* Top Header: Pill on left + 3-dots menu on right */}
@@ -897,11 +911,11 @@ export function ProjectMembersDirectory({
                         className={cn(
                           "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider transition-colors",
                           isGroup
-                            ? "bg-blue-50/90 dark:bg-blue-950/70 text-[#0875D1] dark:text-sky-300 border border-blue-200/80 dark:border-blue-900"
+                            ? "bg-blue-50/90 dark:bg-blue-950/70 text-[#0075ff] dark:text-sky-300 border border-blue-200/80 dark:border-blue-900"
                             : "bg-emerald-50/90 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-900"
                         )}
                       >
-                        {isGroup ? <Users className="w-3 h-3 text-[#0875D1]" /> : <User className="w-3 h-3 text-emerald-600" />}
+                        {isGroup ? <Users className="w-3 h-3 text-[#0075ff]" /> : <User className="w-3 h-3 text-emerald-600" />}
                         <span>{member.groupLabel}</span>
                       </span>
 
@@ -917,7 +931,7 @@ export function ProjectMembersDirectory({
                             e.stopPropagation();
                             setOpenMenuId(isMenuOpen ? null : member.id);
                           }}
-                          className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition"
+                          className="w-8 h-8 rounded-full hover:bg-[#f0f6fe] dark:hover:bg-[#152e4f] flex items-center justify-center text-slate-400 hover:text-[#0075ff] dark:hover:text-[#80c2ff] transition-colors"
                           title="More options"
                           aria-label="Member options"
                         >
@@ -926,11 +940,11 @@ export function ProjectMembersDirectory({
 
                         {/* 3-dots dropdown menu (Edit in Admin Side removed per user request) */}
                         {isMenuOpen && (
-                          <div className="absolute right-0 top-8 z-30 w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-1.5 text-xs animate-in fade-in zoom-in-95">
+                          <div className="absolute right-0 top-9 z-30 w-48 rounded-2xl bg-white dark:bg-[#0f1e35] border border-[#e2edf8] dark:border-[#273b56] shadow-[0_20px_45px_rgb(28_94_165/18%)] p-1.5 text-xs animate-in fade-in zoom-in-95">
                             <button
                               type="button"
                               onClick={() => handleCopyLink(member.id)}
-                              className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-2"
+                              className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#f0f6fe] dark:hover:bg-[#152e4f] text-slate-700 dark:text-slate-200 flex items-center gap-2 transition-colors"
                             >
                               <Copy className="w-3.5 h-3.5 text-slate-400" />
                               <span>Copy Profile Link</span>
@@ -938,16 +952,16 @@ export function ProjectMembersDirectory({
                             <Link
                               href={`/projects/${member.projectSlug}`}
                               onClick={() => setOpenMenuId(null)}
-                              className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-2"
+                              className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#f0f6fe] dark:hover:bg-[#152e4f] text-slate-700 dark:text-slate-200 flex items-center gap-2 transition-colors"
                             >
-                              <Folder className="w-3.5 h-3.5 text-[#0875D1]" />
+                              <Folder className="w-3.5 h-3.5 text-[#0075ff]" />
                               <span>View Project</span>
                             </Link>
                             {member.email && (
                               <a
                                 href={member.email.startsWith("mailto:") ? member.email : `mailto:${member.email}`}
                                 onClick={() => setOpenMenuId(null)}
-                                className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-2"
+                                className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#f0f6fe] dark:hover:bg-[#152e4f] text-slate-700 dark:text-slate-200 flex items-center gap-2 transition-colors"
                               >
                                 <Mail className="w-3.5 h-3.5 text-emerald-500" />
                                 <span>Send Email</span>
@@ -960,7 +974,7 @@ export function ProjectMembersDirectory({
 
                     {/* Centered Circular Avatar */}
                     <div className="mt-2 mb-3 text-center">
-                      <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full mx-auto overflow-hidden bg-slate-100 dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-800 ring-2 ring-slate-200/70 dark:ring-slate-700 shadow-md group-hover:scale-105 transition-transform duration-300">
+                      <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full mx-auto overflow-hidden bg-slate-100 dark:bg-slate-800 border-4 border-white dark:border-[#0f1e35] ring-2 ring-[#cfe3ff] dark:ring-[#273b56] group-hover:ring-[#0075ff]/60 shadow-[0_8px_20px_rgb(46_114_187/14%)] group-hover:scale-105 transition-all duration-500">
                         {member.avatar ? (
                           <Image
                             src={member.avatar}
@@ -982,12 +996,12 @@ export function ProjectMembersDirectory({
                       </div>
 
                       {/* Centered Member Name */}
-                      <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 mt-3 leading-snug tracking-tight group-hover:text-[#0875D1] transition-colors truncate px-1">
+                      <h3 className="font-extrabold text-base text-[#08245C] dark:text-slate-100 mt-3.5 leading-snug tracking-[-0.02em] group-hover:text-[#0075ff] dark:group-hover:text-[#80c2ff] transition-colors truncate px-1">
                         {member.name}
                       </h3>
 
                       {/* Centered Role */}
-                      <p className="text-xs font-semibold text-[#0875D1] dark:text-sky-400 mt-0.5 truncate px-1">
+                      <p className="text-xs font-semibold text-[#0075ff] dark:text-sky-400 mt-0.5 truncate px-1">
                         {member.role}
                       </p>
 
@@ -1001,14 +1015,14 @@ export function ProjectMembersDirectory({
                         {skillTags.slice(0, 3).map((tag, idx) => (
                           <span
                             key={idx}
-                            className="inline-block px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-[10px] font-medium transition-colors hover:bg-slate-200 dark:hover:bg-slate-700"
+                            className="inline-block px-2.5 py-0.5 rounded-full bg-[#e7f3ff] dark:bg-[#152e4f] text-[#0075ff] dark:text-[#80c2ff] text-[10px] font-semibold"
                           >
                             {tag}
                           </span>
                         ))}
                         {skillTags.length > 3 && (
                           <span
-                            className="w-5 h-5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#0875D1] dark:text-sky-300 text-[10px] font-bold flex items-center justify-center"
+                            className="w-5 h-5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#0075ff] dark:text-sky-300 text-[10px] font-bold flex items-center justify-center"
                             title={`More: ${skillTags.slice(3).join(", ")}`}
                           >
                             <ChevronRight className="w-3 h-3" />
@@ -1018,18 +1032,18 @@ export function ProjectMembersDirectory({
                     </div>
 
                     {/* ASSIGNED PROJECT CARD */}
-                    <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800/80">
-                      <div className="text-[10px] font-black uppercase tracking-wider text-[#0875D1] dark:text-sky-400 mb-1.5 flex items-center gap-1.5">
+                    <div className="mt-4 pt-4 border-t border-[#e2edf8] dark:border-[#273b56]">
+                      <div className="text-[10px] font-black uppercase tracking-wider text-[#0075ff] dark:text-sky-400 mb-1.5 flex items-center gap-1.5">
                         <FolderKanban className="w-3.5 h-3.5" />
                         <span>ASSIGNED PROJECT</span>
                       </div>
 
                       <Link
                         href={`/projects/${member.projectSlug}`}
-                        className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 hover:bg-blue-50/80 dark:hover:bg-blue-950/60 border border-slate-200/70 dark:border-slate-700/60 transition-all group/proj shadow-2xs"
+                        className="flex items-center justify-between p-3 rounded-2xl bg-[#f0f6fe] dark:bg-[#13253f] hover:bg-[#e3f0ff] dark:hover:bg-[#173055] transition-colors group/proj"
                       >
                         <div className="min-w-0 pr-2">
-                          <p className="text-xs font-bold text-[#08245C] dark:text-slate-100 group-hover/proj:text-[#0875D1] transition-colors truncate">
+                          <p className="text-xs font-bold text-[#08245C] dark:text-slate-100 group-hover/proj:text-[#0075ff] transition-colors truncate">
                             {member.projectTitle}
                           </p>
                           <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
@@ -1037,7 +1051,7 @@ export function ProjectMembersDirectory({
                           </p>
                         </div>
 
-                        <div className="w-6 h-6 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-[#0875D1] dark:text-sky-300 shadow-2xs group-hover/proj:translate-x-0.5 transition-transform shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#0082f5] dark:bg-[#0869db] flex items-center justify-center text-white group-hover/proj:translate-x-0.5 transition-transform duration-300 shrink-0">
                           <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
@@ -1047,7 +1061,7 @@ export function ProjectMembersDirectory({
                   {/* ========================================================= */}
                   {/* BOTTOM: 4 SOCIAL ICONS ONLY (NO NUMBERS, ACTIVE/SAMPLE)   */}
                   {/* ========================================================= */}
-                  <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800/80 -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-3 py-2.5 bg-slate-50/50 dark:bg-slate-800/20 rounded-b-2xl">
+                  <div className="mt-4 border-t border-[#e2edf8] dark:border-[#273b56] -mx-5 -mb-5 px-3 py-3 bg-[#f7fbff] dark:bg-[#0c1a2e] rounded-b-[20px]">
                     <FourSocialIcons
                       facebook={member.facebook}
                       github={member.github}
@@ -1057,26 +1071,27 @@ export function ProjectMembersDirectory({
                     />
                   </div>
                 </div>
+                </ScrollReveal>
               );
             })}
           </div>
         )
       ) : viewMode === "list" ? (
         /* ================= LIST VIEW (LEFT ALIGNED & STRUCTURED) ================= */
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800/80 shadow-xs overflow-hidden">
-          {paginatedMembers.map((member) => {
+        <div className="space-y-3">
+          {paginatedMembers.map((member, rowIndex) => {
             const isGroup = member.projectType === "group";
             const gradient = getAvatarGradient(member.name);
             const initials = getInitials(member.name);
 
             return (
+              <ScrollReveal key={member.id} animation="fade-up" duration={650} delay={Math.min(rowIndex, 5) * 60}>
               <div
-                key={member.id}
-                className="p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                className="p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 rounded-[20px] bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] shadow-[0_8px_24px_rgb(61_128_191/6%)] hover:shadow-[0_16px_34px_rgb(30_104_175/13%)] hover:-translate-y-0.5 transition-all duration-500 ease-out"
               >
                 {/* 1. MEMBER PROFILE (Left Column - fixed width on desktop for clean alignment) */}
                 <div className="flex items-center gap-3.5 w-full lg:w-72 xl:w-80 shrink-0 text-left">
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden shrink-0 border-2 border-slate-100 dark:border-slate-800 shadow-2xs">
+                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden shrink-0 border-2 border-white dark:border-[#0f1e35] ring-2 ring-[#cfe3ff] dark:ring-[#273b56]">
                     {member.avatar ? (
                       <Image
                         src={member.avatar}
@@ -1099,21 +1114,21 @@ export function ProjectMembersDirectory({
 
                   <div className="min-w-0 flex-1 text-left">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 truncate text-left">
+                      <h4 className="font-extrabold text-sm sm:text-base text-[#08245C] dark:text-slate-100 truncate text-left tracking-[-0.01em]">
                         {member.name}
                       </h4>
                       <span
                         className={cn(
                           "text-[9px] font-black uppercase px-2 py-0.5 rounded-full shrink-0",
                           isGroup
-                            ? "bg-blue-50 text-[#0875D1] dark:bg-blue-950/70 dark:text-sky-300"
+                            ? "bg-blue-50 text-[#0075ff] dark:bg-blue-950/70 dark:text-sky-300"
                             : "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300"
                         )}
                       >
                         {member.groupLabel}
                       </span>
                     </div>
-                    <p className="text-xs font-semibold text-[#0875D1] dark:text-sky-400 truncate mt-0.5 text-left">
+                    <p className="text-xs font-semibold text-[#0075ff] dark:text-sky-400 truncate mt-0.5 text-left">
                       {member.role}
                     </p>
                     <p className="text-[11px] text-slate-400 dark:text-slate-500 truncate mt-0.5 text-left">
@@ -1126,13 +1141,13 @@ export function ProjectMembersDirectory({
                 <div className="w-full lg:w-80 xl:w-96 text-left shrink-0">
                   <Link
                     href={`/projects/${member.projectSlug}`}
-                    className="block p-3 rounded-2xl bg-slate-50/90 dark:bg-slate-800/60 hover:bg-blue-50/80 dark:hover:bg-blue-950/50 border border-slate-200/70 dark:border-slate-700/60 transition-all text-left group/proj shadow-2xs"
+                    className="block p-3 rounded-2xl bg-[#f0f6fe] dark:bg-[#13253f] hover:bg-[#e3f0ff] dark:hover:bg-[#173055] transition-colors text-left group/proj"
                   >
-                    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#0875D1] dark:text-sky-400 mb-1">
+                    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#0075ff] dark:text-sky-400 mb-1">
                       <FolderKanban className="w-3.5 h-3.5" />
                       <span>ASSIGNED PROJECT</span>
                     </div>
-                    <p className="text-xs sm:text-sm font-bold text-[#08245C] dark:text-slate-100 group-hover/proj:text-[#0875D1] transition-colors truncate text-left">
+                    <p className="text-xs sm:text-sm font-bold text-[#08245C] dark:text-slate-100 group-hover/proj:text-[#0075ff] transition-colors truncate text-left">
                       {member.projectTitle}
                     </p>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate text-left mt-0.5">
@@ -1142,7 +1157,7 @@ export function ProjectMembersDirectory({
                 </div>
 
                 {/* 3. 4 SOCIAL ICONS + EXPLORE ARROW (Right-aligned row) */}
-                <div className="flex items-center justify-between lg:justify-end gap-3 shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between lg:justify-end gap-3 shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-[#e2edf8] dark:border-[#273b56]">
                   <FourSocialIcons
                     facebook={member.facebook}
                     github={member.github}
@@ -1153,7 +1168,7 @@ export function ProjectMembersDirectory({
 
                   <Link
                     href={`/projects/${member.projectSlug}`}
-                    className="w-9 h-9 rounded-xl bg-[#0875D1] hover:bg-[#065ea8] text-white flex items-center justify-center transition shadow-2xs hover:scale-105 shrink-0"
+                    className="w-10 h-10 rounded-full bg-[#0082f5] hover:bg-[#006bd6] dark:bg-[#0869db] text-white flex items-center justify-center transition-all duration-300 hover:scale-105 shrink-0"
                     title={`Explore ${member.projectTitle}`}
                     aria-label="Explore Project"
                   >
@@ -1161,30 +1176,28 @@ export function ProjectMembersDirectory({
                   </Link>
                 </div>
               </div>
+              </ScrollReveal>
             );
           })}
         </div>
       ) : (
         /* ================= BY TEAMS VIEW ================= */
-        <div className="space-y-6">
+        <div className="divide-y divide-[#d6e7ff] dark:divide-[#273b56]">
           {filteredProjects.map((proj) => {
             const { label, type } = getGroupMeta(proj.order, proj.title);
             const isGroup = type === "group";
             const projectMembersList = allMembers.filter((m) => m.projectSlug === proj.slug);
 
             return (
-              <div
-                key={proj.id}
-                className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-7 shadow-xs hover:shadow-lg transition-all"
-              >
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-6 border-b border-slate-100 dark:border-slate-800 text-left">
+              <ScrollReveal key={proj.id} animation="fade-up" duration={750} className="py-10 first:pt-2">
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 text-left">
                   <div className="space-y-2 text-left">
                     <div className="flex flex-wrap items-center gap-2">
                       <span
                         className={cn(
                           "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider",
                           isGroup
-                            ? "bg-blue-50 dark:bg-blue-950/70 text-[#0875D1] dark:text-sky-300 border border-blue-200/60 dark:border-blue-900"
+                            ? "bg-blue-50 dark:bg-blue-950/70 text-[#0075ff] dark:text-sky-300 border border-blue-200/60 dark:border-blue-900"
                             : "bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-900"
                         )}
                       >
@@ -1201,28 +1214,30 @@ export function ProjectMembersDirectory({
                       </span>
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-black text-[#08245C] dark:text-white text-left">
+                    <h3 className="text-2xl sm:text-[28px] font-extrabold tracking-[-0.03em] text-[#08245C] dark:text-white text-left">
                       {proj.title}
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed text-left">
+                    <p className="text-sm sm:text-base text-[#6279a1] dark:text-slate-400 max-w-3xl leading-relaxed text-left">
                       {proj.summary}
                     </p>
                   </div>
 
                   <Link
                     href={`/projects/${proj.slug}`}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#065ea8] text-white text-xs font-bold transition shadow-xs shrink-0 self-start lg:self-auto"
+                    className="group/btn inline-flex items-center gap-3 pl-5 pr-1.5 py-1.5 rounded-full bg-[#0075ff] hover:bg-[#0064dd] dark:bg-[#0869db] text-white text-sm font-bold shadow-[0_8px_20px_rgb(0_117_255/22%)] transition-colors shrink-0 self-start lg:self-auto"
                   >
                     <span>Explore Project</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span className="grid place-items-center w-8 h-8 rounded-full bg-white text-[#0075ff]">
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+                    </span>
                   </Link>
                 </div>
 
                 {/* Team Members in this project */}
-                <div className="pt-6">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-1.5 text-left">
-                    <Users className="w-3.5 h-3.5 text-[#0875D1]" />
+                <div className="pt-7">
+                  <h4 className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b7fa6] dark:text-slate-400 mb-4 flex items-center gap-1.5 text-left">
+                    <Users className="w-3.5 h-3.5 text-[#0075ff] dark:text-[#80c2ff]" />
                     Project Team Members
                   </h4>
 
@@ -1234,7 +1249,7 @@ export function ProjectMembersDirectory({
                       return (
                         <div
                           key={member.id || idx}
-                          className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between hover:border-blue-300 dark:hover:border-blue-800 transition"
+                          className="p-4 rounded-[18px] bg-white dark:bg-[#0f1e35] border border-white dark:border-[#273b56] flex flex-col justify-between shadow-[0_8px_24px_rgb(61_128_191/6%)] hover:shadow-[0_16px_32px_rgb(30_104_175/14%)] hover:-translate-y-1 transition-all duration-500 ease-out"
                         >
                           <div className="flex items-center gap-3 text-left">
                             <div className="relative w-11 h-11 rounded-full overflow-hidden shrink-0 border border-slate-200 dark:border-slate-700">
@@ -1258,10 +1273,10 @@ export function ProjectMembersDirectory({
                               )}
                             </div>
                             <div className="min-w-0 text-left">
-                              <p className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate text-left">
+                              <p className="text-sm font-extrabold text-[#08245C] dark:text-slate-100 truncate text-left">
                                 {member.name}
                               </p>
-                              <p className="text-[10px] font-semibold text-[#0875D1] dark:text-sky-400 truncate text-left">
+                              <p className="text-[10px] font-semibold text-[#0075ff] dark:text-sky-400 truncate text-left">
                                 {member.role}
                               </p>
                               <p className="text-[9px] text-slate-400 dark:text-slate-500 truncate text-left">
@@ -1271,7 +1286,7 @@ export function ProjectMembersDirectory({
                           </div>
 
                           {/* 4 Social Icons row */}
-                          <div className="pt-2.5 mt-2.5 border-t border-slate-200/60 dark:border-slate-700/60 flex justify-center">
+                          <div className="pt-3 mt-3 border-t border-[#e2edf8] dark:border-[#273b56] flex justify-center">
                             <FourSocialIcons
                               facebook={member.facebook}
                               github={member.github}
@@ -1285,7 +1300,7 @@ export function ProjectMembersDirectory({
                     })}
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>
@@ -1293,8 +1308,8 @@ export function ProjectMembersDirectory({
 
       {/* Pagination Numbers Below - Displayed when list reaches 12 (more than 12 items) */}
       {!isFutureCohort && (viewMode === "grid" || viewMode === "list") && filteredMembers.length > ITEMS_PER_PAGE && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 rounded-3xl shadow-xs">
-          <div className="text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#d6e7ff] dark:border-[#273b56]">
+          <div className="text-sm text-[#6b7fa6] dark:text-slate-400">
             Showing <span className="font-bold text-slate-900 dark:text-white">{startIndex + 1}</span> to{" "}
             <span className="font-bold text-slate-900 dark:text-white">
               {Math.min(startIndex + ITEMS_PER_PAGE, filteredMembers.length)}
@@ -1308,7 +1323,7 @@ export function ProjectMembersDirectory({
               type="button"
               disabled={safeCurrentPage === 1}
               onClick={() => handlePageChange(Math.max(safeCurrentPage - 1, 1))}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/80 disabled:opacity-35 disabled:cursor-not-allowed transition shadow-2xs"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-full border border-[#e2edf8] dark:border-[#273b56] bg-white dark:bg-[#0f1e35] text-xs font-semibold text-[#08245C] dark:text-slate-200 hover:text-[#0075ff] hover:border-[#b9d9ff] disabled:opacity-35 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
               <span>Previous</span>
@@ -1326,10 +1341,10 @@ export function ProjectMembersDirectory({
                   type="button"
                   onClick={() => handlePageChange(p as number)}
                   className={cn(
-                    "w-8 h-8 rounded-xl text-xs font-bold transition flex items-center justify-center",
+                    "w-9 h-9 rounded-full text-xs font-bold transition-colors flex items-center justify-center",
                     safeCurrentPage === p
-                      ? "bg-[#0875D1] text-white shadow-xs"
-                      : "border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200"
+                      ? "bg-[#0075ff] text-white shadow-[0_6px_16px_rgb(0_117_255/25%)]"
+                      : "border border-[#e2edf8] dark:border-[#273b56] bg-white dark:bg-[#0f1e35] hover:text-[#0075ff] hover:border-[#b9d9ff] text-[#08245C] dark:text-slate-200"
                   )}
                 >
                   {p}
@@ -1342,7 +1357,7 @@ export function ProjectMembersDirectory({
               type="button"
               disabled={safeCurrentPage === totalPages}
               onClick={() => handlePageChange(Math.min(safeCurrentPage + 1, totalPages))}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/80 disabled:opacity-35 disabled:cursor-not-allowed transition shadow-2xs"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-full border border-[#e2edf8] dark:border-[#273b56] bg-white dark:bg-[#0f1e35] text-xs font-semibold text-[#08245C] dark:text-slate-200 hover:text-[#0075ff] hover:border-[#b9d9ff] disabled:opacity-35 disabled:cursor-not-allowed transition-colors"
             >
               <span>Next</span>
               <ChevronRight className="w-3.5 h-3.5" />

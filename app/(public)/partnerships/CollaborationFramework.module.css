@@ -1,0 +1,48 @@
+.framework { min-width: 0; color: #08245c; }
+.heading { margin-bottom: 42px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; color: #0875d1; font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 10px; }
+.eyebrow::before { content: ''; width: 22px; height: 2px; border-radius: 2px; background: #0875d1; }
+.heading h2 { font-size: clamp(27px, 2.7vw, 36px); font-weight: 800; line-height: 1.15; letter-spacing: -.035em; }
+.heading p { color: #55729b; font-size: 14px; line-height: 1.75; margin-top: 14px; }
+.benefits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 18px; }
+.cardEntrance { min-width: 0; height: 100%; }
+.benefitCard { position: relative; height: 100%; padding: 48px 20px 24px; border-radius: 20px; border: 1px solid #dbe9fa; background: linear-gradient(160deg, #fff, #fbfdff); text-align: center; box-shadow: 0 10px 24px rgb(32 88 149 / 8%); transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.benefitCard::after { content: ''; position: absolute; bottom: -1px; left: 28%; width: 44%; height: 3px; border-radius: 4px; background: linear-gradient(90deg, #a4d4ff, #0875d1); }
+.icon { position: absolute; top: -24px; left: calc(50% - 29px); display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; color: #0875d1; background: linear-gradient(145deg, #f4f9ff, #cce0ff); border: 1px solid #d8e9ff; box-shadow: 0 0 0 7px #f0f6fe; }
+.icon svg { transition: transform .3s ease; }
+.number { position: absolute; top: 15px; right: 16px; color: #d5e4f6; font-size: 20px; font-weight: 800; line-height: 1; }
+.benefitCard h3 { position: relative; font-size: 15px; font-weight: 750; line-height: 1.4; letter-spacing: -.015em; margin-bottom: 9px; }
+.benefitCard p { color: #55729b; font-size: 12px; line-height: 1.7; }
+.integrity { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: flex-start; gap: 16px; padding: 24px; margin-top: 26px; border-radius: 20px; color: #fff; background: linear-gradient(125deg, #0c347a, #0a224e); border: 1px solid #164387; box-shadow: 0 12px 24px rgb(8 36 92 / 12%); }
+.integrity::after { content: ''; position: absolute; right: -45px; top: -70px; width: 170px; height: 170px; background: #ffffff08; border-radius: 50%; z-index: -1; }
+.integrityIcon { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border-radius: 15px; background: #ffffff12; color: #80e7ff; }
+.integrity h3 { color: #80e7ff; font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .1em; margin: 2px 0 8px; }
+.integrity p { color: #d6e5f7; font-size: 12px; line-height: 1.7; }
+@media (hover: hover) { .benefitCard:hover { transform: translateY(-5px); border-color: #a8cefa; box-shadow: 0 18px 30px rgb(32 88 149 / 14%); } .benefitCard:hover .icon svg { transform: scale(1.1); } }
+:global(.dark) .framework { color: #f1f5fb; }
+:global(.dark) .eyebrow { color: #80c2ff; }
+:global(.dark) .heading p, :global(.dark) .benefitCard p { color: #acbfd9; }
+:global(.dark) .benefitCard { background: linear-gradient(145deg, #132941, #0f1e35); border-color: #2a4262; }
+:global(.dark) .icon { background: linear-gradient(145deg, #213e63, #122b48); border-color: #355579; box-shadow: 0 0 0 7px #0f1e35; color: #80c2ff; }
+:global(.dark) .number { color: #355579; }
+@media (max-width: 479px) { .benefits { grid-template-columns: minmax(0, 1fr); } .benefitCard { padding: 47px 24px 25px; } .integrity { flex-direction: column; padding: 22px; } }
+@media (prefers-reduced-motion: reduce) { .framework *, .framework *::after { transition: none !important; animation: none !important; } .cardEntrance { opacity: 1 !important; transform: none !important; } }
+
+.networkTrack { padding-block: 10px 24px; }
+.networkCard { position: relative; isolation: isolate; overflow: hidden; flex-shrink: 0; width: 290px; padding: 26px; border: 1px solid #dce9fa; border-radius: 24px; background: linear-gradient(145deg, #fff 45%, #eef6ff); color: #08245c; box-shadow: 0 10px 22px rgb(32 88 149 / 7%); transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.networkCard::before { content: ''; position: absolute; z-index: -1; top: -65px; right: -65px; width: 160px; height: 160px; border: 1px solid #d9eaff; border-radius: 50%; box-shadow: 0 0 0 18px #eaf4ff80; }
+.networkCard::after { content: ''; position: absolute; bottom: 0; left: 26px; width: 56px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, #0075ff, #8dcbff); transition: width .3s ease; }
+.networkCardTop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.networkIcon { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 18px; color: #0875d1; border: 1px solid #cde2ff; background: linear-gradient(140deg, #f0f8ff, #d3e7ff); box-shadow: inset 0 1px 0 #fff, 0 5px 10px #0875d10a; }
+.networkIcon svg { transition: transform .3s ease; }
+.networkNumber { color: #a9c5e5; font-size: 13px; font-weight: 750; letter-spacing: .1em; }
+.networkCard h3 { font-size: 16px; font-weight: 750; line-height: 1.4; letter-spacing: -.02em; min-height: 45px; margin-bottom: 9px; }
+.networkCard p { color: #55729b; font-size: 13px; line-height: 1.65; }
+@media (hover: hover) { .networkCard:hover { transform: translateY(-5px); border-color: #a1cafa; box-shadow: 0 16px 28px rgb(32 88 149 / 13%); } .networkCard:hover .networkIcon svg { transform: scale(1.1) rotate(-5deg); } .networkCard:hover::after { width: 100px; } }
+:global(.dark) .networkCard { background: linear-gradient(145deg, #0f1e35 45%, #142e4a); color: #f1f5fb; border-color: #2a4262; }
+:global(.dark) .networkCard::before { border-color: #294667; box-shadow: 0 0 0 18px #19334c60; }
+:global(.dark) .networkIcon { background: linear-gradient(140deg, #213e63, #122b48); color: #80c2ff; border-color: #355579; box-shadow: inset 0 1px 0 #ffffff0a; }
+:global(.dark) .networkNumber { color: #7b9bbf; }
+:global(.dark) .networkCard p { color: #acbfd9; }
+@media (max-width: 479px) { .networkCard { width: 260px; padding: 23px; } }
+@media (prefers-reduced-motion: reduce) { .networkTrack :global(.animate-marquee) { animation: none !important; } .networkTrack { overflow-x: auto; } .networkCard, .networkCard::after, .networkIcon svg { transition: none !important; } }

@@ -1,0 +1,42 @@
+/* Extras for What We Do. Layout, type and colour come from ../about/AboutPage.module.css. */
+.statsGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.stat { padding: 20px 22px; border-radius: 16px; background: rgb(255 255 255 / 82%); border: 1px solid #fff; box-shadow: 0 10px 23px rgb(32 88 149 / 9%); backdrop-filter: blur(12px); transition: transform .7s ease-out, box-shadow .7s ease-out; }
+.stat:hover { transform: translateY(-4px); box-shadow: 0 16px 28px rgb(32 88 149 / 16%); }
+.stat strong { display: block; font-size: 28px; line-height: 1.1; font-weight: 800; letter-spacing: -.03em; color: #0b2d6b; }
+.stat span { display: block; margin-top: 4px; color: #55729b; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .08em; }
+
+.number { margin-left: auto; color: #b9d4f5; font-size: 22px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.cardBody { min-width: 0; flex: 1; }
+.cardHead { display: flex; align-items: flex-start; gap: 12px; }
+.cardText { color: #55729b; font-size: 12px; line-height: 1.65; margin-bottom: 14px; }
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0 0 16px; }
+.tags li { padding: 6px 13px; border-radius: 999px; background: #fff; color: #0075ff; font-size: 10px; font-weight: 700; box-shadow: 0 3px 8px rgb(32 88 149 / 8%); }
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; padding: 14px 0 0; margin: 0 0 18px; border-top: 1px solid #d6e7ff; }
+.checklist li { display: flex; gap: 10px; font-size: 11px; line-height: 1.5; color: #3f5d88; }
+.checklist li > svg { color: #0075ff; flex-shrink: 0; margin-top: 1px; }
+.missionText { color: #c9dcf5; font-size: 12px; line-height: 1.65; margin-bottom: 14px; }
+.missionNumber { color: rgb(255 255 255 / 30%); }
+.missionList { margin-bottom: 18px; }
+.lightLink { display: inline-flex; align-items: center; gap: 8px; color: #80e7ff; font-size: 11px; font-weight: 700; transition: gap .6s ease-out, color .3s ease-out; }
+.lightLink:hover { color: #fff; gap: 12px; }
+
+.valuesGrid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.valueCard { display: flex; flex-direction: column; }
+.valueLabel { display: block; color: #0075ff; text-transform: uppercase; letter-spacing: .1em; font-size: 9px; font-weight: 750; margin-bottom: 5px; }
+.valueLink { margin-top: auto; padding-top: 14px; display: inline-flex; align-self: center; align-items: center; gap: 6px; color: #0075ff; font-size: 11px; font-weight: 700; transition: gap .6s ease-out; }
+.valueLink:hover { gap: 10px; }
+.valueLink svg { flex-shrink: 0; }
+.valueDesc { margin-bottom: 4px; }
+
+:global(.dark) .stat { background: rgb(17 38 64 / 85%); border-color: #2a4262; box-shadow: 0 10px 23px rgb(0 0 0 / 20%); }
+:global(.dark) .stat strong { color: #f1f5fb; }
+:global(.dark) .stat span, :global(.dark) .cardText { color: #acbfd9; }
+:global(.dark) .number { color: #355579; }
+:global(.dark) .tags li { background: #19395e; color: #80c2ff; box-shadow: none; }
+:global(.dark) .checklist { border-top-color: #2a4262; }
+:global(.dark) .checklist li { color: #c3d3ea; }
+:global(.dark) .checklist li > svg, :global(.dark) .valueLabel, :global(.dark) .valueLink { color: #80c2ff; }
+
+@media (max-width: 1023px) { .valuesGrid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stat strong { font-size: 25px; } }
+@media (max-width: 767px) { .cardText, .missionText { font-size: 13px; } .checklist li { font-size: 12px; } }
+@media (max-width: 479px) { .valuesGrid4 { grid-template-columns: minmax(0, 1fr); } .stat { padding: 16px; } .stat strong { font-size: 23px; } }

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { InnovationPipelineNodes } from "@/components/public/InnovationPipelineNodes";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
-import { Sparkles, ArrowRight, Wrench, Laptop, Layers } from "lucide-react";
+import { JanicCta } from "@/components/public/JanicCta";
+import { Sparkles, Wrench, Laptop, Layers } from "lucide-react";
 
 export const metadata = {
   title: "Innovation Hub",
@@ -176,38 +177,12 @@ export default function InnovationHubPage() {
         </div>
       </section>
 
-      {/* 5. CALL TO ACTION — full-width band */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#062253] via-[#041a40] to-[#031331] text-white">
-        <div className="absolute -top-32 -right-24 w-[420px] h-[420px] rounded-full bg-[#0075ff]/25 blur-[120px] pointer-events-none" aria-hidden="true" />
-        <div className="absolute -bottom-40 -left-24 w-[380px] h-[380px] rounded-full bg-sky-400/10 blur-[120px] pointer-events-none" aria-hidden="true" />
-        <ScrollReveal animation="fade-up" duration={850}>
-          <div className="relative max-w-[1440px] mx-auto px-5 sm:px-8 py-20 sm:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-8">
-              <p className="flex items-center gap-3 text-[#80c2ff] text-xs font-bold uppercase tracking-[0.08em]">
-                <span className="w-8 h-0.5 bg-current" aria-hidden="true" />
-                Incubation Admissions
-              </p>
-              <h2 className="mt-4 text-[30px] sm:text-4xl lg:text-[52px] font-extrabold leading-[1.1] tracking-[-0.04em]">
-                Have an Idea? Let&apos;s Turn It Into <span className="text-[#80c2ff]">Innovation.</span>
-              </h2>
-              <p className="mt-5 max-w-2xl text-slate-300 text-base sm:text-lg leading-relaxed">
-                Any enrolled student or multidisciplinary team at Jazeera University can submit an innovation idea. Shortlisted projects receive dedicated lab workspace, electronics components, and faculty mentorship.
-              </p>
-            </div>
-            <div className="lg:col-span-4 lg:justify-self-end">
-              <Link
-                href="/submit-innovation"
-                className="group inline-flex items-center gap-4 pr-7 rounded-full border border-[#086aff] bg-[#0075ff] hover:bg-[#0660dc] text-white text-sm font-bold shadow-lg shadow-blue-900/40 transition-colors"
-              >
-                <span className="grid place-items-center w-12 h-12 rounded-full bg-white text-[#006bff]">
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                </span>
-                Submit Proposal Now
-              </Link>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
+      {/* 5. CALL TO ACTION — shared Home "Get Involved" section */}
+      <JanicCta
+        eyebrow="Incubation Admissions"
+        description="Any enrolled student or multidisciplinary team at Jazeera University can submit an innovation idea. Shortlisted projects receive dedicated lab workspace, electronics components, and faculty mentorship."
+        primary={{ href: "/submit-innovation", label: "Submit Proposal Now" }}
+      />
     </div>
   );
 }
