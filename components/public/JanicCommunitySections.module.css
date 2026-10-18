@@ -1,0 +1,146 @@
+.root { --brand: #0b3b82; --accent: #0875d1; --heading: #050d35; --button: #0087ff; --body: #647b9c; --surface: #fff; --border: #e2edf8; background: var(--surface); color: var(--heading); }
+.section { padding: 76px 0; overflow: hidden; position: relative; isolation: isolate; }
+.container { max-width: 1440px; padding: 0 40px; margin: auto; position: relative; z-index: 1; }
+.sectionHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; margin-bottom: 40px; }
+.headingCopy { max-width: 660px; }
+.eyebrow { color: var(--accent); font-size: 12px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; }
+.root h2 { font-size: clamp(32px, 4.4vw, 58px); font-weight: 800; line-height: 1.15; letter-spacing: -.035em; }
+.intro { color: var(--body); font-size: 18px; line-height: 1.55; margin-top: 16px; max-width: 600px; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 13px; flex-shrink: 0; background: var(--button); color: #fff; min-height: 52px; padding: 15px 30px; border: 1px solid var(--button); border-radius: 999px; font-size: 13px; font-weight: 700; box-shadow: 0 6px 18px rgb(11 59 130 / 8%); transition: background .6s ease-out, transform .6s ease-out, box-shadow .6s ease-out; }
+.button:hover { background: #104f9f; transform: translateY(-3px); box-shadow: 0 12px 24px rgb(11 59 130 / 16%); }
+.outline { color: var(--brand); background: var(--surface); border-color: #cbdff5; }
+.outline:hover { color: var(--brand); background: #f0f7ff; }
+.textLink { display: inline-flex; align-items: center; gap: 9px; color: var(--accent); font-size: 14px; font-weight: 700; }
+.textLink svg, .button svg { flex-shrink: 0; transition: transform .6s ease-out; }
+.textLink:hover svg, .button:hover svg, .researchCard:hover .textLink svg, .eventCard:hover .textLink svg { transform: translateX(4px); }
+.root a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+.threeColumns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.cardEntrance { display: flex; min-width: 0; }
+.researchCard { display: flex; align-items: flex-start; gap: 22px; padding: 30px; min-height: 272px; width: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 12px 26px rgb(29 80 137 / 5%); transition: transform .7s ease-out, box-shadow .7s ease-out, border-color .7s ease-out; }
+.researchCard:hover { transform: translateY(-4px); border-color: #accff0; box-shadow: 0 18px 30px rgb(29 80 137 / 11%); }
+.researchIcon { display: grid; place-items: center; width: 64px; height: 64px; flex-shrink: 0; border-radius: 50%; background: #e7f3ff; color: var(--accent); }
+.researchCopy { display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-width: 0; }
+.root h3 { font-size: 20px; line-height: 1.3; letter-spacing: -.025em; font-weight: 750; overflow-wrap: anywhere; }
+.researchCopy h3 { margin: 4px 0 14px; }
+.researchCopy > p { font-size: 15px; line-height: 1.65; color: var(--body); margin-bottom: 24px; overflow-wrap: anywhere; }
+.researchCopy .textLink { margin-top: auto; }
+.events { padding-top: 0; }
+.events .container { padding-top: 70px; position: relative; }
+.events .container::before { content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 1px; background: var(--border); }
+.eventCard { display: block; min-width: 0; transition: transform .7s ease-out; }
+.eventCard:hover { transform: translateY(-4px); }
+.eventImage { position: relative; aspect-ratio: 1.37; border-radius: 12px; overflow: hidden; background: #e7eef7; margin-bottom: 18px; }
+.image { object-fit: cover; object-position: center; transition: transform .8s ease-out; }
+.eventCard:hover .image, .partnershipImage:hover .image { transform: scale(1.045); }
+.dateBadge { position: absolute; top: 14px; left: 14px; min-width: 58px; padding: 13px 12px 11px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; background: rgb(255 255 255 / 96%); box-shadow: 0 6px 16px rgb(0 0 0 / 8%); color: #08245c; }
+.dateBadge strong { font-size: 22px; font-weight: 800; line-height: 1.1; }
+.dateBadge span { margin-top: 4px; color: #647b9c; font-size: 10px; font-weight: 650; }
+.location { display: flex; align-items: flex-start; gap: 9px; color: var(--body); font-size: 14px; line-height: 1.6; margin: 12px 0 16px; }
+.location svg { flex-shrink: 0; margin-top: 3px; }
+.partnership { background: #eff8ff; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 90px; }
+.partnershipCopy .intro { max-width: 535px; }
+.actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
+.partnershipImage { position: relative; aspect-ratio: 1.5; border-radius: 18px; overflow: hidden; background: #123d6a; }
+.cta { text-align: center; padding: 110px 0 116px; min-height: 440px; }
+.ctaCopy { position: relative; z-index: 1; max-width: 880px; padding: 0 24px; margin: auto; }
+.cta .intro { margin: 24px auto 30px; max-width: 650px; font-size: 16px; }
+.root [data-community-reveal] { transition: opacity .8s ease-out, translate .8s ease-out; }
+@media (prefers-reduced-motion: no-preference) { .root [data-ready]:not([data-visible]) { opacity: 0; translate: 0 18px; } }
+@media (max-width: 1199px) { .researchCard { padding: 24px; gap: 14px; } .researchIcon { width: 44px; height: 44px; } .root h3 { font-size: 17px; } .researchCopy > p { font-size: 13px; } .split { gap: 40px; } }
+@media (max-width: 899px) { .threeColumns { grid-template-columns: repeat(2, minmax(0, 1fr)); } .section { padding-block: 48px; } .events { padding-top: 0; } .sectionHeading { gap: 24px; } .sectionHeading .button { padding-inline: 20px; } .researchCard { flex-direction: column; } .researchCopy { height: auto; flex: 1; } .intro { font-size: 15px; } .split { gap: 28px; } .partnership h2 { font-size: 34px; } .actions { gap: 12px; } .actions .button { padding-inline: 20px; } .cta { padding-block: 64px; } }
+@media (max-width: 767px) { .sectionHeading { align-items: flex-start; flex-direction: column; gap: 22px; } .split { grid-template-columns: minmax(0, 1fr); gap: 32px; } .partnershipCopy .intro { max-width: 560px; } .desktopBreak { display: none; } .partnershipImage { aspect-ratio: 1.6; } .partnership h2 { font-size: 36px; } }
+@media (max-width: 639px) { .container { padding-inline: 20px; } .section { padding-block: 40px; } .events { padding-top: 0; } .events .container { padding-top: 40px; } .events .container::before { left: 20px; right: 20px; } .threeColumns { grid-template-columns: minmax(0, 1fr); gap: 28px; } .researchCard { flex-direction: row; padding: 24px; } .researchCopy > p { font-size: 14px; } .root h2, .partnership h2 { font-size: 30px; } .root h3 { font-size: 20px; } .eventImage { margin-bottom: 16px; } .intro { font-size: 15px; } .cta { padding-block: 56px; } }
+@media (max-width: 379px) { .researchCard { padding: 20px; gap: 12px; } .researchIcon { width: 38px; height: 38px; } .researchIcon svg { width: 23px; height: 23px; } .actions { flex-direction: column; align-items: stretch; } }
+:global(.dark) .root { --brand: #176cd5; --button: #176cd5; --accent: #80c2ff; --heading: #f1f5fb; --body: #acbfd9; --surface: #020617; --border: #263a56; }
+:global(.dark) .researchCard { background: #0f1e35; box-shadow: 0 12px 26px rgb(0 0 0 / 15%); }
+:global(.dark) .researchCard:hover { border-color: #4b78a8; box-shadow: 0 18px 30px rgb(0 0 0 / 25%); }
+:global(.dark) .researchIcon { background: #152e4f; }
+:global(.dark) .button:hover { background: #267fed; }
+:global(.dark) .outline { color: #dcecff; border-color: #44698f; background: #0f1e35; }
+:global(.dark) .outline:hover { background: #173355; color: #fff; }
+:global(.dark) .partnership { background: #081225; }
+:global(.dark) .dateBadge { background: rgb(15 30 53 / 96%); color: #f1f5fb; border: 1px solid #35506f; }
+:global(.dark) .dateBadge span { color: #acbfd9; }
+:global(.dark) .eventImage { background: #0f1e35; }
+@media (prefers-reduced-motion: reduce) { .root *, .root *::before, .root *::after { transition: none !important; animation: none !important; } }
+
+/* Reference details, confined to the closing four sections. */
+.sectionHeading > .button { margin-top: 24px; }
+.events .sectionHeading { align-items: flex-end; }
+.root > .section:first-child::after {
+  content: ""; position: absolute; top: 124px; right: 23%; width: 170px; height: 120px;
+  background: radial-gradient(circle, #c7e5ff 1.5px, transparent 2px) 0 0 / 20px 20px;
+  opacity: .65; z-index: 0; pointer-events: none;
+}
+.partnership::before { content: ""; position: absolute; width: 640px; height: 640px; top: -450px; right: -250px; border: 120px solid #dcefff; border-radius: 50%; opacity: .65; pointer-events: none; }
+.partnership::after { content: ""; position: absolute; width: 700px; height: 700px; bottom: -670px; left: 40%; border: 120px solid #dcefff; border-radius: 50%; opacity: .65; pointer-events: none; }
+.partnership .split::after { content: ""; position: absolute; right: 16px; top: -22px; width: 110px; height: 130px; background: radial-gradient(circle, #8ccaff 1.5px, transparent 2px) 0 0 / 15px 15px; z-index: -1; pointer-events: none; }
+.ctaWaves { position: absolute; inset: auto 0 0; width: 100%; height: 100%; min-height: 330px; pointer-events: none; z-index: 0; color: #dff0ff; }
+.ctaRays { width: 140px; height: 52px; margin: 0 auto 22px; color: #b5daff; }
+.cta .eyebrow { font-size: 22px; margin-bottom: 18px; }
+.cta h2 { font-size: clamp(30px, 3.5vw, 46px); }
+.researchIcon svg { width: 30px; height: 30px; }
+:global(.dark) .root > .section:first-child::after { opacity: .12; }
+:global(.dark) .partnership::before, :global(.dark) .partnership::after { border-color: #173355; opacity: .45; }
+:global(.dark) .partnership .split::after { opacity: .3; }
+:global(.dark) .ctaWaves { color: #102946; }
+:global(.dark) .ctaRays { color: #4777a7; }
+@media (max-width: 1199px) {
+  .root h2 { font-size: 44px; }
+  .root h3 { font-size: 18px; }
+  .researchCard { gap: 16px; min-height: 255px; }
+  .researchCopy > p { font-size: 14px; }
+  .root > .section:first-child::after { right: 20%; width: 100px; }
+  .cta h2 { font-size: 38px; }
+}
+@media (max-width: 899px) {
+  .container { padding-inline: 28px; }
+  .root h2 { font-size: 38px; }
+  .researchCard { min-height: 255px; }
+  .researchIcon svg { width: 26px; height: 26px; }
+  .intro { font-size: 16px; }
+  .root > .section:first-child::after { display: none; }
+  .cta { padding-block: 76px; }
+  .cta h2 { font-size: 36px; }
+}
+@media (max-width: 767px) {
+  .sectionHeading > .button { margin-top: 0; }
+  .events .sectionHeading { align-items: flex-start; }
+  .partnership .split::after { right: 10px; top: auto; bottom: 20px; }
+}
+@media (max-width: 639px) {
+  .container { padding-inline: 20px; }
+  .root h2, .cta h2 { font-size: 30px; }
+  .root h3 { font-size: 18px; }
+  .researchCard { min-height: 220px; }
+  .intro, .cta .intro { font-size: 15px; }
+  .cta { padding-block: 66px; }
+  .ctaWaves { height: 75%; opacity: .8; }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  .section { padding-block: 54px; }
+  .events { padding-top: 0; }
+  .events .container { padding-top: 52px; }
+  .sectionHeading { margin-bottom: 28px; }
+  .intro { font-size: 14px; line-height: 1.6; max-width: 520px; }
+  .researchCard { padding: 20px; gap: 14px; min-height: 200px; }
+  .researchIcon { width: 48px; height: 48px; }
+  .researchIcon svg { width: 26px; height: 26px; }
+  .researchCopy h3 { font-size: 16px; margin-top: 3px; margin-bottom: 12px; }
+  .researchCopy > p { font-size: 12px; line-height: 1.55; margin-bottom: 22px; }
+  .textLink { font-size: 12px; }
+  .button { font-size: 12px; min-height: 44px; padding: 12px 22px; gap: 10px; }
+  .dateBadge { min-width: 44px; padding: 10px 9px 8px; }
+  .dateBadge strong { font-size: 18px; }
+  .eventCard h3 { font-size: 16px; }
+  .location { font-size: 12px; }
+  .partnership .split { gap: 72px; }
+  .partnershipCopy .intro { font-size: 14px; }
+  .cta { padding-block: 70px; }
+  .cta h2 { font-size: 34px; }
+  .cta .intro { font-size: 14px; }
+  .ctaCopy { max-width: 720px; }
+}
+@media (min-width: 1200px) { .ctaCopy { max-width: 820px; } }
+@media (min-width: 900px) and (max-width: 1199px) { .threeColumns { gap: 16px; } .researchCard { padding: 18px; gap: 12px; } }

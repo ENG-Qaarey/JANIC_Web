@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -27,10 +34,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   icons: {
     icon: [
-      { url: "/images/janic-logo-white-badge.png", type: "image/png" },
+      { url: "/images/janic-new-icon.png", type: "image/png" },
     ],
-    shortcut: "/images/janic-logo-white-badge.png",
-    apple: "/images/janic-logo-white-badge.png",
+    shortcut: "/images/janic-new-icon.png",
+    apple: "/images/janic-new-icon.png",
   },
 };
 
@@ -40,12 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="h-full antialiased scroll-smooth">
-      <head>
-        <link rel="icon" href="/images/janic-logo-white-badge.png" type="image/png" sizes="any" />
-        <link rel="shortcut icon" href="/images/janic-logo-white-badge.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/images/janic-logo-white-badge.png" />
-      </head>
+    <html lang="en" suppressHydrationWarning className={`${plusJakartaSans.variable} h-full antialiased scroll-smooth`}>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-blue-600 selection:text-white">
         <ClerkProvider
           appearance={{

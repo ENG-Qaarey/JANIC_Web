@@ -1,0 +1,128 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #fff;
+  color: #08245c;
+  padding: 80px 0;
+}
+.section::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -110px;
+  bottom: -220px;
+  width: 360px;
+  height: 360px;
+  border: 52px solid #f0f7ff;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.container { max-width: 1380px; margin: auto; padding: 0 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.visual { position: relative; aspect-ratio: 1 / 1; min-width: 0; }
+.visual::before { content: ""; position: absolute; top: 5%; left: 18%; width: 78%; height: 89%; border-radius: 34px; background: linear-gradient(145deg, #f0f7ff, #dbeeff); }
+.mainEntrance { position: absolute; inset: 0 auto auto 0; width: 85%; height: 84%; }
+.secondaryEntrance { position: absolute; right: 0; bottom: 0; width: 52%; height: 43%; z-index: 2; transition-delay: .15s !important; }
+.photo { position: relative; width: 100%; height: 100%; overflow: hidden; border: 3px solid #fff; border-radius: 28px; box-shadow: 0 18px 38px rgb(19 75 125 / 15%); }
+.image { object-fit: cover; object-position: center; transition: transform .8s ease-out; }
+.photo:hover .image { transform: scale(1.045); }
+.badgeEntrance { position: absolute; right: -1%; top: 32%; width: 212px; z-index: 3; transition-delay: .25s !important; }
+.badge { display: flex; align-items: center; gap: 17px; padding: 16px; border: 3px solid rgb(255 255 255 / 95%); border-radius: 24px; background: linear-gradient(130deg, rgb(255 255 255 / 88%), rgb(227 240 255 / 72%)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 16px 35px rgb(28 92 165 / 18%), inset 0 1px 1px #fff; position: relative; overflow: hidden; animation: float 5s ease-in-out infinite; }
+.badge::after { content: ""; position: absolute; right: -14px; bottom: -24px; width: 62px; height: 62px; border-radius: 55% 45% 0 0; rotate: 32deg; background: linear-gradient(140deg, #c5e2ff, #6db1ff); opacity: .65; }
+.badgeIcon { display: grid; place-items: center; flex-shrink: 0; width: 60px; height: 60px; color: #fff; background: linear-gradient(145deg, #6eb5ff, #0075ff 70%); border: 3px solid #c1ddff; border-radius: 50%; box-shadow: 0 5px 12px #0075ff33; }
+.badge > div { position: relative; z-index: 1; display: flex; flex-direction: column; }
+.badge strong { font-size: 31px; font-weight: 800; line-height: 1.15; letter-spacing: -.03em; }
+.badge div > span { color: #7087ad; font-size: 18px; line-height: 1.5; }
+.dots { position: absolute; bottom: -1%; left: 3%; width: 90px; height: 62px; background: radial-gradient(circle, #d4e7ff 3px, transparent 3.5px) 0 0 / 18px 18px; z-index: -1; }
+.content { min-width: 0; }
+.eyebrow { display: flex; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: .13em; font-size: 12px; font-weight: 750; color: #0082ff; }
+.eyebrow::after { content: ""; width: 36px; height: 1px; background: #0082ff; }
+.title { font-size: clamp(30px, 3.05vw, 44px); line-height: 1.17; font-weight: 800; letter-spacing: -.035em; margin: 20px 0 24px; transition-delay: .1s !important; }
+.description { font-size: 16px; line-height: 1.8; color: #6b82a8; transition-delay: .2s !important; }
+.features { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 24px; margin: 30px 0; padding: 0; }
+.feature { min-width: 0; display: flex; gap: 14px; align-items: flex-start; }
+.check { width: 34px; height: 34px; display: grid; place-items: center; color: #0082ff; background: #eaf5ff; border-radius: 50%; flex-shrink: 0; }
+.feature h3 { font-size: 15px; font-weight: 750; line-height: 1.45; margin: 2px 0 5px; }
+.feature p { font-size: 13px; line-height: 1.7; color: #6b82a8; }
+.buttonEntrance { transition-delay: .2s !important; }
+.button { display: inline-flex; justify-content: center; align-items: center; gap: 20px; padding: 15px 30px; min-height: 50px; border-radius: 999px; font-size: 15px; font-weight: 650; background: #082f78; color: #fff; box-shadow: 0 10px 24px rgb(16 75 135 / 14%); transition: transform .7s ease-out, background .7s ease-out, box-shadow .7s ease-out; }
+.button:hover { background: #064498; transform: translateY(-3px); box-shadow: 0 15px 30px rgb(16 75 135 / 23%); }
+.button:focus-visible { outline: 3px solid #0082ff; outline-offset: 5px; }
+.section [data-about-reveal] { transition: opacity .8s ease-out, translate .8s ease-out; }
+@media (prefers-reduced-motion: no-preference) {
+  .section [data-about-ready]:not([data-visible]) { opacity: 0; translate: 0 20px; }
+  .section .mainEntrance[data-about-ready]:not([data-visible]), .section .secondaryEntrance[data-about-ready]:not([data-visible]) { translate: -24px 0; }
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+:global(.dark) .section { background: #020617; color: #f1f5f9; }
+:global(.dark) .section::after { border-color: #0d1c34; }
+:global(.dark) .visual::before { background: linear-gradient(145deg, #10213a, #163c66); }
+:global(.dark) .photo { border-color: #243d5c; }
+:global(.dark) .badge { background: linear-gradient(130deg, rgb(15 35 62 / 90%), rgb(18 50 87 / 78%)); border-color: #487db166; }
+:global(.dark) .badge div > span, :global(.dark) .description, :global(.dark) .feature p { color: #a0b5d3; }
+:global(.dark) .check { background: #0b2b50; color: #63b7ff; }
+:global(.dark) .dots { opacity: .2; }
+@media (max-width: 1100px) {
+  .section { padding: 64px 0; }
+  .container { gap: 36px; }
+  .titleBreak { display: none; }
+  .title { font-size: 34px; margin-block: 16px 20px; }
+  .description { font-size: 15px; line-height: 1.7; }
+  .features { gap: 20px 16px; margin-block: 24px; }
+  .feature { gap: 10px; }
+  .feature h3 { font-size: 14px; }
+  .feature p { font-size: 12px; }
+  .check { width: 30px; height: 30px; }
+  .badgeEntrance { width: 190px; }
+  .badge { padding: 12px; gap: 12px; border-radius: 20px; }
+  .badgeIcon { width: 52px; height: 52px; }
+  .badge strong { font-size: 27px; }
+  .badge div > span { font-size: 16px; }
+}
+@media (max-width: 1023px) {
+  .container { grid-template-columns: minmax(0, 1fr); gap: 38px; }
+  .visual { width: min(100%, 550px); justify-self: center; }
+  .content { width: min(100%, 680px); justify-self: center; }
+}
+@media (max-width: 767px) {
+  .section { padding: 44px 0; }
+  .container { padding-inline: 24px; gap: 32px; }
+  .visual { max-width: 450px; }
+  .photo { border-radius: 22px; }
+  .title { font-size: clamp(28px, 5.5vw, 36px); }
+  .badgeEntrance { width: 175px; right: 0; }
+  .badge { gap: 10px; padding: 10px; border-width: 2px; }
+  .badgeIcon { width: 46px; height: 46px; }
+  .badgeIcon svg { width: 23px; height: 23px; }
+  .badge strong { font-size: 25px; }
+  .badge div > span { font-size: 15px; }
+  .features { gap: 22px 18px; }
+  .description { font-size: 15px; }
+}
+@media (max-width: 479px) {
+  .container { padding-inline: 20px; }
+  .features { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .feature h3 { font-size: 15px; }
+  .feature p { font-size: 13px; }
+  .button { width: 100%; }
+  .badgeEntrance { width: 156px; top: 30%; }
+  .badgeIcon { width: 40px; height: 40px; }
+  .badge strong { font-size: 23px; }
+  .badge div > span { font-size: 14px; }
+  .dots { width: 65px; height: 42px; background-size: 14px 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section *, .section *::before, .section *::after { animation: none !important; transition: none !important; }
+}
+
+
+/* Complete the existing About dark theme with matching accents and controls. */
+:global(.dark) .eyebrow { color: #80c2ff; }
+:global(.dark) .eyebrow::after { background: #80c2ff; }
+:global(.dark) .badge { box-shadow: 0 16px 35px rgb(0 0 0 / 25%), inset 0 1px 0 rgb(255 255 255 / 6%); }
+:global(.dark) .badge::after { opacity: .22; }
+:global(.dark) .badgeIcon { border-color: #4b81bc; }
+:global(.dark) .photo { box-shadow: 0 18px 38px rgb(0 0 0 / 30%); }
+:global(.dark) .button { background: #0869db; box-shadow: 0 10px 24px rgb(0 0 0 / 20%); }
+:global(.dark) .button:hover { background: #1478ed; box-shadow: 0 15px 30px rgb(0 0 0 / 30%); }
+:global(.dark) .button:focus-visible { outline-color: #91cbff; }

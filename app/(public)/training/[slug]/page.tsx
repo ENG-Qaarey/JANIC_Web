@@ -67,6 +67,7 @@ export default async function TrainingDetailPage({
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#070d18]">
       <SectionHero
+        image={program.coverImage}
         badge={program.category}
         title={program.title}
         description={program.summary}

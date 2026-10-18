@@ -27,7 +27,7 @@ export async function PublicFooter() {
             <Link href="/" className="inline-block group">
               <div className="relative w-48 h-12 transition-transform group-hover:scale-[1.02]">
                 <Image
-                  src="/images/janic-logo-white.png"
+                  src="/images/janic-new-with-jazeera-white.png"
                   alt="JANIC Logo"
                   fill
                   className="object-contain object-left"
@@ -87,6 +87,11 @@ export async function PublicFooter() {
               </li>
               <li>
                 <Link href="/search" className="hover:text-white transition">Search</Link>
+              </li>
+              <li>
+                <a href="https://juictgirls.org/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+                  JU ICT Girls<span className="sr-only"> (opens in a new tab)</span>
+                </a>
               </li>
             </ul>
           </div>
