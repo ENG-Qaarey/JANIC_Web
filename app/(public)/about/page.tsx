@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
+import { JanicCta } from "@/components/public/JanicCta";
 import { MentorsLeadershipSection } from "@/components/public/MentorsLeadershipSection";
 import { TeamRepository } from "@/repositories/team.repository";
 import styles from "./AboutPage.module.css";
@@ -183,17 +184,8 @@ export default async function AboutPage() {
         </section>
       )}
 
-      <section className={styles.cta} aria-labelledby="about-cta-title">
-        <svg className={styles.waves} viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 40 C320 60 360 400 740 400 C1040 400 1160 150 1440 80 L1440 400 L0 400Z" fill="currentColor" opacity=".4" />
-          <path d="M0 180 C300 120 400 420 740 400 C1040 390 1150 250 1440 190 L1440 260 C1150 300 1060 410 740 400 C380 440 280 200 0 245Z" fill="currentColor" opacity=".5" />
-        </svg>
-        <ScrollReveal animation="fade-up" duration={800} className={styles.ctaCopy}>
-          <h2 id="about-cta-title">Have an Idea? Let&apos;s Turn It Into<br /> Innovation.</h2>
-          <p>Join our vibrant ecosystem of developers, researchers, and visionaries.</p>
-          <Link href="/submit-innovation" className={styles.button}>Get Started Today <ArrowRight size={17} aria-hidden="true" /></Link>
-        </ScrollReveal>
-      </section>
+      {/* CALL TO ACTION — shared Home "Get Involved" section */}
+      <JanicCta />
     </div>
   );
 

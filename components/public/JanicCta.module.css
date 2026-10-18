@@ -1,0 +1,42 @@
+/* "Get Involved" call to action — the Home page closing section, shared across pages. */
+.section { --accent: #0875d1; --heading: #050d35; --button: #0087ff; --brand: #0b3b82; --body: #647b9c; --surface: #fff; position: relative; isolation: isolate; overflow: hidden; padding: 110px 0 116px; min-height: 440px; text-align: center; background: var(--surface); color: var(--heading); }
+.waves { position: absolute; inset: auto 0 0; width: 100%; height: 100%; min-height: 330px; pointer-events: none; z-index: 0; color: #dff0ff; }
+.copy { position: relative; z-index: 1; max-width: 880px; padding: 0 24px; margin: auto; }
+.rays { width: 140px; height: 52px; margin: 0 auto 22px; color: #b5daff; }
+.eyebrow { color: var(--accent); font-size: 22px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 18px; }
+.section .title { font-size: clamp(30px, 3.5vw, 46px); font-weight: 800; line-height: 1.15; letter-spacing: -.035em; }
+.intro { color: var(--body); font-size: 16px; line-height: 1.55; margin: 24px auto 30px; max-width: 650px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 13px; flex-shrink: 0; background: var(--button); color: #fff; min-height: 52px; padding: 15px 30px; border: 1px solid var(--button); border-radius: 999px; font-size: 13px; font-weight: 700; box-shadow: 0 6px 18px rgb(11 59 130 / 8%); transition: background .6s ease-out, transform .6s ease-out, box-shadow .6s ease-out; }
+.button:hover { background: #104f9f; transform: translateY(-3px); box-shadow: 0 12px 24px rgb(11 59 130 / 16%); }
+.button svg { flex-shrink: 0; transition: transform .6s ease-out; }
+.button:hover svg { transform: translateX(4px); }
+.outline { color: var(--brand); background: var(--surface); border-color: #cbdff5; }
+.outline:hover { color: var(--brand); background: #f0f7ff; }
+.section a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+.copy { transition: opacity .8s ease-out, translate .8s ease-out; }
+@media (prefers-reduced-motion: no-preference) { .copy[data-ready]:not([data-visible]) { opacity: 0; translate: 0 18px; } }
+
+:global(.dark) .section { --brand: #176cd5; --button: #176cd5; --accent: #80c2ff; --heading: #f1f5fb; --body: #acbfd9; --surface: #020617; }
+:global(.dark) .waves { color: #102946; }
+:global(.dark) .rays { color: #4777a7; }
+:global(.dark) .button:hover { background: #267fed; }
+:global(.dark) .outline { color: #dcecff; border-color: #44698f; background: #0f1e35; }
+:global(.dark) .outline:hover { background: #173355; color: #fff; }
+
+@media (min-width: 1200px) { .copy { max-width: 820px; } }
+@media (min-width: 900px) and (max-width: 1199px) {
+  .section { padding-block: 70px; }
+  .section .title { font-size: 34px; }
+  .intro { font-size: 14px; }
+  .copy { max-width: 720px; }
+  .button { font-size: 12px; min-height: 44px; padding: 12px 22px; gap: 10px; }
+}
+@media (max-width: 899px) { .section { padding-block: 76px; } .section .title { font-size: 36px; } .actions { gap: 12px; } }
+@media (max-width: 639px) {
+  .section { padding-block: 66px; }
+  .section .title { font-size: 30px; }
+  .intro { font-size: 15px; }
+  .waves { height: 75%; opacity: .8; }
+}
+@media (prefers-reduced-motion: reduce) { .section *, .section *::before, .section *::after { transition: none !important; animation: none !important; } }

@@ -1,6 +1,5 @@
 import React from "react";
 import { SectionHero } from "@/components/layout/SectionHero";
-import { ScrollReveal } from "@/components/public/ScrollReveal";
 import { ProjectService } from "@/services/projects/project.service";
 import { ProjectMemberRepository } from "@/repositories/project-member.repository";
 import { ProjectMembersDirectory } from "@/components/public/ProjectMembersDirectory";
@@ -76,39 +75,37 @@ export default async function ProjectMembersPage() {
           { label: "Project Members" },
         ]}
       >
-        {/* Hero stat badges */}
-        <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 pt-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 text-xs font-bold text-[#08245C] dark:text-slate-100 shadow-2xs">
-            <FolderGit2 className="w-3.5 h-3.5 text-[#0875D1]" />
-            <span>15 Total Projects</span>
-          </div>
-
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/70 border border-blue-200/70 dark:border-blue-900 text-xs font-bold text-[#0875D1] dark:text-sky-300 shadow-2xs">
-            <Users className="w-3.5 h-3.5 text-[#0875D1]" />
-            <span>10 Group Teams</span>
-          </div>
-
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200/70 dark:border-emerald-900 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-            <span>5 Individual Projects</span>
-          </div>
-
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 dark:bg-purple-950/70 border border-purple-200/70 dark:border-purple-900 text-xs font-bold text-purple-700 dark:text-purple-300 shadow-2xs">
-            <Award className="w-3.5 h-3.5 text-purple-600" />
-            <span>{memberRecords.length > 0 ? `${memberRecords.length} Student Engineers` : "30+ Student Engineers"}</span>
-          </div>
-        </div>
+        {/* Hero stats — same glass treatment as the Home hero stats */}
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-y-4 py-4 rounded-[20px] bg-white/40 dark:bg-[#0c1b30]/80 border border-white/70 dark:border-[#263e5d] backdrop-blur-md shadow-[0_15px_35px_rgb(91_155_218/6%)] max-w-[640px]">
+          {[
+            { icon: FolderGit2, value: "15", label: "Total Projects" },
+            { icon: Users, value: "10", label: "Group Teams" },
+            { icon: Sparkles, value: "5", label: "Individual Projects" },
+            { icon: Award, value: memberRecords.length > 0 ? `${memberRecords.length}` : "30+", label: "Student Engineers" },
+          ].map(({ icon: Icon, value, label }, i) => (
+            <div
+              key={label}
+              className={`flex items-center gap-3 px-4 min-w-0 ${i === 3 ? "" : i % 2 === 0 ? "border-r" : "sm:border-r"} border-[#d6e7ff] dark:border-[#2a405d]`}
+            >
+              <span className="grid place-items-center w-10 h-10 shrink-0 rounded-[14px] bg-[#deedff] dark:bg-[#152e4f] text-[#0075ff] dark:text-[#80c2ff]">
+                <Icon className="w-5 h-5" strokeWidth={1.8} aria-hidden="true" />
+              </span>
+              <div className="flex flex-col-reverse min-w-0">
+                <dt className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#6d7fa4] dark:text-[#acbfd9] leading-tight">{label}</dt>
+                <dd className="text-xl font-extrabold text-[#031541] dark:text-white leading-tight">{value}</dd>
+              </div>
+            </div>
+          ))}
+        </dl>
       </SectionHero>
 
       {/* 2. DIRECTORY SECTION WITH FILTER CONTROLS */}
-      <section className="py-8 sm:py-14 bg-slate-50 dark:bg-slate-950 min-h-[600px] overflow-hidden">
-        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollReveal animation="fade-up" duration={850}>
-            <ProjectMembersDirectory
-              initialMembers={memberRecords}
-              projects={projects}
-            />
-          </ScrollReveal>
+      <section className="py-14 sm:py-20 bg-[#f0f6fe] dark:bg-[#081225] min-h-[600px] overflow-hidden">
+        <div className="max-w-[1380px] mx-auto px-5 sm:px-8">
+          <ProjectMembersDirectory
+            initialMembers={memberRecords}
+            projects={projects}
+          />
         </div>
       </section>
     </div>

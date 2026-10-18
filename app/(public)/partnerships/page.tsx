@@ -1,9 +1,10 @@
 import React from "react";
-import Link from "next/link";
+import styles from "./CollaborationFramework.module.css";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
+import { JanicCta } from "@/components/public/JanicCta";
 import { PartnershipForm } from "@/components/forms/PartnershipForm";
-import { Handshake, Building2, Globe2, Rocket, Award, ShieldCheck } from "lucide-react";
+import { Building2, Globe2, Rocket, Award, ShieldCheck, Users, GraduationCap, HeartHandshake, Landmark, Cpu, Microscope } from "lucide-react";
 
 export const metadata = {
   title: "Partnerships & Collaboration",
@@ -38,13 +39,13 @@ export default async function PartnershipsPage() {
   ];
 
   const coreSectors = [
-    { title: "SMEs & Startups", desc: "Scaling with digital solutions & tech talent" },
-    { title: "Women-Owned Businesses", desc: "Empowering with technology & mentorship" },
-    { title: "Universities & Education", desc: "Research, curriculum & student programs" },
-    { title: "NGOs & Development Organizations", desc: "Digital transformation & community tech" },
-    { title: "Government Institutions", desc: "Digital governance & public innovation" },
-    { title: "Technology Companies", desc: "R&D, talent & co-development" },
-    { title: "Researchers & Professionals", desc: "Joint publications & applied research" },
+    { title: "SMEs & Startups", desc: "Scaling with digital solutions & tech talent", icon: Rocket },
+    { title: "Women-Owned Businesses", desc: "Empowering with technology & mentorship", icon: Users },
+    { title: "Universities & Education", desc: "Research, curriculum & student programs", icon: GraduationCap },
+    { title: "NGOs & Development Organizations", desc: "Digital transformation & community tech", icon: HeartHandshake },
+    { title: "Government Institutions", desc: "Digital governance & public innovation", icon: Landmark },
+    { title: "Technology Companies", desc: "R&D, talent & co-development", icon: Cpu },
+    { title: "Researchers & Professionals", desc: "Joint publications & applied research", icon: Microscope },
   ];
 
   return (
@@ -77,30 +78,27 @@ export default async function PartnershipsPage() {
         </div>
 
         <ScrollReveal animation="fade-up" duration={800} delay={200}>
-          <div className="group relative">
+          <div className={styles.networkTrack + " group relative"}>
             <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-r from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent z-10 pointer-events-none"></div>
             <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent z-10 pointer-events-none"></div>
 
             <div className="overflow-hidden">
               <div className="flex w-max gap-4 sm:gap-5 animate-marquee group-hover:[animation-play-state:paused]">
                 {[...Array(2)].map((_, setIndex) => (
-                  <div key={setIndex} className="flex gap-4 sm:gap-5 shrink-0">
-                    {coreSectors.map((org, orgIndex) => (
-                      <div
-                        key={`${setIndex}-${org.title}`}
-                        className="shrink-0 w-[260px] sm:w-[280px] bg-white dark:bg-slate-900 p-5 rounded-2xl border border-blue-100/80 dark:border-slate-700/60 shadow-sm dark:shadow-slate-950/30 hover:shadow-lg hover:border-[#0875D1]/40 dark:hover:border-[#0875D1]/50 hover:-translate-y-1 transition-all duration-300 ease-out group/card"
-                      >
-                        <span className="text-2xl font-black text-blue-100 dark:text-slate-700 group-hover/card:text-transparent group-hover/card:bg-clip-text group-hover/card:bg-gradient-to-br group-hover/card:from-[#0875D1] group-hover/card:to-[#10B981] dark:group-hover/card:from-[#60a5fa] dark:group-hover/card:to-[#34d399] transition-all duration-300 select-none leading-none">
-                          {String(orgIndex + 1).padStart(2, "0")}
-                        </span>
-                        <h4 className="text-sm font-bold text-[#08245C] dark:text-white tracking-tight mt-3.5">
-                          {org.title}
-                        </h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1.5">
-                          {org.desc}
-                        </p>
-                      </div>
-                    ))}
+                  <div key={setIndex} className="flex gap-4 sm:gap-5 shrink-0" aria-hidden={setIndex === 1 ? true : undefined}>
+                    {coreSectors.map((org, orgIndex) => {
+                      const Icon = org.icon;
+                      return (
+                        <article key={org.title} className={styles.networkCard}>
+                          <div className={styles.networkCardTop}>
+                            <span className={styles.networkIcon}><Icon size={27} strokeWidth={1.7} aria-hidden="true" /></span>
+                            <span className={styles.networkNumber} aria-hidden="true">{String(orgIndex + 1).padStart(2, "0")}</span>
+                          </div>
+                          <h3>{org.title}</h3>
+                          <p>{org.desc}</p>
+                        </article>
+                      );
+                    })}
                   </div>
                 ))}
               </div>
@@ -109,57 +107,40 @@ export default async function PartnershipsPage() {
         </ScrollReveal>
       </section>
 
-      {/* 3. PARTNERSHIPS BENTO CANVAS */}
-      <section className="py-8 sm:py-14 bg-white overflow-hidden">
+      {/* 3. FULL-WIDTH COLLABORATION FRAMEWORK */}
+      <section className="w-full py-10 sm:py-14 bg-[#F0F6FE] overflow-hidden">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-left" duration={850}>
-            <div className="bg-[#F0F6FE] rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-14 border border-blue-100/70 shadow-sm">
+            <div>
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                <div className="lg:col-span-6 space-y-8">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
-                      Collaboration Framework
-                    </span>
-                    <h2 className="text-3xl sm:text-4xl font-black text-[#08245C] tracking-tight leading-tight">
-                      Why Partner with JANIC?
-                    </h2>
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mt-2.5">
-                      As the innovation arm of Faculty of Computer Science &amp; IT at Jazeera University, JANIC serves as the premier bridge between academic capability and regional market execution.
-                    </p>
-                  </div>
-
-                  <div className="space-y-4">
-                    {benefits.map((b) => {
-                      const Icon = b.icon;
+                <div className={`${styles.framework} lg:col-span-6`}>
+                  <header className={styles.heading}>
+                    <span className={styles.eyebrow}>Collaboration Framework</span>
+                    <h2>Why Partner with JANIC?</h2>
+                    <p>As the innovation arm of Faculty of Computer Science &amp; IT at Jazeera University, JANIC serves as the premier bridge between academic capability and regional market execution.</p>
+                  </header>
+                  <div className={styles.benefits}>
+                    {benefits.map((benefit, index) => {
+                      const Icon = benefit.icon;
                       return (
-                        <div
-                          key={b.title}
-                          className="bg-white p-6 rounded-2xl border border-blue-100/80 flex items-start gap-4 shadow-sm hover:shadow-md transition-all group"
-                        >
-                          <div className="w-11 h-11 rounded-xl bg-blue-50 text-[#0875D1] flex items-center justify-center font-bold shrink-0 group-hover:scale-105 transition-transform">
-                            <Icon className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-bold text-[#08245C] tracking-tight">
-                              {b.title}
-                            </h4>
-                            <p className="text-xs text-slate-500 leading-relaxed mt-1">
-                              {b.desc}
-                            </p>
-                          </div>
-                        </div>
+                        <ScrollReveal key={benefit.title} animation="fade-up" duration={700} delay={index * 90} className={styles.cardEntrance}>
+                          <article className={styles.benefitCard}>
+                            <span className={styles.icon}><Icon size={26} strokeWidth={1.8} aria-hidden="true" /></span>
+                            <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                            <h3>{benefit.title}</h3>
+                            <p>{benefit.desc}</p>
+                          </article>
+                        </ScrollReveal>
                       );
                     })}
                   </div>
-
-                  <div className="p-7 rounded-2xl bg-[#0A224E] text-white space-y-2 border border-blue-900/60 shadow-lg">
-                    <div className="flex items-center gap-2 text-xs font-bold text-cyan-300 uppercase tracking-wider">
-                      <ShieldCheck className="w-4 h-4" /> Institutional Integrity
+                  <aside className={styles.integrity} aria-labelledby="partnership-integrity-title">
+                    <span className={styles.integrityIcon}><ShieldCheck size={26} aria-hidden="true" /></span>
+                    <div>
+                      <h3 id="partnership-integrity-title">Institutional Integrity</h3>
+                      <p>All partnerships are governed under formal Memorandums of Understanding (MoU) with the Senate and Dean of Faculty at Jazeera University.</p>
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      All partnerships are governed under formal Memorandums of Understanding (MoU) with the Senate and Dean of Faculty at Jazeera University.
-                    </p>
-                  </div>
+                  </aside>
                 </div>
 
                 <div className="lg:col-span-6 bg-white p-8 sm:p-10 rounded-2xl border border-blue-100/80 shadow-md space-y-6">
@@ -183,27 +164,8 @@ export default async function PartnershipsPage() {
         </div>
       </section>
 
-      {/* 4. CALL TO ACTION */}
-      <section className="pt-8 pb-20 sm:pt-12 sm:pb-28 bg-white text-center overflow-hidden">
-        <ScrollReveal animation="zoom-in" duration={800}>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3.5">
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#08245C] tracking-tight leading-tight">
-              Have an Idea? Let&apos;s Turn It Into Innovation.
-            </h2>
-            <p className="text-slate-500 text-xs sm:text-sm font-normal tracking-wide max-w-xl mx-auto">
-              Join our vibrant ecosystem of developers, researchers, and visionaries.
-            </p>
-            <div className="pt-3">
-              <Link
-                href="/submit-innovation"
-                className="inline-flex items-center px-8 py-3.5 rounded-full bg-[#0875D1] hover:bg-[#0660ac] text-white text-xs sm:text-sm font-bold shadow-md shadow-blue-500/30 hover:shadow-lg transition-all"
-              >
-                Get Started Today
-              </Link>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
+      {/* CALL TO ACTION — shared Home "Get Involved" section */}
+      <JanicCta />
     </div>
   );
 }

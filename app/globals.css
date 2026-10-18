@@ -233,6 +233,22 @@ body {
   animation: hero-float 8s ease-in-out infinite;
 }
 
+/* Soft fade between route changes (opacity only, so fixed/sticky children are unaffected). */
+@keyframes page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.page-enter {
+  animation: page-enter 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-nodes {
     animation: none;
