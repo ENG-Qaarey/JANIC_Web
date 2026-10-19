@@ -7,8 +7,7 @@ import { CheckCircle2, AlertCircle, Loader2, Send, Sparkles } from "lucide-react
 interface FormErrors {
   title?: string;
   category?: string;
-  problemStatement?: string;
-  solutionDescription?: string;
+  description?: string;
   submitterName?: string;
   submitterEmail?: string;
   submitterPhone?: string;
@@ -20,13 +19,11 @@ export function InnovationSubmissionForm() {
   const [formData, setFormData] = useState({
     title: "",
     category: "Web Platform",
-    problemStatement: "",
-    solutionDescription: "",
+    description: "",
     technologyStack: "",
     submitterName: "",
     submitterEmail: "",
     submitterPhone: "",
-    facultyOrDepartment: "Faculty of Computer Science & IT",
     studentId: "",
     teamMembers: "",
     prototypeUrl: "",
@@ -58,20 +55,12 @@ export function InnovationSubmissionForm() {
       newErrors.title = "Title must be at least 3 characters";
     }
 
-    // 2. Problem Statement
-    const trimmedProblem = formData.problemStatement.trim();
-    if (!trimmedProblem) {
-      newErrors.problemStatement = "Problem statement is required";
-    } else if (trimmedProblem.length < 15) {
-      newErrors.problemStatement = "Please describe the problem in more detail (at least 15 characters)";
-    }
-
-    // 3. Solution Description
-    const trimmedSolution = formData.solutionDescription.trim();
-    if (!trimmedSolution) {
-      newErrors.solutionDescription = "Solution description is required";
-    } else if (trimmedSolution.length < 15) {
-      newErrors.solutionDescription = "Please elaborate on your technical solution (at least 15 characters)";
+    // 2. Project Description
+    const trimmedDesc = formData.description.trim();
+    if (!trimmedDesc) {
+      newErrors.description = "Project description is required";
+    } else if (trimmedDesc.length < 15) {
+      newErrors.description = "Please describe your project (at least 15 characters)";
     }
 
     // 4. Submitter Name
@@ -171,13 +160,11 @@ export function InnovationSubmissionForm() {
             setFormData({
               title: "",
               category: "Web Platform",
-              problemStatement: "",
-              solutionDescription: "",
+              description: "",
               technologyStack: "",
               submitterName: "",
               submitterEmail: "",
               submitterPhone: "",
-              facultyOrDepartment: "Faculty of Computer Science & IT",
               studentId: "",
               teamMembers: "",
               prototypeUrl: "",
@@ -256,46 +243,23 @@ export function InnovationSubmissionForm() {
 
         <div>
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            The Problem Statement *
+            Project Description *
           </label>
           <textarea
-            rows={3}
-            value={formData.problemStatement}
-            onChange={(e) => handleInputChange("problemStatement", e.target.value)}
-            placeholder="What specific challenge does your innovation solve? Who experiences this problem?"
+            rows={4}
+            value={formData.description}
+            onChange={(e) => handleInputChange("description", e.target.value)}
+            placeholder="Describe your project, the problem it solves, and the technical solution or system architecture..."
             className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-              errors.problemStatement
+              errors.description
                 ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
                 : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
             }`}
           />
-          {errors.problemStatement && (
+          {errors.description && (
             <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{errors.problemStatement}</span>
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            The Solution & Technical Approach *
-          </label>
-          <textarea
-            rows={3}
-            value={formData.solutionDescription}
-            onChange={(e) => handleInputChange("solutionDescription", e.target.value)}
-            placeholder="How does your system work? Describe the architecture, hardware components, or algorithms..."
-            className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition ${
-              errors.solutionDescription
-                ? "border border-red-500 focus:ring-2 focus:ring-red-400/30"
-                : "border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500"
-            }`}
-          />
-          {errors.solutionDescription && (
-            <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium flex items-center gap-1 animate-in fade-in duration-200">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              <span>{errors.solutionDescription}</span>
+              <span>{errors.description}</span>
             </p>
           )}
         </div>
@@ -392,32 +356,17 @@ export function InnovationSubmissionForm() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-              Student ID / Registration No. (Optional)
-            </label>
-            <input
-              type="text"
-              value={formData.studentId}
-              onChange={(e) => handleInputChange("studentId", e.target.value)}
-              placeholder="e.g. JU/CS/2023/..."
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-              Faculty / Department
-            </label>
-            <input
-              type="text"
-              value={formData.facultyOrDepartment}
-              onChange={(e) => handleInputChange("facultyOrDepartment", e.target.value)}
-              placeholder="Faculty of Computer Science & IT"
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            Student ID / Registration No. (Optional)
+          </label>
+          <input
+            type="text"
+            value={formData.studentId}
+            onChange={(e) => handleInputChange("studentId", e.target.value)}
+            placeholder="e.g. JU/CS/2023/..."
+            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
 
         <div>

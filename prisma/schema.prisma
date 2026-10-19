@@ -278,13 +278,11 @@ model InnovationSubmission {
   id                   String           @id @default(cuid())
   title                String
   category             String
-  problemStatement     String           @db.Text
-  solutionDescription  String           @db.Text
+  description          String           @db.Text
   technologyStack      String?          @db.Text
   submitterName        String
   submitterEmail       String
   submitterPhone       String
-  facultyOrDepartment  String?
   studentId            String?
   teamMembers          String?          @db.Text
   prototypeUrl         String?

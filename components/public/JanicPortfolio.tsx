@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, ChartNoAxesColumnIncreasing, Users, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ProjectMediaCover } from "./ProjectMediaCover";
 import styles from "./JanicPortfolio.module.css";
 
@@ -14,13 +14,13 @@ interface ProjectCard {
   slug: string;
   videoUrl?: string | null;
 }
-interface FeaturedProject extends Omit<ProjectCard, "category"> {
-  stats: { value: string; label: string }[];
-}
-interface JanicPortfolioProps { cards: ProjectCard[]; spotlight: FeaturedProject; }
-const statIcons = [Zap, Users, ChartNoAxesColumnIncreasing];
 
-export function JanicPortfolio({ cards, spotlight }: JanicPortfolioProps) {
+interface JanicPortfolioProps {
+  cards: ProjectCard[];
+  spotlight?: unknown;
+}
+
+export function JanicPortfolio({ cards }: JanicPortfolioProps) {
   const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-portfolio-reveal]");
@@ -55,9 +55,10 @@ export function JanicPortfolio({ cards, spotlight }: JanicPortfolioProps) {
                 </div>
                 <div className={styles.cardCopy}>
                   <h3>{card.title}</h3>
-                  <div className={styles.summaryRow}>
-                    <p>{card.summary}</p>
-                    <span className={styles.cardArrow} aria-hidden="true"><ArrowRight size={20} /></span>
+                  <p className={styles.description}>{card.summary}</p>
+                  <div className={styles.cardFooter}>
+                    <span className={styles.cardAction}>View Solution</span>
+                    <span className={styles.cardArrow} aria-hidden="true"><ArrowRight size={18} /></span>
                   </div>
                 </div>
               </Link>
@@ -67,28 +68,6 @@ export function JanicPortfolio({ cards, spotlight }: JanicPortfolioProps) {
         <div className={styles.portfolioButton}>
           <Link href="/projects" className={styles.button}>View Full Portfolio <ArrowRight size={19} aria-hidden="true" /></Link>
         </div>
-        <article className={styles.featured} aria-labelledby="janic-featured-project-title">
-          <div data-portfolio-reveal className={styles.featuredImageEntrance}>
-            <div className={styles.featuredImage}>
-              <ProjectMediaCover videoUrl={spotlight.videoUrl} imageUrl={spotlight.heroImage} alt={spotlight.title} />
-            </div>
-          </div>
-          <div data-portfolio-reveal className={styles.featuredCopy}>
-            <p className={styles.featuredEyebrow}>Featured Project</p>
-            <h3 id="janic-featured-project-title">{spotlight.title}</h3>
-            <p className={styles.featuredSummary}>{spotlight.summary}</p>
-            <dl className={styles.stats}>
-              {spotlight.stats.map((stat, index) => {
-                const Icon = statIcons[index % statIcons.length];
-                return <div className={styles.stat} key={stat.label}>
-                  <span className={styles.statIcon}><Icon size={25} strokeWidth={1.8} aria-hidden="true" /></span>
-                  <div><dt>{stat.label}</dt><dd>{stat.value}</dd></div>
-                </div>;
-              })}
-            </dl>
-            <Link href={`/projects/${spotlight.slug}`} className={styles.button}>View Case Study <ArrowRight size={19} aria-hidden="true" /></Link>
-          </div>
-        </article>
       </div>
     </section>
   );

@@ -20,7 +20,7 @@ export async function PublicFooter() {
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Column (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
@@ -75,9 +75,6 @@ export async function PublicFooter() {
               </li>
               <li>
                 <Link href="/events" className="text-slate-400 hover:text-white transition">Events & Hackathons</Link>
-              </li>
-              <li>
-                <Link href="/team" className="hover:text-white transition">Our Team</Link>
               </li>
               <li>
                 <Link href="/posts" className="hover:text-white transition">Posts</Link>

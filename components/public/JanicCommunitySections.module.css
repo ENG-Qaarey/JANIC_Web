@@ -1,6 +1,6 @@
 .root { --brand: #0b3b82; --accent: #0875d1; --heading: #050d35; --button: #0087ff; --body: #647b9c; --surface: #fff; --border: #e2edf8; background: var(--surface); color: var(--heading); }
 .section { padding: 76px 0; overflow: hidden; position: relative; isolation: isolate; }
-.container { max-width: 1440px; padding: 0 40px; margin: auto; position: relative; z-index: 1; }
+.container { max-width: 1380px; padding: 0 32px; margin: 0 auto; position: relative; z-index: 1; }
 .sectionHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; margin-bottom: 40px; }
 .headingCopy { max-width: 660px; }
 .eyebrow { color: var(--accent); font-size: 12px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; }
@@ -26,7 +26,7 @@
 .researchCopy .textLink { margin-top: auto; }
 .events { padding-top: 0; }
 .events .container { padding-top: 70px; position: relative; }
-.events .container::before { content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 1px; background: var(--border); }
+.events .container::before { content: ""; position: absolute; top: 0; left: 32px; right: 32px; height: 1px; background: var(--border); }
 .eventCard { display: block; min-width: 0; transition: transform .7s ease-out; }
 .eventCard:hover { transform: translateY(-4px); }
 .eventImage { position: relative; aspect-ratio: 1.37; border-radius: 12px; overflow: hidden; background: #e7eef7; margin-bottom: 18px; }
@@ -45,9 +45,13 @@
 .root [data-community-reveal] { transition: opacity .8s ease-out, translate .8s ease-out; }
 @media (prefers-reduced-motion: no-preference) { .root [data-ready]:not([data-visible]) { opacity: 0; translate: 0 18px; } }
 @media (max-width: 1199px) { .researchCard { padding: 24px; gap: 14px; } .researchIcon { width: 44px; height: 44px; } .root h3 { font-size: 17px; } .researchCopy > p { font-size: 13px; } .split { gap: 40px; } }
+@media (max-width: 1023px) {
+  .container { padding: 0 24px; }
+  .events .container::before { left: 24px; right: 24px; }
+}
 @media (max-width: 899px) { .threeColumns { grid-template-columns: repeat(2, minmax(0, 1fr)); } .section { padding-block: 48px; } .events { padding-top: 0; } .sectionHeading { gap: 24px; } .sectionHeading .button { padding-inline: 20px; } .researchCard { flex-direction: column; } .researchCopy { height: auto; flex: 1; } .intro { font-size: 15px; } .split { gap: 28px; } .partnership h2 { font-size: 34px; } .actions { gap: 12px; } .actions .button { padding-inline: 20px; } }
 @media (max-width: 767px) { .sectionHeading { align-items: flex-start; flex-direction: column; gap: 22px; } .split { grid-template-columns: minmax(0, 1fr); gap: 32px; } .partnershipCopy .intro { max-width: 560px; } .desktopBreak { display: none; } .partnershipImage { aspect-ratio: 1.6; } .partnership h2 { font-size: 36px; } }
-@media (max-width: 639px) { .container { padding-inline: 20px; } .section { padding-block: 40px; } .events { padding-top: 0; } .events .container { padding-top: 40px; } .events .container::before { left: 20px; right: 20px; } .threeColumns { grid-template-columns: minmax(0, 1fr); gap: 28px; } .researchCard { flex-direction: row; padding: 24px; } .researchCopy > p { font-size: 14px; } .root h2, .partnership h2 { font-size: 30px; } .root h3 { font-size: 20px; } .eventImage { margin-bottom: 16px; } .intro { font-size: 15px; } }
+@media (max-width: 639px) { .container { padding-inline: 16px; } .section { padding-block: 40px; } .events { padding-top: 0; } .events .container { padding-top: 40px; } .events .container::before { left: 16px; right: 16px; } .threeColumns { grid-template-columns: minmax(0, 1fr); gap: 28px; } .researchCard { flex-direction: row; padding: 24px; } .researchCopy > p { font-size: 14px; } .root h2, .partnership h2 { font-size: 30px; } .root h3 { font-size: 20px; } .eventImage { margin-bottom: 16px; } .intro { font-size: 15px; } }
 @media (max-width: 379px) { .researchCard { padding: 20px; gap: 12px; } .researchIcon { width: 38px; height: 38px; } .researchIcon svg { width: 23px; height: 23px; } .actions { flex-direction: column; align-items: stretch; } }
 :global(.dark) .root { --brand: #176cd5; --button: #176cd5; --accent: #80c2ff; --heading: #f1f5fb; --body: #acbfd9; --surface: #020617; --border: #263a56; }
 :global(.dark) .researchCard { background: #0f1e35; box-shadow: 0 12px 26px rgb(0 0 0 / 15%); }

@@ -5,13 +5,11 @@ export class SubmissionService {
   static async submitInnovation(data: {
     title: string;
     category: string;
-    problemStatement: string;
-    solutionDescription: string;
+    description: string;
     technologyStack?: string;
     submitterName: string;
     submitterEmail: string;
     submitterPhone: string;
-    facultyOrDepartment?: string;
     studentId?: string;
     teamMembers?: string;
     prototypeUrl?: string;
@@ -21,13 +19,11 @@ export class SubmissionService {
     return SubmissionRepository.create({
       title: data.title,
       category: data.category,
-      problemStatement: data.problemStatement,
-      solutionDescription: data.solutionDescription,
+      description: data.description,
       technologyStack: data.technologyStack,
       submitterName: data.submitterName,
       submitterEmail: data.submitterEmail,
       submitterPhone: data.submitterPhone,
-      facultyOrDepartment: data.facultyOrDepartment || "Faculty of Computer Science & IT",
       studentId: data.studentId,
       teamMembers: data.teamMembers,
       prototypeUrl: data.prototypeUrl,

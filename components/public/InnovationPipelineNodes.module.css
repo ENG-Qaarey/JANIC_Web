@@ -1,5 +1,5 @@
 .section { padding: 64px 0 48px; background: #fff; color: #08132c; overflow: hidden; }
-.container { max-width: 1440px; margin: auto; padding: 0 32px; }
+.container { max-width: 1380px; margin: 0 auto; padding: 0 32px; }
 .heading { text-align: center; max-width: 1000px; margin: auto; }
 .eyebrow { display: inline-block; padding: 10px 24px; border-radius: 999px; background: #e7f3ff; color: #0075ff; font-size: 12px; line-height: 1.4; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
 .heading h2 { margin: 20px 0 15px; font-size: clamp(30px, 3.4vw, 48px); font-weight: 800; line-height: 1.15; letter-spacing: -.04em; }
@@ -31,7 +31,7 @@
 @media (max-width: 1200px) and (min-width: 1024px) { .content h3 { font-size: 18px; } .content p { font-size: 13px; } .deliverable { padding-inline: 10px; font-size: 9px; } }
 @media (max-width: 1023px) {
   .section { padding-block: 48px; }
-  .container { max-width: 800px; }
+  .container { max-width: 800px; padding: 0 24px; }
   .heading h2 { font-size: 36px; }
   .intro { font-size: 16px; }
   .desktopBreak { display: none; }
@@ -46,9 +46,9 @@
   .above .content { grid-column: 3; text-align: left; }
   .content::before, .content::after { display: none; }
 }
-@media (max-width: 559px) {
+@media (max-width: 639px) {
   .section { padding-block: 40px; }
-  .container { padding-inline: 24px; }
+  .container { padding-inline: 16px; }
   .heading h2 { font-size: 30px; }
   .intro { font-size: 15px; }
   .timeline { margin-top: 32px; }

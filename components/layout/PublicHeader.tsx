@@ -39,7 +39,6 @@ export const defaultNavStructure: NavItem[] = [
     subLinks: [
       { name: "Innovation Hub", href: "/innovation-hub" },
       { name: "Projects", href: "/projects" },
-      { name: "Team Members", href: "/team" },
       { name: "Project Members", href: "/project-members" },
     ],
   },

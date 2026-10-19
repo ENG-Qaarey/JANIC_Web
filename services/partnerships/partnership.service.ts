@@ -20,6 +20,7 @@ export class PartnershipService {
       proposalDetails: data.proposalDetails,
       isApproved: false,
       isRejected: false,
+      status: "NEW",
     });
   }
 

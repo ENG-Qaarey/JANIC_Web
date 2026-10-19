@@ -32,17 +32,28 @@
 .hub .eyebrow::before { width: 23px; }
 .hub h2 { margin: 14px 0 10px; font-size: clamp(20px, 1.6vw, 24px); font-weight: 800; line-height: 1.25; letter-spacing: -.035em; }
 .hub h2 span { color: #0075ff; padding-inline: 3px; font-weight: 500; }
-.hub p { color: #526a8b; font-size: 15px; line-height: 1.6; }
+.hub p { color: #000000; font-size: 15px; line-height: 1.6; font-weight: 500; }
 .hub a { display: inline-flex; align-items: center; gap: 10px; margin-top: 15px; color: #0075ff; font-size: 15px; font-weight: 700; transition: gap .6s ease-out; }
 .hub a:hover { gap: 17px; }
 .statsEntrance { margin-top: 26px; max-width: 880px; transition-delay: .1s !important; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); padding: 21px 0; background: rgb(255 255 255 / 40%); border: 1px solid rgb(255 255 255 / 70%); border-radius: 20px; box-shadow: 0 15px 35px #5b9bda10; backdrop-filter: blur(15px); }
 .stat { display: flex; align-items: center; justify-content: center; gap: 17px; padding: 0 17px; border-right: 1px solid #d6e7ff; }
 .stat:last-child { border: 0; }
-.statIcon { display: grid; place-items: center; width: 49px; height: 49px; flex-shrink: 0; border-radius: 16px; color: #0075ff; background: #deedff; }
-.stat > div { display: flex; flex-direction: column-reverse; gap: 1px; }
-.stat dt { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #6d7fa4; }
-.stat dd { font-size: 25px; line-height: 1.2; font-weight: 800; font-variant-numeric: tabular-nums; }
+.statIcon { display: grid; place-items: center; width: 49px; height: 49px; flex-shrink: 0; border-radius: 16px; color: #0075ff; background: #deedff; transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease; }
+.stat > div, .statLink > div { display: flex; flex-direction: column-reverse; gap: 1px; }
+.stat dt, .statLink dt { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #6d7fa4; transition: color .22s ease; }
+.statLabel { display: inline-flex; align-items: center; gap: 3px; }
+.statArrow { opacity: .7; transition: transform .22s ease, opacity .22s ease, color .22s ease; }
+.stat dd, .statLink dd { font-size: 25px; line-height: 1.2; font-weight: 800; font-variant-numeric: tabular-nums; transition: color .22s ease; }
+
+/* Compact, refined interactive pill for the linked stat */
+.statLink { display: inline-flex; align-items: center; gap: 12px; padding: 4px 10px 4px 4px; border-radius: 18px; border: 1px solid transparent; text-decoration: none; color: inherit; cursor: pointer; transition: background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
+.statLink:hover { background: rgb(255 255 255 / 80%); border-color: rgb(0 117 255 / 22%); box-shadow: 0 4px 12px rgb(0 117 255 / 10%); transform: translateY(-2px); }
+.statLink:hover .statIcon { background: linear-gradient(135deg, #0084ff, #0062eb); color: #fff; box-shadow: 0 4px 12px rgb(0 117 255 / 30%); transform: scale(1.05); }
+.statLink:hover dd { color: #0062eb; }
+.statLink:hover dt { color: #0062eb; }
+.statLink:hover .statArrow { opacity: 1; color: #0062eb; transform: translate(1.5px, -1.5px); }
+.statLink:focus-visible { outline: 2px solid #0075ff; outline-offset: 2px; }
 .dots { position: absolute; top: 64px; left: max(0px, calc((100% - 1380px) / 2 - 40px)); width: 24px; height: 80px; background: radial-gradient(circle, #83b8ff55 2.5px, transparent 3px) 0 0 / 20px 20px; }
 .orbit { position: absolute; z-index: -1; top: 45px; left: 50%; width: 230px; height: 230px; border: 1px solid #168aff40; border-radius: 50%; }
 .orbit i { position: absolute; width: 42px; height: 42px; border-radius: 9px; border: 1px solid #168aff66; background: #168aff20; left: -30px; top: 25px; }
@@ -55,8 +66,8 @@
 }
 @keyframes drift { from { transform: scale(1); } to { transform: scale(1.045); } }
 @media (min-width: 1500px) { .container { padding-top: 64px; } }
-@media (max-width: 1100px) {
-  .container { padding: 44px 32px 30px; }
+@media (max-width: 1023px) {
+  .container { padding: 44px 24px 30px; }
   .grid { gap: 26px; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); }
   .dots { display: none; }
   .title { font-size: clamp(42px, 5vw, 55px); }
@@ -69,8 +80,8 @@
   .stat dd { font-size: 23px; }
   .primary, .secondary { padding-inline: 24px; font-size: 14px; min-height: 48px; }
 }
-@media (max-width: 767px) {
-  .container { padding: 36px 24px 28px; }
+@media (max-width: 639px) {
+  .container { padding: 36px 16px 28px; }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .title { font-size: clamp(36px, 7.5vw, 52px); }
   .description { font-size: 16px; max-width: 420px; }
@@ -91,6 +102,7 @@
   .primary, .secondary { padding-inline: 19px; font-size: 14px; }
   .hub { padding: 20px; }
   .stat { padding-inline: 8px; gap: 10px; }
+  .statLink { padding: 2px 6px 2px 2px; gap: 8px; }
   .statIcon { width: 36px; height: 40px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -111,7 +123,8 @@
 :global(.dark) .wash::after { border-color: rgb(91 161 255 / 3%); box-shadow: 0 0 0 110px rgb(91 161 255 / 2%), 0 0 0 220px rgb(91 161 255 / 2%); }
 :global(.dark) .title span, :global(.dark) .eyebrow, :global(.dark) .hub h2 span, :global(.dark) .hub a { color: #75bbff; }
 :global(.dark) .eyebrow::before { background: #75bbff; }
-:global(.dark) .description, :global(.dark) .hub p, :global(.dark) .badge p { color: #bfcee3; }
+:global(.dark) .description, :global(.dark) .badge p { color: #bfcee3; }
+:global(.dark) .hub p { color: #f1f5fb; font-weight: 450; }
 :global(.dark) .glass { background: rgb(18 38 64 / 40%); border-color: rgb(143 188 240 / 24%); box-shadow: 0 12px 35px rgb(0 0 0 / 20%), inset 0 1px 0 rgb(255 255 255 / 5%); }
 :global(.dark) .glass:hover { box-shadow: 0 20px 42px rgb(0 0 0 / 30%); }
 :global(.dark) .primary { background: #0869db; border-color: #348fff; }
@@ -123,5 +136,10 @@
 :global(.dark) .stat { border-right-color: #2a405d; }
 :global(.dark) .statIcon { background: #152e4f; color: #80c2ff; }
 :global(.dark) .stat dt { color: #acbfd9; }
+:global(.dark) .statLink:hover { background: rgb(18 38 64 / 80%); border-color: rgb(117 187 255 / 35%); box-shadow: 0 4px 14px rgb(0 0 0 / 35%); }
+:global(.dark) .statLink:hover .statIcon { background: linear-gradient(135deg, #1877f2, #0c56bd); color: #fff; box-shadow: 0 4px 12px rgb(0 117 255 / 40%); }
+:global(.dark) .statLink:hover dd { color: #75bbff; }
+:global(.dark) .statLink:hover dt { color: #99cbff; }
+:global(.dark) .statLink:hover .statArrow { color: #99cbff; }
 :global(.dark) .dots { opacity: .45; }
 :global(.dark) .orbit { border-color: #4788cb40; }
