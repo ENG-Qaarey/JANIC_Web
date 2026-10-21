@@ -3,14 +3,22 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Building2, CalendarDays, FileText, Layers, Rocket } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Building2, CalendarDays, FileText, Layers, Rocket } from "lucide-react";
 import styles from "./JanicHero.module.css";
 
-const stats = [
+interface StatItem {
+  value: number;
+  suffix: string;
+  label: string;
+  icon: typeof CalendarDays;
+  href?: string;
+}
+
+const stats: StatItem[] = [
   { value: 2021, suffix: "", label: "Founded", icon: CalendarDays },
   { value: 18, suffix: "+", label: "Projects", icon: FileText },
   { value: 6, suffix: "", label: "Functions", icon: Layers },
-  { value: 2, suffix: "", label: "Hub", icon: Building2 },
+  { value: 2, suffix: "", label: "Hubs", icon: Building2, href: "https://juictgirls.org/" },
 ];
 
 function CountUp({ value, suffix }: { value: number; suffix: string }) {
@@ -113,12 +121,39 @@ export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel }: Ja
         </div>
         <div data-reveal className={styles.statsEntrance}>
           <dl className={styles.stats}>
-            {stats.map(({ value, suffix, label, icon: Icon }) => (
-              <div className={styles.stat} key={label}>
-                <span className={styles.statIcon}><Icon size={29} strokeWidth={1.8} aria-hidden="true" /></span>
-                <div><dt>{label}</dt><dd><CountUp value={value} suffix={suffix} /></dd></div>
-              </div>
-            ))}
+            {stats.map(({ value, suffix, label, icon: Icon, href }) => {
+              const inner = (
+                <>
+                  <span className={styles.statIcon}><Icon size={29} strokeWidth={1.8} aria-hidden="true" /></span>
+                  <div>
+                    <dt className={styles.statLabel}>
+                      <span>{label}</span>
+                      {href && <ArrowUpRight size={12} strokeWidth={2.4} className={styles.statArrow} aria-hidden="true" />}
+                    </dt>
+                    <dd><CountUp value={value} suffix={suffix} /></dd>
+                  </div>
+                </>
+              );
+
+              return (
+                <div className={styles.stat} key={label}>
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.statLink}
+                      title={`Visit ${label} (${href})`}
+                      aria-label={`${value}${suffix} ${label} - opens in a new tab`}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    inner
+                  )}
+                </div>
+              );
+            })}
           </dl>
         </div>
       </div>

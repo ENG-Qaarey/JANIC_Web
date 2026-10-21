@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/events",
     "/partnerships",
     "/contact",
-    "/team",
     "/posts",
     "/faq",
     "/submit-innovation",

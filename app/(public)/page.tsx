@@ -77,18 +77,6 @@ export default async function HomePage() {
                 },
               ];
 
-            const defaultSpotlight = {
-              title: "BADBAADO Healthcare Coordination Platform",
-              summary:
-                "A revolutionary platform designed to synchronize medical emergency responses and healthcare data across regional clinics. It streamlines patient data transfer and reduces critical response times by 35%.",
-              heroImage: "/images/badbaado-healthcare.jpg",
-              slug: "badbaado",
-              stats: [
-                { value: "35%", label: "Faster Response Time" },
-                { value: "12k+", label: "Patients Managed" },
-                { value: "20+", label: "Clinics Connected" },
-              ],
-            };
 
             const allProjects = featuredProjects || [];
 
@@ -145,33 +133,7 @@ export default async function HomePage() {
                 slug: p4?.slug || fallbackGrid[3].slug,
               },
             ];
-
-            const dbSpotlight =
-              allProjects.find(
-                (p) =>
-                  p.slug.toLowerCase().includes("badbaado") ||
-                  p.title.toLowerCase().includes("badbaado") ||
-                  p.title.toLowerCase().includes("healthcare")
-              ) || allProjects.find((p) => p.isFeatured) || allProjects[4];
-
-            const spotlight = {
-              title:
-                dbSpotlight?.title && dbSpotlight.title.toLowerCase().includes("healthcare")
-                  ? dbSpotlight.title
-                  : (dbSpotlight?.title
-                    ? `${dbSpotlight.title} Healthcare Coordination Platform`
-                    : defaultSpotlight.title),
-              summary: dbSpotlight?.summary || defaultSpotlight.summary,
-              heroImage:
-                dbSpotlight?.heroImage && !dbSpotlight.heroImage.includes("unsplash")
-                  ? dbSpotlight.heroImage
-                  : defaultSpotlight.heroImage,
-              videoUrl: dbSpotlight?.videoUrl || null,
-              slug: dbSpotlight?.slug || defaultSpotlight.slug,
-              stats: defaultSpotlight.stats,
-            };
-
-            return <JanicPortfolio cards={gridCards} spotlight={spotlight} />;
+            return <JanicPortfolio cards={gridCards} />;
       })()}
 
       <JanicCommunitySections

@@ -1,17 +1,48 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
-import { ArrowRight, Binary, Cloud, Code2, Settings, Shield, UsersRound } from "lucide-react";
+import { Binary, Cloud, Code2, Settings, Shield, UsersRound } from "lucide-react";
 import styles from "./JanicFunctions.module.css";
 
-const functions = [
-  { title: "Technology & Platform Development", description: "Building scalable web applications, mobile platforms, and enterprise software solutions tailored for local and international markets.", icon: Code2, variant: "technology" },
-  { title: "Cybersecurity & Trust", description: "Ensuring digital assets are protected through rigorous security protocols and auditing.", icon: Shield, variant: "security" },
-  { title: "Cloud Infrastructure", description: "Optimizing deployments for scalability and performance across multi-cloud environments.", icon: Cloud },
-  { title: "AI & Machine Learning", description: "Implementing intelligent automation and predictive analytics to drive business insights.", icon: Binary },
-  { title: "Embedded Systems", description: "Developing hardware-software integrations for smart city and IoT applications.", icon: Settings },
-  { title: "Research & Innovation Support", description: "Providing tools, mentorship, and resources to support student and academic research projects.", icon: UsersRound },
+interface FunctionItem {
+  title: string;
+  description: string;
+  icon: typeof Code2;
+  tags?: string[];
+}
+
+const functions: FunctionItem[] = [
+  {
+    title: "Technology & Platform Development",
+    description: "Building scalable web applications, mobile platforms, and enterprise software solutions tailored for local and international markets.",
+    icon: Code2,
+    tags: ["Full Stack", "Mobile App", "Cloud Native"],
+  },
+  {
+    title: "Cybersecurity & Trust",
+    description: "Ensuring digital assets are protected through rigorous security protocols and auditing.",
+    icon: Shield,
+  },
+  {
+    title: "Cloud Infrastructure",
+    description: "Optimizing deployments for scalability and performance across multi-cloud environments.",
+    icon: Cloud,
+  },
+  {
+    title: "AI & Machine Learning",
+    description: "Implementing intelligent automation and predictive analytics to drive business insights.",
+    icon: Binary,
+  },
+  {
+    title: "Embedded Systems",
+    description: "Developing hardware-software integrations for smart city and IoT applications.",
+    icon: Settings,
+  },
+  {
+    title: "Research & Innovation Support",
+    description: "Providing tools, mentorship, and resources to support student and academic research projects.",
+    icon: UsersRound,
+  },
 ];
 
 export function JanicFunctions() {
@@ -43,17 +74,22 @@ export function JanicFunctions() {
           <p className={styles.intro}>We provide a full spectrum of services from fundamental development to advanced AI implementations.</p>
         </header>
         <div className={styles.grid}>
-          {functions.map(({ title, description, icon: Icon, variant }, index) => (
+          {functions.map(({ title, description, icon: Icon, tags }, index) => (
             <div key={title} data-function-reveal className={styles.entrance} style={{ transitionDelay: `${(index % 3) * 120}ms` }}>
-              <article className={`${styles.card} ${variant ? styles[variant] : styles.white}`}>
+              <article className={`${styles.card} ${styles.white}`}>
                 <div className={styles.cardTop}>
                   <span className={styles.icon}><Icon size={28} strokeWidth={1.8} aria-hidden="true" /></span>
                   <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 </div>
                 <h3>{title}</h3>
                 <p className={styles.description}>{description}</p>
-                {variant === "technology" && <ul className={styles.tags} aria-label="Development specialties"><li>Full Stack</li><li>Mobile App</li><li>Cloud Native</li></ul>}
-                {variant === "security" && <Link href="/what-we-do" className={styles.learnMore}><span className={styles.arrow}><ArrowRight size={21} aria-hidden="true" /></span>Learn more</Link>}
+                {tags && (
+                  <ul className={styles.tags} aria-label="Development specialties">
+                    {tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                )}
               </article>
             </div>
           ))}

@@ -24,13 +24,11 @@ interface Submission {
   id: string;
   title: string;
   category: string;
-  problemStatement: string;
-  solutionDescription: string;
+  description: string;
   technologyStack?: string | null;
   submitterName: string;
   submitterEmail: string;
   submitterPhone: string;
-  facultyOrDepartment?: string | null;
   studentId?: string | null;
   teamMembers?: string | null;
   prototypeUrl?: string | null;
@@ -354,7 +352,6 @@ export function SubmissionManager({ initialSubmissions }: { initialSubmissions: 
                 <div className="grid grid-cols-2 gap-3">
                   <InfoItem label="Name" value={selectedSub.submitterName} />
                   <InfoItem label="Phone" value={selectedSub.submitterPhone} />
-                  <InfoItem label="Department" value={selectedSub.facultyOrDepartment} />
                   <InfoItem label="Student ID" value={selectedSub.studentId} />
                 </div>
                 <a
@@ -365,15 +362,9 @@ export function SubmissionManager({ initialSubmissions }: { initialSubmissions: 
                 </a>
               </DrawerSection>
 
-              <DrawerSection title="Problem Statement" icon={MessageSquare}>
+              <DrawerSection title="Project Description" icon={MessageSquare}>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
-                  {selectedSub.problemStatement}
-                </p>
-              </DrawerSection>
-
-              <DrawerSection title="Proposed Solution" icon={MessageSquare}>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
-                  {selectedSub.solutionDescription}
+                  {selectedSub.description}
                 </p>
               </DrawerSection>
 

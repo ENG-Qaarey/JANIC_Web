@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// Reloaded to recognize newly installed @clerk packages in node_modules
+// Reloaded to recognize updated prisma schema in node_modules
 const nextConfig: NextConfig = {
   devIndicators: false,
   async redirects() {

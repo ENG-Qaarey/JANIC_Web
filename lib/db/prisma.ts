@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-const SCHEMA_VERSION = "2026-10-11-v8-engagement-controls";
+const SCHEMA_VERSION = "2026-10-19-v9-innovation-submissions";
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
   schemaVersion?: string;
