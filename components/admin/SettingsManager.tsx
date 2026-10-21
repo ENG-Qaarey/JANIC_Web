@@ -74,7 +74,7 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
     hero_subtitle:
       settingsMap["hero_subtitle"] ||
       "The leading institutional hub for technological transformation, advanced research, and digital excellence.",
-    hero_image: settingsMap["hero_image"] || "/images/janic-hero-lab.jpg",
+    hero_image: settingsMap["hero_image"] || "/images/jazeera.jpeg",
     hero_badge_value: settingsMap["hero_badge_value"] || "18+",
     hero_badge_label: settingsMap["hero_badge_label"] || "STUDENT INNOVATION PROJECTS",
     footer_tagline: settingsMap["footer_tagline"] || "Technology • Innovation • Research • Training",
@@ -273,7 +273,7 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
                 value={form.hero_image}
                 onChange={(val) => handleChange("hero_image", val)}
                 folder="hero"
-                placeholder="/images/janic-hero-lab.jpg or https://..."
+                placeholder="/images/jazeera.jpeg or https://..."
               />
               {field("Badge Value", "hero_badge_value")}
               {field("Badge Label", "hero_badge_label")}

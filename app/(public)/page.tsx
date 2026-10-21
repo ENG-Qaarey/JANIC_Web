@@ -20,8 +20,8 @@ export default async function HomePage() {
 
   const heroTitle = await getSetting("hero_title", "Innovating Technology. Empowering the Future.");
   const heroSubtitle = await getSetting("hero_subtitle", "The leading institutional hub for technological transformation, advanced research, and digital excellence.");
-  const savedHeroImage = await getSetting("hero_image", "/images/janic-glass-office.png");
-  const heroImage = savedHeroImage === "/images/janic-hero-lab.jpg" ? "/images/janic-glass-office.png" : savedHeroImage;
+  const savedHeroImage = await getSetting("hero_image", "/images/jazeera.jpeg");
+  const heroImage = savedHeroImage === "/images/janic-hero-lab.jpg" ? "/images/jazeera.jpeg" : savedHeroImage;
   const heroBadgeValue = await getSetting("hero_badge_value", "18+");
   const heroBadgeLabel = await getSetting("hero_badge_label", "STUDENT INNOVATION PROJECTS");
 
