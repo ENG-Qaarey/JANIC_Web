@@ -1,9 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import Link from "next/link";
 import { MapPin, Mail, Lock } from "lucide-react";
+import { getSettingsMap } from "@/lib/settings";
 
-export function InstitutionalTopBar() {
+export async function InstitutionalTopBar() {
+  const settings = await getSettingsMap();
+  const institutionName = (settings["institution_name"] || "JAZEERA UNIVERSITY").toUpperCase();
+  const facultyName = settings["faculty_name"] || "Faculty of Computer Science & IT";
+  const address = settings["campus_address"] || "KM4, Mogadishu, Somalia";
+  const email = settings["contact_email"] || "info@janic.edu.so";
+
   return (
     <div className="bg-[#051532] text-slate-300 text-xs border-b border-blue-900/40 relative z-30">
       {/* Institutional emerald accent line */}
@@ -13,23 +19,23 @@ export function InstitutionalTopBar() {
         <div className="flex items-center gap-3">
           <span className="font-semibold text-white tracking-wide flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            JAZEERA UNIVERSITY
+            {institutionName}
           </span>
           <span className="text-slate-500 hidden md:inline">|</span>
           <span className="text-slate-300 hidden md:inline">
-            Faculty of Computer Science & IT
+            {facultyName}
           </span>
         </div>
 
         <div className="flex items-center gap-5 text-[11px] text-slate-300">
           <div className="hidden lg:flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-blue-400" />
-            <span>KM4, Mogadishu, Somalia</span>
+            <span>{address}</span>
           </div>
           <div className="hidden sm:flex items-center gap-1.5">
             <Mail className="w-3.5 h-3.5 text-blue-400" />
-            <a href="mailto:info@janic.edu.so" className="hover:text-white transition">
-              info@janic.edu.so
+            <a href={`mailto:${email}`} className="hover:text-white transition">
+              {email}
             </a>
           </div>
           <Link

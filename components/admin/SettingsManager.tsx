@@ -12,6 +12,7 @@ import {
   MapPin,
   Building,
   ShieldCheck,
+  Clock,
   Image as ImageIcon,
   ListOrdered,
   Layout,
@@ -66,6 +67,9 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
     contact_email: settingsMap["contact_email"] || "info@janic.edu.so",
     contact_phone: settingsMap["contact_phone"] || "+252 61 555 1234",
     campus_address: settingsMap["campus_address"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia",
+    campus_wing: settingsMap["campus_wing"] || "Faculty of Computer Science & IT, 2nd Floor Innovation Wing",
+    office_hours: settingsMap["office_hours"] || "Saturday – Thursday: 8:00 AM – 5:00 PM\nFriday: Closed",
+    accreditation_text: settingsMap["accreditation_text"] || "Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.",
     linkedin_url: settingsMap["linkedin_url"] || "https://linkedin.com/school/jazeera-university",
     github_url: settingsMap["github_url"] || "https://github.com/janic-innovation",
     twitter_url: settingsMap["twitter_url"] || "",
@@ -94,7 +98,7 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
 
     try {
       const groupFor = (key: string) => {
-        if (key.includes("email") || key.includes("phone") || key.includes("address")) return "contact";
+        if (key.includes("email") || key.includes("phone") || key.includes("address") || key.includes("hours") || key.includes("wing") || key.includes("accreditation_text")) return "contact";
         if (key.includes("url")) return "social";
         if (key.startsWith("hero_")) return "hero";
         if (key.startsWith("footer_") || key === "accreditation_badge") return "footer";
@@ -238,7 +242,25 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
                 <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Campus Address
                 </label>
-                <textarea rows={3} value={form.campus_address} onChange={(e) => handleChange("campus_address", e.target.value)} className={`${inputCls} resize-none`} required />
+                <textarea rows={2} value={form.campus_address} onChange={(e) => handleChange("campus_address", e.target.value)} className={`${inputCls} resize-none`} required />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <Building className="w-3.5 h-3.5 text-muted-foreground" /> Innovation Wing / Floor Location
+                </label>
+                <input type="text" value={form.campus_wing} onChange={(e) => handleChange("campus_wing", e.target.value)} className={inputCls} />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-muted-foreground" /> Office Hours
+                </label>
+                <textarea rows={2} value={form.office_hours} onChange={(e) => handleChange("office_hours", e.target.value)} className={`${inputCls} resize-none`} />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-muted-foreground" /> Academic Accreditation / Affiliation Note
+                </label>
+                <textarea rows={2} value={form.accreditation_text} onChange={(e) => handleChange("accreditation_text", e.target.value)} className={`${inputCls} resize-none`} />
               </div>
             </div>
 

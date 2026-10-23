@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
     const updated = await SettingService.updateMany(parsed.data.settings);
     revalidatePath("/", "layout");
     revalidatePath("/");
+    revalidatePath("/contact");
+    revalidatePath("/about");
     return NextResponse.json({ success: true, items: updated });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Error updating settings";

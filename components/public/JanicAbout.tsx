@@ -44,7 +44,7 @@ export function JanicAbout() {
           </div>
           <div data-about-reveal className={styles.secondaryEntrance}>
             <div className={styles.photo}>
-              <Image src="/images/event-workshop.jpg" alt="Participants collaborating during a technology workshop" fill sizes="(max-width: 767px) 48vw, (max-width: 1023px) 38vw, 25vw" className={styles.image} />
+              <Image src="/images/Events.jpg" alt="JANIC technology innovation and workshop" fill sizes="(max-width: 767px) 48vw, (max-width: 1023px) 38vw, 25vw" className={styles.image} />
             </div>
           </div>
           <div data-about-reveal className={styles.badgeEntrance}>

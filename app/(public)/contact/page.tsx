@@ -1,7 +1,9 @@
+import React from "react";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { MapPin, Mail, Phone, Clock, ShieldCheck } from "lucide-react";
+import { getSettingsMap } from "@/lib/settings";
 import styles from "./ContactSection.module.css";
 
 export const metadata = {
@@ -10,6 +12,9 @@ export const metadata = {
     "Get in touch with the Jazeera Nexus Innovation Center at Jazeera University in Mogadishu, Somalia.",
 };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ContactPage({
   searchParams,
 }: {
@@ -17,6 +22,23 @@ export default async function ContactPage({
 }) {
   const resolvedParams = await searchParams;
   const initialSubject = resolvedParams.subject || "";
+
+  const settings = await getSettingsMap();
+
+  const institutionName = settings["institution_name"] || "Jazeera University";
+  const facultyName = settings["faculty_name"] || "Faculty of Computer Science & IT";
+  const campusTitle = settings["campus_title"] || `${institutionName} Main Campus`;
+  const campusWing = settings["campus_wing"] || `${facultyName}, 2nd Floor Innovation Wing`;
+  const campusAddress = settings["campus_address"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia";
+  const contactEmail = settings["contact_email"] || "info@janic.edu.so";
+  const contactPhone = settings["contact_phone"] || "+252 613667595";
+  const officeHours = settings["office_hours"] || "Saturday – Thursday: 8:00 AM – 5:00 PM\nFriday: Closed";
+  const accreditationText =
+    settings["accreditation_text"] ||
+    settings["accreditation_badge"] ||
+    "Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.";
+
+  const telHref = contactPhone.split("/")[0]?.trim() || contactPhone;
 
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-x-clip">
@@ -35,25 +57,40 @@ export default async function ContactPage({
               <aside className={styles.infoPanel} aria-labelledby="contact-information-title">
                 <header>
                   <p className={styles.eyebrow}>Contact Information</p>
-                  <h2 id="contact-information-title">Jazeera University Main Campus</h2>
-                  <p className={styles.campus}>Faculty of Computer Science &amp; IT, 2nd Floor Innovation Wing</p>
+                  <h2 id="contact-information-title">{campusTitle}</h2>
+                  <p className={styles.campus}>{campusWing}</p>
                 </header>
                 <dl className={styles.details}>
                   <div className={styles.detail}>
                     <span className={styles.icon}><MapPin size={23} strokeWidth={1.8} aria-hidden="true" /></span>
-                    <div><dt>Address</dt><dd>KM4 District, Airport Road, Mogadishu, Somalia</dd></div>
+                    <div><dt>Address</dt><dd>{campusAddress}</dd></div>
                   </div>
                   <div className={styles.detail}>
                     <span className={styles.icon}><Mail size={23} strokeWidth={1.8} aria-hidden="true" /></span>
-                    <div><dt>Email</dt><dd><a href="mailto:info@janic.edu.so">info@janic.edu.so</a></dd></div>
+                    <div><dt>Email</dt><dd><a href={`mailto:${contactEmail}`}>{contactEmail}</a></dd></div>
                   </div>
                   <div className={styles.detail}>
                     <span className={styles.icon}><Phone size={23} strokeWidth={1.8} aria-hidden="true" /></span>
-                    <div><dt>Telephone</dt><dd>+252 61 555 1234 / +252 61 987 6543</dd></div>
+                    <div>
+                      <dt>Telephone</dt>
+                      <dd>
+                        <a href={`tel:${telHref.replace(/[^\d+]/g, "")}`}>{contactPhone}</a>
+                      </dd>
+                    </div>
                   </div>
                   <div className={styles.detail}>
                     <span className={styles.icon}><Clock size={23} strokeWidth={1.8} aria-hidden="true" /></span>
-                    <div><dt>Office Hours</dt><dd>Saturday – Thursday: 8:00 AM – 5:00 PM<br />Friday: Closed</dd></div>
+                    <div>
+                      <dt>Office Hours</dt>
+                      <dd>
+                        {officeHours.split("\n").map((line, idx, arr) => (
+                          <React.Fragment key={idx}>
+                            {line}
+                            {idx < arr.length - 1 && <br />}
+                          </React.Fragment>
+                        ))}
+                      </dd>
+                    </div>
                   </div>
                 </dl>
                 <div className={styles.affiliationWrap}>
@@ -61,8 +98,8 @@ export default async function ContactPage({
                     <ShieldCheck size={23} strokeWidth={1.8} aria-hidden="true" />
                     <div>
                       <h3>Academic Affiliation</h3>
-                      <h4>Jazeera University</h4>
-                      <p>Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.</p>
+                      <h4>{institutionName}</h4>
+                      <p>{accreditationText}</p>
                     </div>
                   </div>
                 </div>
