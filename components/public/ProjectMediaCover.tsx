@@ -19,7 +19,7 @@ export function ProjectMediaCover({
   videoUrl,
   imageUrl,
   alt,
-  fallbackImage = "/images/janic-hero-lab.jpg",
+  fallbackImage = "/images/jazeera.jpeg",
   className = "object-cover object-center",
   aspectClassName = "absolute inset-0",
   priority = false,
