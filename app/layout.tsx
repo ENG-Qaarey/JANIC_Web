@@ -34,9 +34,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   icons: {
     icon: [
-      { url: "/images/janic-new-icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/images/janic-new-icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.png", type: "image/png" },
     ],
-    shortcut: "/images/janic-new-icon.png",
+    shortcut: "/favicon.ico",
     apple: "/images/janic-new-icon.png",
   },
 };
