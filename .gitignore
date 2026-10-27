@@ -44,3 +44,7 @@ next-env.d.ts
 
 # JetBrains IDE
 .idea/
+
+# Cloudflare / OpenNext build output
+.open-next/
+.wrangler/
