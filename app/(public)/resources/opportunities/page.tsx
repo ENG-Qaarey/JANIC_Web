@@ -3,13 +3,15 @@ import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { Briefcase, Trophy, Sparkles, Calendar, ArrowRight, CheckCircle2 } from "lucide-react";
 
+import { OpportunityRepository } from "@/repositories/opportunity.repository";
+
 export const metadata = {
   title: "Opportunities | JANIC Resources",
   description:
     "Explore internships, innovation challenges, student competitions, and funding calls at JANIC.",
 };
 
-const opportunities = [
+const defaultOpportunities = [
   {
     title: "Call for Student Innovation Prototypes (Cohort 2026/27)",
     type: "Call for Projects",
@@ -60,7 +62,17 @@ const opportunities = [
   },
 ];
 
-export default function OpportunitiesPage() {
+export default async function OpportunitiesPage() {
+  let displayItems = defaultOpportunities;
+  try {
+    const dbItems = await OpportunityRepository.findActive();
+    if (dbItems && dbItems.length > 0) {
+      displayItems = dbItems;
+    }
+  } catch (err) {
+    console.error("Error loading opportunities from db:", err);
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
       <SectionHero
@@ -89,7 +101,7 @@ export default function OpportunitiesPage() {
         </div>
 
         <div className="space-y-6">
-          {opportunities.map((item) => (
+          {displayItems.map((item) => (
             <div
               key={item.title}
               className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:border-[#00A3E0]/60 hover:shadow-md transition-all shadow-sm"

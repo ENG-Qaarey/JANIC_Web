@@ -608,3 +608,57 @@ model ServiceRequestHistory {
 
   @@index([requestId, createdAt])
 }
+
+model Hub {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  category    String
+  description String   @db.Text
+  icon        String?
+  status      String   @default("Active")
+  link        String?
+  tags        String?  @db.Text
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, order])
+  @@index([slug])
+}
+
+model Opportunity {
+  id          String   @id @default(cuid())
+  title       String
+  type        String
+  deadline    String
+  department  String
+  description String   @db.Text
+  eligibility String   @db.Text
+  actionUrl   String
+  actionLabel String   @default("Apply Now")
+  status      String   @default("Active")
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, order])
+}
+
+model ResourceDocument {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  format      String   @default("PDF")
+  size        String   @default("500 KB")
+  description String   @db.Text
+  fileUrl     String?  @db.Text
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, order])
+}

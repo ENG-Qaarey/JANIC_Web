@@ -19,10 +19,27 @@ import {
   Clock,
 } from "lucide-react";
 
+import { HubRepository } from "@/repositories/hub.repository";
+
 export const metadata = {
   title: "Hubs & Programmes | JANIC",
   description:
     "Explore the 12 specialized innovation hubs and programmes at Jazeera Nexus Innovation Center.",
+};
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Lightbulb,
+  Sparkles,
+  Cpu,
+  ShieldCheck,
+  Smartphone,
+  BarChart3,
+  Cloud,
+  FlaskConical,
+  Rocket,
+  Building2,
+  Users,
+  Layers,
 };
 
 interface HubItem {
@@ -36,7 +53,7 @@ interface HubItem {
   tags: string[];
 }
 
-const hubs: HubItem[] = [
+const defaultHubs: HubItem[] = [
   {
     id: "innovation-hub",
     name: "JANIC Innovation Hub",
@@ -164,7 +181,26 @@ const hubs: HubItem[] = [
   },
 ];
 
-export default function HubsPage() {
+export default async function HubsPage() {
+  let displayHubs: HubItem[] = defaultHubs;
+  try {
+    const dbHubs = await HubRepository.findActive();
+    if (dbHubs && dbHubs.length > 0) {
+      displayHubs = dbHubs.map((h: any) => ({
+        id: h.slug || h.id,
+        name: h.name,
+        category: h.category,
+        description: h.description,
+        icon: (h.icon && ICON_MAP[h.icon]) ? ICON_MAP[h.icon] : Layers,
+        status: (h.status === "Upcoming" ? "Upcoming" : "Active") as "Active" | "Upcoming",
+        link: h.link || undefined,
+        tags: h.tags ? h.tags.split(",").map((t: string) => t.trim()).filter(Boolean) : [],
+      }));
+    }
+  } catch (err) {
+    console.error("Error loading hubs from db:", err);
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
       <SectionHero
@@ -197,7 +233,7 @@ export default function HubsPage() {
 
         {/* 12 Hubs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
-          {hubs.map((hub) => {
+          {displayHubs.map((hub) => {
             const Icon = hub.icon;
             const isExternal = hub.link?.startsWith("http");
 

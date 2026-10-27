@@ -3,13 +3,15 @@ import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { FileText, Download, ArrowRight, ShieldCheck, FileSpreadsheet } from "lucide-react";
 
+import { ResourceDocumentRepository } from "@/repositories/resource-document.repository";
+
 export const metadata = {
   title: "Downloads & Forms | JANIC Resources",
   description:
     "Official application forms, proposal templates, and guidelines for students, faculty, and industry partners.",
 };
 
-const documents = [
+const defaultDocuments = [
   {
     title: "JANIC Innovation Project Proposal Template",
     category: "Student Projects",
@@ -52,7 +54,17 @@ const documents = [
   },
 ];
 
-export default function DownloadsPage() {
+export default async function DownloadsPage() {
+  let displayDocs: any[] = defaultDocuments;
+  try {
+    const dbDocs = await ResourceDocumentRepository.findActive();
+    if (dbDocs && dbDocs.length > 0) {
+      displayDocs = dbDocs;
+    }
+  } catch (err) {
+    console.error("Error loading documents from db:", err);
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
       <SectionHero
@@ -81,7 +93,7 @@ export default function DownloadsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {documents.map((doc) => (
+          {displayDocs.map((doc) => (
             <div
               key={doc.title}
               className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-[#00A3E0]/60 hover:shadow-md transition-all shadow-sm"
@@ -104,13 +116,25 @@ export default function DownloadsPage() {
               </div>
 
               <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00A3E0] hover:text-[#008ec4] transition-colors"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Request / Download File</span>
-                </Link>
+                {doc.fileUrl ? (
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00A3E0] hover:text-[#008ec4] transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download File</span>
+                  </a>
+                ) : (
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00A3E0] hover:text-[#008ec4] transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Request / Download File</span>
+                  </Link>
+                )}
                 <span className="text-[11px] text-slate-400">Official Release</span>
               </div>
             </div>

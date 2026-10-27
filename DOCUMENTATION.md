@@ -190,7 +190,63 @@ Files: `components/layout/PublicFooter.tsx`, `/privacy`, `/terms`, `/accessibili
 
 ---
 
-## 5. File Change Summary
+## 5. Admin Control & Database CRUD Architecture
+
+All newly created content entities have been completely integrated into the MySQL database with full Admin CRUD control (Create, Read, Update, Delete, Toggle Active, Reorder, and Search) via the Admin Dashboard.
+
+### 5.1 Database Models (`prisma/schema.prisma`)
+* **`Hub`**: Stores all 12+ innovation labs and hubs with `id`, `name`, `slug`, `category`, `description`, `icon`, `status`, `link`, `tags`, `order`, `isActive`, timestamps.
+* **`Opportunity`**: Stores grants, hackathons, and calls for proposals with `id`, `title`, `type`, `deadline`, `department`, `description`, `eligibility`, `actionUrl`, `actionLabel`, `status`, `order`, `isActive`, timestamps.
+* **`ResourceDocument`**: Stores policy documents, proposal templates, and forms with `id`, `title`, `category`, `format`, `size`, `description`, `fileUrl`, `order`, `isActive`, timestamps.
+
+### 5.2 Database Repositories
+* [`repositories/hub.repository.ts`](file:///c:/Users/pc/Desktop/JANIC/repositories/hub.repository.ts): `findActive()`, `findAllAdmin()`, `findById()`, `findBySlug()`, `create()`, `update()`, `delete()`, `count()`.
+* [`repositories/opportunity.repository.ts`](file:///c:/Users/pc/Desktop/JANIC/repositories/opportunity.repository.ts): `findActive()`, `findAllAdmin()`, `findById()`, `create()`, `update()`, `delete()`, `count()`.
+* [`repositories/resource-document.repository.ts`](file:///c:/Users/pc/Desktop/JANIC/repositories/resource-document.repository.ts): `findActive()`, `findAllAdmin()`, `findById()`, `create()`, `update()`, `delete()`, `count()`.
+
+### 5.3 REST API Endpoints
+* **Hubs**:
+  * `GET /api/admin/hubs` — Fetch all hubs.
+  * `POST /api/admin/hubs` — Create a new innovation hub.
+  * `GET /api/admin/hubs/[id]` — Retrieve specific hub details.
+  * `PUT /api/admin/hubs/[id]` — Update hub data or toggle status.
+  * `DELETE /api/admin/hubs/[id]` — Delete a hub from database.
+* **Opportunities**:
+  * `GET /api/admin/opportunities` & `POST /api/admin/opportunities`
+  * `GET /api/admin/opportunities/[id]`, `PUT /api/admin/opportunities/[id]`, `DELETE /api/admin/opportunities/[id]`
+* **Downloads & Forms**:
+  * `GET /api/admin/downloads` & `POST /api/admin/downloads`
+  * `GET /api/admin/downloads/[id]`, `PUT /api/admin/downloads/[id]`, `DELETE /api/admin/downloads/[id]`
+
+### 5.4 Admin Management Interfaces (`components/admin/`)
+* [`components/admin/HubManager.tsx`](file:///c:/Users/pc/Desktop/JANIC/components/admin/HubManager.tsx):
+  * KPI metrics for total hubs, active vs inactive count, and categories.
+  * Search by name, tags, or description + Category filter dropdown.
+  * Modal for creating and editing hubs with auto-slug generation.
+  * Instant status toggle (Active/Inactive), reordering, and direct preview links.
+* [`components/admin/OpportunityManager.tsx`](file:///c:/Users/pc/Desktop/JANIC/components/admin/OpportunityManager.tsx):
+  * Search by title, eligibility, or department + Type filter dropdown.
+  * Modal for posting grants, challenges, and application deadlines.
+  * Instant status toggle, direct edit, and delete confirmation.
+* [`components/admin/DownloadManager.tsx`](file:///c:/Users/pc/Desktop/JANIC/components/admin/DownloadManager.tsx):
+  * Document card list with format badge, size indicator, and preview link.
+  * Search and category filter (Policies, Templates, Toolkits, Reports).
+  * Modal for updating download links, file formats, and publication statuses.
+
+### 5.5 Admin Sidebar Integration (`components/admin/AdminSidebar.tsx`)
+* Added **"Hubs & Programmes"** directly under the **Content** group with `Layers` icon (`/admin/hubs`).
+* Added a new **Resources** group in the sidebar with:
+  * **"Opportunities"** (`Briefcase` icon, `/admin/opportunities`)
+  * **"Downloads & Forms"** (`FileText` icon, `/admin/downloads`)
+
+### 5.6 Live Public Page Synchronization
+* [`/hubs`](file:///c:/Users/pc/Desktop/JANIC/app/(public)/hubs/page.tsx) dynamically queries `HubRepository.findActive()` from MySQL, rendering newly created or edited hubs in real-time.
+* [`/resources/opportunities`](file:///c:/Users/pc/Desktop/JANIC/app/(public)/resources/opportunities/page.tsx) dynamically queries `OpportunityRepository.findActive()` from MySQL.
+* [`/resources/downloads`](file:///c:/Users/pc/Desktop/JANIC/app/(public)/resources/downloads/page.tsx) dynamically queries `ResourceDocumentRepository.findActive()` from MySQL with direct download link support.
+
+---
+
+## 6. Complete File Change Summary
 
 ```
 app/
@@ -198,19 +254,32 @@ app/
 │   ├── about/page.tsx               # Updated Who We Are, Vision, Mission, 6 Objectives
 │   ├── accessibility/page.tsx       # [NEW] Accessibility Statement (rounded-2xl)
 │   ├── contact/page.tsx             # Updated FOCOSIT contact details
-│   ├── hubs/page.tsx                # [NEW] 12 Hubs & Programmes Directory (rounded-2xl)
+│   ├── hubs/page.tsx                # [NEW] 12 Hubs & Programmes Directory (connected to DB)
 │   ├── join/page.tsx                # [NEW] 3-Audience Join Portal (rounded-2xl)
 │   ├── page.tsx                     # Updated Hero subtitle, buttons, added CTA & Partners
 │   ├── partnerships/page.tsx        # Updated 5 Ways to Collaborate & Sponsorship tiers
 │   ├── privacy/page.tsx             # [NEW] Privacy Notice page (rounded-2xl)
 │   ├── resources/
-│   │   ├── downloads/page.tsx       # [NEW] Downloads & Forms Directory (rounded-2xl)
-│   │   └── opportunities/page.tsx   # [NEW] Opportunities & Open Calls (rounded-2xl)
+│   │   ├── downloads/page.tsx       # [NEW] Downloads & Forms Directory (connected to DB)
+│   │   └── opportunities/page.tsx   # [NEW] Opportunities & Open Calls (connected to DB)
 │   └── terms/page.tsx               # [NEW] Terms of Use page (rounded-2xl)
-├── globals.css                      # Updated Brand CSS tokens (#0B3B82, #00A3E0, #00873D)
-└── layout.tsx                       # Switched font to Poppins Google Font
+├── admin/
+│   ├── downloads/page.tsx           # [NEW] Admin CMS page for Downloads & Forms
+│   ├── hubs/page.tsx                # [NEW] Admin CMS page for Hubs & Programmes
+│   └── opportunities/page.tsx       # [NEW] Admin CMS page for Opportunities & Grants
+├── api/admin/
+│   ├── downloads/route.ts & [id]/   # [NEW] Full REST CRUD endpoints for Documents
+│   ├── hubs/route.ts & [id]/        # [NEW] Full REST CRUD endpoints for Hubs
+│   └── opportunities/route.ts & [id]/ # [NEW] Full REST CRUD endpoints for Opportunities
+├── globals.css                      # Brand CSS tokens (#0B3B82, #00A3E0, #00873D)
+└── layout.tsx                       # Poppins Google Font
 
 components/
+├── admin/
+│   ├── AdminSidebar.tsx             # Added Hubs & Programmes, Opportunities, Downloads nav
+│   ├── DownloadManager.tsx          # [NEW] Full interactive CRUD UI for Downloads
+│   ├── HubManager.tsx               # [NEW] Full interactive CRUD UI for Hubs
+│   └── OpportunityManager.tsx       # [NEW] Full interactive CRUD UI for Opportunities
 ├── forms/
 │   └── ContactForm.tsx              # Added Org, Enquiry Type, and Consent fields
 ├── layout/
@@ -219,12 +288,31 @@ components/
 └── public/
     ├── InnovationPipelineNodes.tsx  # Aligned 6-step pathway names to Section 5
     └── JanicHero.tsx                # Added 3 CTA buttons: Projects, Join, Partner
+
+lib/
+└── db/prisma.ts                     # Invalidation logic & support for new models
+
+prisma/
+└── schema.prisma                    # [NEW] Hub, Opportunity, ResourceDocument models
+
+repositories/
+├── hub.repository.ts                # [NEW] Hub repository CRUD operations
+├── opportunity.repository.ts        # [NEW] Opportunity repository CRUD operations
+└── resource-document.repository.ts  # [NEW] ResourceDocument repository CRUD operations
+
+scripts/
+└── seed-new-models.js               # Initial database seeder for all 12 hubs & resources
 ```
 
 ---
 
-## 6. Verification & Build Confirmation
+## 7. Verification & Operational Confirmation
 
-* **TypeScript Compilation**: `npx tsc --noEmit` executed with **exit code 0** (0 errors).
-* **Development Server**: Active on `http://localhost:3000` with hot-module reload enabled.
-* **Component Styling**: All newly created pages utilize `rounded-2xl` on cards and `rounded-xl` on buttons.
+* **TypeScript Compilation**: `npx tsc --noEmit` exited with **code 0** (0 errors).
+* **Database Synchronization**: `prisma db push` executed successfully against MySQL database `janic_db`.
+* **Database Seeding**: All 12 hubs, 4 opportunities, and 5 resource documents seeded and verified in MySQL.
+* **REST API Endpoints**: All verified returning `200 OK` and `{ success: true }`.
+* **Admin Dashboard Pages**: `/admin/hubs`, `/admin/opportunities`, `/admin/downloads` verified returning `200 OK`.
+* **Public Pages**: `/hubs`, `/resources/opportunities`, `/resources/downloads` verified returning `200 OK`.
+* **Card Aesthetics**: All cards across both public and admin interfaces adhere strictly to `rounded-2xl` rounded corners.
+
