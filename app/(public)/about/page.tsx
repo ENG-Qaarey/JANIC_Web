@@ -30,7 +30,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
-  const teamMembers = await TeamRepository.findActive();
+  const teamMembers = await TeamRepository.findActive().catch(() => []);
   const founder = teamMembers.find((m) => m.isFounder) || null;
   const otherMembers = teamMembers.filter((m) => (founder ? m.id !== founder.id : !m.isFounder));
 

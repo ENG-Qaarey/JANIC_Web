@@ -142,7 +142,7 @@ function FormSkeleton() {
 }
 
 export default async function CommunityServicesPage() {
-  const categories = await CommunityServiceRepository.listCategories();
+  const categories = await CommunityServiceRepository.listCategories().catch(() => []);
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950 overflow-x-clip">

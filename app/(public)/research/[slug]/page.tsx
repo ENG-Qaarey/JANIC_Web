@@ -29,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const paper = await ResearchService.getPaperBySlug(slug);
+  const paper = await ResearchService.getPaperBySlug(slug).catch(() => null);
   if (!paper) return { title: "Paper Not Found | JANIC" };
 
   return {
@@ -45,8 +45,8 @@ export default async function ResearchDetailPage({
 }) {
   const { slug } = await params;
   const [paper, currentUser] = await Promise.all([
-    ResearchService.getPaperBySlug(slug),
-    getCurrentUser(),
+    ResearchService.getPaperBySlug(slug).catch(() => null),
+    getCurrentUser().catch(() => null),
   ]);
 
   if (!paper || paper.status !== "PUBLISHED") {

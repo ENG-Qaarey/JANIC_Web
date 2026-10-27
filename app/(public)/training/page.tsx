@@ -12,7 +12,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function TrainingPage() {
-  const programs = await TrainingService.getPublishedPrograms();
+  const programs = await TrainingService.getPublishedPrograms().catch(() => []);
 
   const categories = Array.from(
     new Set(programs.map((p) => p.category).filter(Boolean))

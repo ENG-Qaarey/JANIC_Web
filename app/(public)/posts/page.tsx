@@ -12,7 +12,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function PostsPage() {
-  const media = await MediaRepository.findAll();
+  const media = await MediaRepository.findAll().catch(() => []);
   const items = media.filter(
     (m) =>
       m.source === "post" &&

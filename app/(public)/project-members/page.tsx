@@ -15,8 +15,8 @@ export const dynamic = "force-dynamic";
 
 export default async function ProjectMembersPage() {
   const [members, rawProjects] = await Promise.all([
-    ProjectMemberRepository.findAll({ isActive: true }),
-    ProjectService.getPublishedProjects(),
+    ProjectMemberRepository.findAll({ isActive: true }).catch(() => []),
+    ProjectService.getPublishedProjects().catch(() => []),
   ]);
 
   // Sort projects in canonical order 1 to 15

@@ -29,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const program = await TrainingService.getProgramBySlug(slug);
+  const program = await TrainingService.getProgramBySlug(slug).catch(() => null);
   if (!program) return { title: "Training Program Not Found | JANIC" };
 
   return {
@@ -45,8 +45,8 @@ export default async function TrainingDetailPage({
 }) {
   const { slug } = await params;
   const [program, currentUser] = await Promise.all([
-    TrainingService.getProgramBySlug(slug),
-    getCurrentUser(),
+    TrainingService.getProgramBySlug(slug).catch(() => null),
+    getCurrentUser().catch(() => null),
   ]);
 
   if (!program || program.status !== "PUBLISHED") {

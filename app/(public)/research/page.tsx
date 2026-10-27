@@ -14,7 +14,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ResearchPage() {
-  const papers = await ResearchService.getPublishedPapers();
+  const papers = await ResearchService.getPublishedPapers().catch(() => []);
 
   const categories = Array.from(
     new Set(papers.map((p) => p.category).filter(Boolean))

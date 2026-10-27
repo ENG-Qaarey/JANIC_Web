@@ -31,8 +31,8 @@ export default async function ProjectsPage({
     ProjectService.getPublishedProjects({
       category: currentCategory === "all" ? undefined : currentCategory,
       search: searchQuery || undefined,
-    }),
-    ProjectService.getCategories(),
+    }).catch(() => []),
+    ProjectService.getCategories().catch(() => []),
   ]);
 
   const isFutureCohort = currentYear === "2027" || currentYear === "2028";

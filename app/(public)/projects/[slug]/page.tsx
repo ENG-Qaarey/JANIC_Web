@@ -32,7 +32,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = await ProjectService.getProjectBySlug(slug);
+  const project = await ProjectService.getProjectBySlug(slug).catch(() => null);
   if (!project) return { title: "Project Not Found" };
 
   return {
@@ -52,7 +52,7 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = await ProjectService.getProjectBySlug(slug);
+  const project = await ProjectService.getProjectBySlug(slug).catch(() => null);
 
   const currentUser = await getCurrentUser();
   const isAdminOrEditor =
@@ -86,7 +86,7 @@ export default async function ProjectDetailPage({
       tags: m.tags || null,
     }));
   } else {
-    const allStudentMembers = await ProjectMemberRepository.findAll();
+    const allStudentMembers = await ProjectMemberRepository.findAll().catch(() => []);
     const matchedByProj = allStudentMembers.filter(
       (m) => m.projectId === project.id || (m.project && m.project.slug === project.slug)
     );

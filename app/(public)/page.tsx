@@ -15,9 +15,9 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [researchPapers, upcomingEvents, featuredProjects] = await Promise.all([
-    ResearchService.getFeaturedPapers(3),
-    EventService.getUpcomingEvents(3),
-    ProjectService.getFeaturedProjects(8),
+    ResearchService.getFeaturedPapers(3).catch(() => []),
+    EventService.getUpcomingEvents(3).catch(() => []),
+    ProjectService.getFeaturedProjects(8).catch(() => []),
   ]);
 
   const heroTitle = await getSetting("hero_title", "Innovating Technology. Empowering the Future.");

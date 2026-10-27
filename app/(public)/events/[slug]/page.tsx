@@ -29,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const event = await EventService.getEventBySlug(slug);
+  const event = await EventService.getEventBySlug(slug).catch(() => null);
   if (!event) return { title: "Event Not Found | JANIC" };
 
   return {
@@ -44,7 +44,7 @@ export default async function EventDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const event = await EventService.getEventBySlug(slug);
+  const event = await EventService.getEventBySlug(slug).catch(() => null);
 
   if (!event || event.status !== "PUBLISHED") {
     notFound();
