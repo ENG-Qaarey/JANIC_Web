@@ -8,17 +8,32 @@ interface FormErrors {
   name?: string;
   email?: string;
   phone?: string;
+  organization?: string;
+  enquiryType?: string;
   subject?: string;
   message?: string;
+  consent?: string;
 }
+
+const ENQUIRY_TYPES = [
+  "General Inquiry",
+  "Student Project / Innovation",
+  "Technical Mentorship",
+  "Industry Partnership & Sponsorship",
+  "Applied Research Collaboration",
+  "Training & Workshop Information",
+];
 
 export function ContactForm({ initialSubject }: { initialSubject?: string }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    organization: "",
+    enquiryType: "General Inquiry",
     subject: initialSubject || "",
     message: "",
+    consent: false,
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -46,15 +61,6 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
       newErrors.email = "Please enter a valid email address (e.g. name@example.com)";
     }
 
-    // Phone validation (optional, but validated if provided)
-    const trimmedPhone = formData.phone.trim();
-    if (trimmedPhone) {
-      const phoneDigits = trimmedPhone.replace(/[\s\-()]/g, "");
-      if (phoneDigits.length < 6 || !/^\+?[0-9]{6,15}$/.test(phoneDigits)) {
-        newErrors.phone = "Please enter a valid phone number (at least 6 digits)";
-      }
-    }
-
     // Subject validation
     const trimmedSubject = formData.subject.trim();
     if (!trimmedSubject) {
@@ -71,11 +77,16 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
       newErrors.message = "Message must be at least 10 characters";
     }
 
+    // Consent validation
+    if (!formData.consent) {
+      newErrors.consent = "You must give consent to be contacted regarding this enquiry.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof typeof formData, value: string) => {
+  const handleInputChange = (field: keyof typeof formData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -94,10 +105,18 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
     setError(null);
 
     try {
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || undefined,
+        subject: `[${formData.enquiryType}] ${formData.subject.trim()}`,
+        message: `${formData.organization ? `Organization: ${formData.organization.trim()}\n` : ""}Enquiry Type: ${formData.enquiryType}\n\n${formData.message.trim()}`,
+      };
+
       const res = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -126,7 +145,16 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
         <button
           onClick={() => {
             setSuccess(false);
-            setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+            setFormData({
+              name: "",
+              email: "",
+              phone: "",
+              organization: "",
+              enquiryType: "General Inquiry",
+              subject: "",
+              message: "",
+              consent: false,
+            });
             setErrors({});
           }}
           className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 transition cursor-pointer"
@@ -138,10 +166,10 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
   }
 
   const fields = [
-    { name: "name", label: "Your Full Name *", type: "text", placeholder: "Eng. Ahmed Mohamed", autoComplete: "name", icon: UserRound },
+    { name: "name", label: "Full Name *", type: "text", placeholder: "e.g. Eng. Ahmed Mohamed", autoComplete: "name", icon: UserRound },
     { name: "email", label: "Email Address *", type: "email", placeholder: "ahmed@example.com", autoComplete: "email", icon: Mail },
+    { name: "organization", label: "Organisation (Optional)", type: "text", placeholder: "e.g. Jazeera University, Tech Corp, NGO", autoComplete: "organization", icon: UserRound },
     { name: "phone", label: "Phone Number (Optional)", type: "tel", placeholder: "+252 61...", autoComplete: "tel", icon: Phone },
-    { name: "subject", label: "Subject *", type: "text", placeholder: "e.g. Training Inquiry, General Question", autoComplete: "off", icon: FileText },
   ] as const;
 
   return (
@@ -158,18 +186,60 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
                 name={name}
                 type={type}
                 autoComplete={autoComplete}
-                value={formData[name]}
-                onChange={(e) => handleInputChange(name, e.target.value)}
+                value={(formData as any)[name]}
+                onChange={(e) => handleInputChange(name as any, e.target.value)}
                 placeholder={placeholder}
-                aria-invalid={Boolean(errors[name])}
-                aria-describedby={errors[name] ? `contact-${name}-error` : undefined}
-                className={errors[name] ? styles.invalid : undefined}
+                aria-invalid={Boolean((errors as any)[name])}
+                aria-describedby={(errors as any)[name] ? `contact-${name}-error` : undefined}
+                className={(errors as any)[name] ? styles.invalid : undefined}
               />
             </div>
-            {errors[name] && <p id={`contact-${name}-error`} className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{errors[name]}</span></p>}
+            {(errors as any)[name] && <p id={`contact-${name}-error`} className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{(errors as any)[name]}</span></p>}
           </div>
         ))}
+
+        {/* Enquiry Type Dropdown */}
+        <div className={styles.field}>
+          <label htmlFor="contact-enquiryType">Enquiry Type *</label>
+          <div className={styles.control}>
+            <select
+              id="contact-enquiryType"
+              name="enquiryType"
+              value={formData.enquiryType}
+              onChange={(e) => handleInputChange("enquiryType", e.target.value)}
+              className="w-full min-h-[48px] px-3.5 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-[#f8fbff] dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-xs font-medium outline-none transition focus:border-[#00A3E0]"
+            >
+              {ENQUIRY_TYPES.map((type) => (
+                <option key={type} value={type} className="dark:bg-slate-900">
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Subject */}
+        <div className={styles.field}>
+          <label htmlFor="contact-subject">Subject *</label>
+          <div className={styles.control}>
+            <FileText className={styles.inputIcon} size={18} strokeWidth={1.7} aria-hidden="true" />
+            <input
+              id="contact-subject"
+              name="subject"
+              type="text"
+              value={formData.subject}
+              onChange={(e) => handleInputChange("subject", e.target.value)}
+              placeholder="Brief summary of your inquiry"
+              aria-invalid={Boolean(errors.subject)}
+              aria-describedby={errors.subject ? "contact-subject-error" : undefined}
+              className={errors.subject ? styles.invalid : undefined}
+            />
+          </div>
+          {errors.subject && <p id="contact-subject-error" className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{errors.subject}</span></p>}
+        </div>
       </div>
+
+      {/* Message */}
       <div className={styles.field}>
         <label htmlFor="contact-message">Your Message *</label>
         <div className={styles.control}>
@@ -188,6 +258,25 @@ export function ContactForm({ initialSubject }: { initialSubject?: string }) {
         </div>
         {errors.message && <p id="contact-message-error" className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{errors.message}</span></p>}
       </div>
+
+      {/* Consent Checkbox */}
+      <div className="pt-1">
+        <label className="flex items-start gap-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={formData.consent}
+            onChange={(e) => handleInputChange("consent", e.target.checked)}
+            className="w-4 h-4 mt-0.5 rounded border-slate-300 text-[#00A3E0] focus:ring-[#00A3E0]"
+          />
+          <span className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            I consent to being contacted by the JANIC office regarding this enquiry and agree to the responsible processing of my details. *
+          </span>
+        </label>
+        {errors.consent && (
+          <p className={styles.fieldError}><AlertCircle size={14} aria-hidden="true" /><span>{errors.consent}</span></p>
+        )}
+      </div>
+
       <button type="submit" disabled={loading} className={styles.sendButton}>
         {loading ? <><Loader2 size={19} className="animate-spin" aria-hidden="true" />Sending Message...</> : <><Send size={20} aria-hidden="true" />Send Message to JANIC<ArrowRight size={22} className={styles.sendArrow} aria-hidden="true" /></>}
       </button>

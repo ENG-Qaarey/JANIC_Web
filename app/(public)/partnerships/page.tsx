@@ -15,25 +15,30 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function PartnershipsPage() {
-  const benefits = [
+  const waysToCollaborate = [
     {
-      title: "Direct Access to Top Tech Talent",
-      desc: "Connect directly with graduating software engineers, robotics developers, and cybersecurity practitioners.",
-      icon: Rocket,
+      title: "Mentoring & Technical Expertise",
+      desc: "Lead guest lectures, offer industry mentorship, and share technical expertise with student developers and researchers.",
+      icon: Users,
     },
     {
-      title: "Custom Prototyping & R&D",
-      desc: "Leverage our university hardware lab and faculty expertise to prototype custom digital solutions.",
+      title: "Industry Problem Statements & R&D",
+      desc: "Propose real-world business challenges and co-create applied research prototypes with academic supervision.",
       icon: Building2,
     },
     {
-      title: "High-Impact Regional CSR & Branding",
-      desc: "Co-brand student hackathons, technology summits, and community digital literacy bootcamps.",
+      title: "Internships & Career Opportunities",
+      desc: "Host student interns, organize corporate workplace visits, and recruit verified top talent graduating from JANIC.",
+      icon: Rocket,
+    },
+    {
+      title: "Workshops, Equipment & Cloud Credits",
+      desc: "Support student hackathons, sponsor specialized hardware kits, developer tools, or institutional cloud credits.",
       icon: Award,
     },
     {
-      title: "Institutional Research Exchanges",
-      desc: "Joint peer-reviewed papers, faculty fellowships, and international academic credit transfers.",
+      title: "Research, Pilot Testing & Community Pilots",
+      desc: "Joint peer-reviewed publications, live field prototype testing, pilot trials, and civic community initiatives.",
       icon: Globe2,
     },
   ];
@@ -115,20 +120,20 @@ export default async function PartnershipsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 <div className={`${styles.framework} lg:col-span-6`}>
                   <header className={styles.heading}>
-                    <span className={styles.eyebrow}>Collaboration Framework</span>
-                    <h2>Why Partner with JANIC?</h2>
-                    <p>As the innovation arm of Faculty of Computer Science &amp; IT at Jazeera University, JANIC serves as the premier bridge between academic capability and regional market execution.</p>
+                    <span className={styles.eyebrow}>Ways to Collaborate</span>
+                    <h2>Partnering with JANIC</h2>
+                    <p>JANIC welcomes collaboration with technology companies, public institutions, NGOs, universities, alumni, startups, and development partners to connect real-world challenges with student talent and academic expertise.</p>
                   </header>
                   <div className={styles.benefits}>
-                    {benefits.map((benefit, index) => {
-                      const Icon = benefit.icon;
+                    {waysToCollaborate.map((item, index) => {
+                      const Icon = item.icon;
                       return (
-                        <ScrollReveal key={benefit.title} animation="fade-up" duration={700} delay={index * 90} className={styles.cardEntrance}>
+                        <ScrollReveal key={item.title} animation="fade-up" duration={700} delay={index * 90} className={styles.cardEntrance}>
                           <article className={styles.benefitCard}>
                             <span className={styles.icon}><Icon size={26} strokeWidth={1.8} aria-hidden="true" /></span>
                             <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                            <h3>{benefit.title}</h3>
-                            <p>{benefit.desc}</p>
+                            <h3>{item.title}</h3>
+                            <p>{item.desc}</p>
                           </article>
                         </ScrollReveal>
                       );
@@ -138,25 +143,46 @@ export default async function PartnershipsPage() {
                     <span className={styles.integrityIcon}><ShieldCheck size={26} aria-hidden="true" /></span>
                     <div>
                       <h3 id="partnership-integrity-title">Institutional Integrity</h3>
-                      <p>All partnerships are governed under formal Memorandums of Understanding (MoU) with the Senate and Dean of Faculty at Jazeera University.</p>
+                      <p>All partnerships are governed under formal Memorandums of Understanding (MoU) with the Faculty of Computer Science &amp; IT at Jazeera University.</p>
                     </div>
                   </aside>
                 </div>
 
-                <div className="lg:col-span-6 bg-white p-8 sm:p-10 rounded-2xl border border-blue-100/80 shadow-md space-y-6">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#0875D1] block mb-1">
-                      Partnership Inquiries
-                    </span>
-                    <h3 className="text-2xl font-bold text-[#08245C] tracking-tight">
-                      Start a Collaboration
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      Tell us about your organization and how we can work together.
-                    </p>
+                <div className="lg:col-span-6 space-y-8">
+                  <div className="bg-white p-8 sm:p-10 rounded-2xl border border-blue-100/80 shadow-md space-y-6">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#00A3E0] block mb-1">
+                        Partnership Inquiries
+                      </span>
+                      <h3 className="text-2xl font-bold text-[#0B3B82] tracking-tight">
+                        Start a Collaboration
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                        Tell us about your organization and how we can work together.
+                      </p>
+                    </div>
+
+                    <PartnershipForm />
                   </div>
 
-                  <PartnershipForm />
+                  {/* Sponsorship Categories Notice as per Section 7 */}
+                  <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#00A3E0] block mb-1">
+                      Sponsorship Opportunities
+                    </span>
+                    <h4 className="text-base font-bold text-slate-900 mb-2">
+                      Sponsorship Tiers (Gold, Silver, Supporting & In-Kind)
+                    </h4>
+                    <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                      JANIC offers tiered sponsorship opportunities for regional tech innovators, equipment manufacturers, and corporate donors. Specific sponsorship benefits and partner logo inclusions are activated upon formal bilateral approval.
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-semibold text-[#0B3B82]">
+                      <div className="p-2.5 bg-amber-50 border border-amber-200/70 rounded-lg">Gold Partner</div>
+                      <div className="p-2.5 bg-slate-100 border border-slate-200 rounded-lg">Silver Partner</div>
+                      <div className="p-2.5 bg-blue-50 border border-blue-200/70 rounded-lg">Supporting</div>
+                      <div className="p-2.5 bg-emerald-50 border border-emerald-200/70 rounded-lg">In-Kind</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

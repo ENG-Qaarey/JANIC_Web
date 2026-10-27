@@ -5,12 +5,12 @@ import { Lightbulb, Layers, Cpu, CheckCircle2, Award, Rocket } from "lucide-reac
 import styles from "./InnovationPipelineNodes.module.css";
 
 const pipelineSteps = [
-  { number: "01", name: "Innovation Project", tagline: "Identify real-world problems and formulate hypotheses.", deliverable: "Problem Brief", icon: Lightbulb, position: 250 },
-  { number: "02", name: "Design", tagline: "Develop system architecture, blueprints, and UI specs.", deliverable: "System Spec", icon: Layers, position: 205 },
-  { number: "03", name: "Build", tagline: "Engineer functional hardware prototypes and codebases.", deliverable: "Working MVP", icon: Cpu, position: 270 },
-  { number: "04", name: "Test", tagline: "Rigorous laboratory validation, debugging, and trials.", deliverable: "Field Validated", icon: CheckCircle2, position: 215 },
-  { number: "05", name: "Showcase", tagline: "Demonstrate innovations live at Annual Demo Day.", deliverable: "Demo Pitch", icon: Award, position: 275 },
-  { number: "06", name: "Scale", tagline: "Incubate, partner, file IP, and deploy to market.", deliverable: "Market Launch", icon: Rocket, position: 195 },
+  { number: "01", name: "Identify Idea", tagline: "Identify community and industry problems or create new ideas.", deliverable: "Problem Brief", icon: Lightbulb, position: 250 },
+  { number: "02", name: "Design", tagline: "Develop concept, system architecture, blueprints, and UI specs.", deliverable: "Design Spec", icon: Layers, position: 205 },
+  { number: "03", name: "Prototype", tagline: "Engineer functional software applications or hardware prototypes.", deliverable: "Working Prototype", icon: Cpu, position: 270 },
+  { number: "04", name: "Validate", tagline: "Rigorous laboratory testing, field validation, and trial feedback.", deliverable: "Testing Results", icon: CheckCircle2, position: 215 },
+  { number: "05", name: "Showcase", tagline: "Demonstrate verified solutions live at university Demo Days.", deliverable: "Live Showcase", icon: Award, position: 275 },
+  { number: "06", name: "Advance", tagline: "Incubate, launch pilot projects, secure mentorship, and scale.", deliverable: "Project Advance", icon: Rocket, position: 195 },
 ];
 
 export function InnovationPipelineNodes() {

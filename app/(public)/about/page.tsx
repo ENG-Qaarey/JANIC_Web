@@ -34,56 +34,56 @@ export default async function AboutPage() {
   const founder = teamMembers.find((m) => m.isFounder) || null;
   const otherMembers = teamMembers.filter((m) => (founder ? m.id !== founder.id : !m.isFounder));
 
-  const coreValues = [
+  const objectives = [
     {
-      title: "Excellence",
-      desc: "We pursue uncompromising quality in research, software development, and technical education.",
+      title: "Student Technology Projects",
+      desc: "Provide students with opportunities to design, develop, test, and present practical technology projects.",
+      icon: Target,
+    },
+    {
+      title: "Practical Skills & Teamwork",
+      desc: "Strengthen practical digital skills, teamwork, creativity, communication, and real-world problem-solving.",
       icon: Trophy,
     },
     {
-      title: "Innovation & Agility",
-      desc: "We continuously explore emerging technologies and adapt quickly to industry breakthroughs.",
-      icon: Lightbulb,
-    },
-    {
-      title: "Integrity & Professionalism",
-      desc: "We operate with ethical rigor, transparency, and international institutional standards.",
-      icon: Shield,
-    },
-    {
-      title: "Teamwork & Collaboration",
-      desc: "We believe transformative innovation is built through multidisciplinary teamwork.",
-      icon: Users,
-    },
-    {
-      title: "Localization of Knowledge",
-      desc: "We adapt global technology to solve local infrastructure, health, and economic challenges.",
+      title: "Applied Research & Prototypes",
+      desc: "Support applied academic research and rapid prototype development addressing local challenges.",
       icon: Database,
     },
     {
-      title: "Continuous Learning",
-      desc: "We promote lifelong curiosity, ongoing technical certification, and skill refinement.",
-      icon: BookOpen,
+      title: "Responsible Technology",
+      desc: "Promote secure, ethical, inclusive, and responsible technology across all student and faculty initiatives.",
+      icon: Shield,
+    },
+    {
+      title: "Industry & Community Needs",
+      desc: "Connect students and faculty directly with industry demands, public services, and grassroots community needs.",
+      icon: Users,
+    },
+    {
+      title: "Entrepreneurship & Startups",
+      desc: "Encourage entrepreneurship, venture validation, and the commercial development of promising projects.",
+      icon: Lightbulb,
     },
   ];
 
   return (
     <div className={styles.page}>
-      {/* 1. HERO SECTION (MATCHING HOME PAGE ROUNDED CARD) */}
+      {/* 1. HERO SECTION */}
       <SectionHero
         badge="About JANIC"
-        title="Where Education Meets Innovation"
-        description="Bridging the gap between academic theory, technological innovation, and real-world market needs in the Horn of Africa."
+        title="Where Ideas Become Practical Solutions"
+        description="Jazeera Nexus Innovation Center under the Faculty of Computer Science & IT at Jazeera University, Mogadishu, Somalia."
         breadcrumbs={[{ label: "About JANIC" }]}
       />
 
       <section className={styles.history} aria-labelledby="about-history-title">
         <div className={`${styles.container} ${styles.historyGrid}`}>
           <ScrollReveal animation="fade-right" duration={850} className={styles.historyCopy}>
-            <p className={styles.eyebrow}>Our History &amp; Origin</p>
-            <h2 id="about-history-title">Founded at Jazeera University in 2021</h2>
-            <p>Jazeera Nexus Innovation Center (JANIC), formerly known as Jazeera Innovation Technology (JIT), was founded on October 25, 2021, by the Faculty of Computer Science &amp; IT at Jazeera University in Mogadishu, Somalia.</p>
-            <p>JANIC was established to resolve a persistent challenge in higher education: the disconnect between classroom curriculum and the practical, rapidly evolving demands of the technology market. Its operations combine software engineering, process automation, hands-on ICT training, applied scientific research, and startup incubation.</p>
+            <p className={styles.eyebrow}>Who We Are</p>
+            <h2 id="about-history-title">Faculty of Computer Science & IT Innovation Center</h2>
+            <p>Jazeera Nexus Innovation Center (JANIC) is an innovation and technology initiative under the Faculty of Computer Science & IT at Jazeera University, Mogadishu, Somalia.</p>
+            <p>JANIC provides a coordinated environment where students and faculty can explore ideas, build prototypes, conduct applied research, and collaborate with external partners on practical digital solutions.</p>
             <Link href="/projects" className={styles.button}>Explore Student Innovations <ArrowRight size={17} aria-hidden="true" /></Link>
           </ScrollReveal>
           <ScrollReveal animation="fade-left" duration={850} delay={120} className={styles.historyVisual}>
@@ -104,9 +104,9 @@ export default async function AboutPage() {
             <article className={`${styles.purposeCard} ${styles.vision}`}>
               <span className={styles.purposeIcon}><Eye size={27} strokeWidth={1.8} aria-hidden="true" /></span>
               <div>
-                <p className={styles.eyebrow}>Long-Term Ambition</p>
-                <h2>Our Vision</h2>
-                <p className={styles.visionText}>To be a premier technology innovation center and training hub in Africa and globally, delivering reliable, cutting-edge digital products, high-impact research, and world-class ICT certifications.</p>
+                <p className={styles.eyebrow}>Our Vision</p>
+                <h2>Vision</h2>
+                <p className={styles.visionText}>To become a leading university-based innovation ecosystem that empowers talent and advances technology-driven solutions for Somalia and beyond.</p>
               </div>
             </article>
           </ScrollReveal>
@@ -114,34 +114,30 @@ export default async function AboutPage() {
             <article className={`${styles.purposeCard} ${styles.mission}`}>
               <span className={styles.purposeIcon}><Target size={27} strokeWidth={1.8} aria-hidden="true" /></span>
               <div>
-                <p className={styles.eyebrow}>Institutional Mandate</p>
-                <h2>Our Mission</h2>
-                <ul>
-                  <li><CheckCircle2 size={16} aria-hidden="true" /><span><strong>Transformative Solutions:</strong> Develop dynamic, high-quality digital platforms and automation services.</span></li>
-                  <li><CheckCircle2 size={16} aria-hidden="true" /><span><strong>Capacity Building:</strong> Equip students and professionals with hands-on technical skills and recognized certifications.</span></li>
-                  <li><CheckCircle2 size={16} aria-hidden="true" /><span><strong>Global Collaboration:</strong> Build strategic partnerships, research exchanges, and international networks.</span></li>
-                </ul>
+                <p className={styles.eyebrow}>Our Mission</p>
+                <h2>Mission</h2>
+                <p className={styles.visionText}>To connect education, research, innovation, and partnership through practical projects, mentorship, responsible technology development, and opportunities for students to transform ideas into solutions.</p>
               </div>
             </article>
           </ScrollReveal>
         </div>
       </section>
 
-      <section className={styles.valuesSection} aria-labelledby="about-values-title">
+      <section className={styles.valuesSection} aria-labelledby="about-objectives-title">
         <div className={styles.container}>
           <ScrollReveal animation="fade-up" duration={800} className={styles.valuesHeading}>
-            <p className={styles.eyebrow}>Institutional Principles</p>
-            <h2 id="about-values-title">Our Core Values</h2>
-            <p>The ethical framework and technological mindset guiding every project at JANIC.</p>
+            <p className={styles.eyebrow}>Strategic Mandate</p>
+            <h2 id="about-objectives-title">Key Objectives</h2>
+            <p>Six core objectives driving student empowerment, research advancement, and practical technology delivery at JANIC.</p>
           </ScrollReveal>
           <div className={styles.valuesGrid}>
-            {coreValues.map((value, index) => {
-              const Icon = value.icon;
-              return <ScrollReveal key={value.title} animation="fade-up" duration={800} delay={(index % 3) * 120} className={styles.valueEntrance}>
+            {objectives.map((obj, index) => {
+              const Icon = obj.icon;
+              return <ScrollReveal key={obj.title} animation="fade-up" duration={800} delay={(index % 3) * 120} className={styles.valueEntrance}>
                 <article className={styles.valueCard}>
                   <span className={styles.valueIcon}><Icon size={26} strokeWidth={1.8} aria-hidden="true" /></span>
-                  <h3>{value.title}</h3>
-                  <p>{value.desc}</p>
+                  <h3>{obj.title}</h3>
+                  <p>{obj.desc}</p>
                 </article>
               </ScrollReveal>;
             })}

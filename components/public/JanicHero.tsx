@@ -98,8 +98,9 @@ export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel }: Ja
             </h1>
             <p data-reveal className={styles.description}>{subtitle}</p>
             <div data-reveal className={styles.buttons}>
-              <Link href="/innovation-hub" className={styles.primary}>Explore the Hub <ArrowRight size={21} aria-hidden="true" /></Link>
-              <Link href="/contact" className={styles.secondary}>Contact Us</Link>
+              <Link href="/projects" className={styles.primary}>Explore Our Projects <ArrowRight size={20} aria-hidden="true" /></Link>
+              <Link href="/join" className={styles.secondary}>Join JANIC</Link>
+              <Link href="/partnerships" className={styles.secondary}>Partner with Us</Link>
             </div>
           </div>
           <div className={styles.visual}>

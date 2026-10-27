@@ -7,6 +7,8 @@ import { ProjectService } from "@/services/projects/project.service";
 import { InnovationPipelineNodes } from "@/components/public/InnovationPipelineNodes";
 import { JanicCommunitySections } from "@/components/public/JanicCommunitySections";
 import { JanicPortfolio } from "@/components/public/JanicPortfolio";
+import { TrustedOrganizationsSection } from "@/components/public/TrustedOrganizationsSection";
+import { JanicCta } from "@/components/public/JanicCta";
 import { getSetting } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
@@ -19,7 +21,7 @@ export default async function HomePage() {
   ]);
 
   const heroTitle = await getSetting("hero_title", "Innovating Technology. Empowering the Future.");
-  const heroSubtitle = await getSetting("hero_subtitle", "The leading institutional hub for technological transformation, advanced research, and digital excellence.");
+  const heroSubtitle = await getSetting("hero_subtitle", "JANIC is where ideas become practical digital solutions. Based at Jazeera University, we connect students, faculty, industry, and communities to develop technology, strengthen digital skills, and turn promising ideas into meaningful impact.");
   const savedHeroImage = await getSetting("hero_image", "/images/jazeera.jpeg");
   const heroImage = savedHeroImage === "/images/janic-hero-lab.jpg" ? "/images/jazeera.jpeg" : savedHeroImage;
   const heroBadgeValue = await getSetting("hero_badge_value", "18+");
@@ -139,6 +141,15 @@ export default async function HomePage() {
       <JanicCommunitySections
         research={(researchPapers || []).map(paper => ({ title: paper.title, abstract: paper.abstract, slug: paper.slug }))}
         events={(upcomingEvents || []).map(event => ({ title: event.title, slug: event.slug, date: new Date(event.eventDate).toISOString(), location: event.location, coverImage: event.coverImage }))}
+      />
+
+      <TrustedOrganizationsSection />
+
+      <JanicCta
+        eyebrow="Join JANIC"
+        description="Whether you are a student with a bold idea, a faculty mentor, or an industry partner seeking applied research, JANIC is your innovation platform."
+        primary={{ href: "/submit-innovation", label: "Join JANIC Today" }}
+        secondary={{ href: "/partnerships", label: "Partner With Us" }}
       />
     </div>
   );

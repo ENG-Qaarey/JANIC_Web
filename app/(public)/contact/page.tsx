@@ -29,9 +29,9 @@ export default async function ContactPage({
   const facultyName = settings["faculty_name"] || "Faculty of Computer Science & IT";
   const campusTitle = settings["campus_title"] || `${institutionName} Main Campus`;
   const campusWing = settings["campus_wing"] || `${facultyName}, 2nd Floor Innovation Wing`;
-  const campusAddress = settings["campus_address"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia";
-  const contactEmail = settings["contact_email"] || "info@janic.edu.so";
-  const contactPhone = settings["contact_phone"] || "+252 613667595";
+  const campusAddress = settings["campus_address"] || "Faculty of Computer Science & IT (FOCOSIT), Jazeera University, Mogadishu, Somalia";
+  const contactEmail = settings["contact_email"] || "janic@jazeerauniversity.edu.so";
+  const contactPhone = settings["contact_phone"] || "+25213195111";
   const officeHours = settings["office_hours"] || "Saturday – Thursday: 8:00 AM – 5:00 PM\nFriday: Closed";
   const accreditationText =
     settings["accreditation_text"] ||

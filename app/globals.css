@@ -3,14 +3,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-janic-navy: #08245C;
-  --color-janic-navy-dark: #051532;
-  --color-janic-blue: #0875D1;
-  --color-janic-blue-hover: #065ea8;
-  --color-janic-blue-light: #DCEEFF;
-  --color-janic-ice: #F0F7FF;
-  --color-janic-green: #059669;
-  --color-janic-emerald: #10B981;
+  --color-janic-navy: #0B3B82;
+  --color-janic-navy-dark: #072757;
+  --color-janic-blue: #00A3E0;
+  --color-janic-blue-hover: #008ec4;
+  --color-janic-blue-light: #E0F5FC;
+  --color-janic-ice: #F0F9FF;
+  --color-janic-green: #00873D;
+  --color-janic-emerald: #00873D;
 }
 
 :root {
@@ -18,19 +18,19 @@
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
-  --primary: #0875D1;
+  --primary: #00A3E0;
   --primary-foreground: #ffffff;
-  --secondary: #eff6ff;
-  --secondary-foreground: #08245C;
+  --secondary: #E0F5FC;
+  --secondary-foreground: #0B3B82;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #eff6ff;
-  --accent-foreground: #08245C;
+  --accent: #E0F5FC;
+  --accent-foreground: #0B3B82;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #0875D1;
+  --ring: #00A3E0;
   --radius: 0.75rem;
 }
 
@@ -78,7 +78,7 @@ html.dark .section-portfolio-bg,
 }
 
 @theme inline {
-  --font-sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -105,7 +105,7 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-plus-jakarta-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
 }
 

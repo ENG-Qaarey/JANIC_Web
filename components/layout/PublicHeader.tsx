@@ -33,28 +33,8 @@ export interface NavItem {
 
 export const defaultNavStructure: NavItem[] = [
   {
-    id: "innovation",
-    name: "INNOVATION",
-    href: "/innovation-hub",
-    subLinks: [
-      { name: "Innovation Hub", href: "/innovation-hub" },
-      { name: "Projects", href: "/projects" },
-      { name: "Project Members", href: "/project-members" },
-    ],
-  },
-  {
-    id: "research",
-    name: "RESEARCH",
-    href: "/research",
-    subLinks: [
-      { name: "Training", href: "/training" },
-      { name: "Research", href: "/research" },
-      { name: "Events", href: "/events" },
-    ],
-  },
-  {
     id: "about",
-    name: "ABOUT",
+    name: "About JANIC",
     href: "/about",
     subLinks: [
       { name: "About JANIC", href: "/about" },
@@ -62,8 +42,41 @@ export const defaultNavStructure: NavItem[] = [
     ],
   },
   {
+    id: "hubs",
+    name: "Hubs & Programmes",
+    href: "/hubs",
+    subLinks: [
+      { name: "All Hubs & Programmes", href: "/hubs" },
+      { name: "Innovation Pipeline", href: "/innovation-hub" },
+    ],
+  },
+  {
+    id: "projects",
+    name: "Projects & Innovations",
+    href: "/projects",
+    subLinks: [
+      { name: "Featured Projects", href: "/projects" },
+      { name: "Project Members & Teams", href: "/project-members" },
+      { name: "Submit Innovation", href: "/submit-innovation" },
+    ],
+  },
+  {
+    id: "resources",
+    name: "Resources",
+    href: "/training",
+    subLinks: [
+      { name: "Training & Workshops", href: "/training" },
+      { name: "Events & News", href: "/events" },
+      { name: "Research & Publications", href: "/research" },
+      { name: "Downloads & Forms", href: "/resources/downloads" },
+      { name: "Opportunities", href: "/resources/opportunities" },
+      { name: "Articles & Posts", href: "/posts" },
+      { name: "FAQs", href: "/faq" },
+    ],
+  },
+  {
     id: "partnerships",
-    name: "PARTNERSHIPS",
+    name: "Partnerships",
     href: "/partnerships",
     subLinks: [
       { name: "Partnerships", href: "/partnerships" },
@@ -72,7 +85,7 @@ export const defaultNavStructure: NavItem[] = [
   },
   {
     id: "contact",
-    name: "CONTACT",
+    name: "Contact",
     href: "/contact",
   },
 ];
@@ -205,10 +218,11 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpandedSections, setMobileExpandedSections] = useState<Record<string, boolean>>({
-    about: true,
-    innovation: true,
-    research: true,
-    partnerships: true,
+    about: false,
+    hubs: false,
+    projects: false,
+    resources: false,
+    partnerships: false,
   });
   const [scrolled, setScrolled] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -348,8 +362,8 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
                     className={cn(
                       "inline-flex items-center gap-1.5 text-[11px] xl:text-xs font-bold tracking-wider uppercase transition-colors whitespace-nowrap py-1",
                       isGroupActive
-                        ? "text-[#0875D1] dark:text-sky-400"
-                        : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300 dark:hover:text-sky-400"
+                        ? "text-[#00A3E0] dark:text-sky-400"
+                        : "text-slate-700 hover:text-[#00A3E0] dark:text-slate-300 dark:hover:text-sky-400"
                     )}
                   >
                     <span>{item.name}</span>
@@ -357,8 +371,8 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
                       className={cn(
                         "w-3.5 h-3.5 transition-transform duration-200",
                         openDropdown === item.id
-                          ? "rotate-180 text-[#0875D1] dark:text-sky-400"
-                          : "text-slate-400 dark:text-slate-500 group-hover:text-[#0875D1] dark:group-hover:text-sky-400"
+                          ? "rotate-180 text-[#00A3E0] dark:text-sky-400"
+                          : "text-slate-400 dark:text-slate-500 group-hover:text-[#00A3E0] dark:group-hover:text-sky-400"
                       )}
                     />
                   </Link>
@@ -404,8 +418,8 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
                 className={cn(
                   "text-[11px] xl:text-xs font-bold tracking-wider uppercase transition-colors whitespace-nowrap py-1",
                   isGroupActive
-                    ? "text-[#0875D1] dark:text-sky-400"
-                    : "text-slate-700 hover:text-[#0875D1] dark:text-slate-300 dark:hover:text-sky-400"
+                    ? "text-[#00A3E0] dark:text-sky-400"
+                    : "text-slate-700 hover:text-[#00A3E0] dark:text-slate-300 dark:hover:text-sky-400"
                 )}
               >
                 {item.name}
@@ -465,14 +479,14 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
                   {activeUser.username ? `@${activeUser.username}` : activeUser.name}
                 </p>
                 {activeUser.username === "jamiila" || activeUser.name.toLowerCase().includes("jamiila") ? (
-                  <p className="text-xs font-bold text-[#0875D1] dark:text-sky-400">
+                  <p className="text-xs font-bold text-[#00A3E0] dark:text-sky-400">
                     Dean of CS & IT
                   </p>
                 ) : null}
                 <p className="text-[11px] text-muted-foreground truncate">
                   {activeUser.email}
                 </p>
-                <p className="text-[10px] font-extrabold tracking-wider text-[#0875D1] uppercase mt-0.5">
+                <p className="text-[10px] font-extrabold tracking-wider text-[#00A3E0] uppercase mt-0.5">
                   {activeUser.username === "jamiila" || activeUser.name.toLowerCase().includes("jamiila")
                     ? "Dean of CS & IT • System Admin"
                     : activeUser.role}
