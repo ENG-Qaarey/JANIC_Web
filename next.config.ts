@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 // Reloaded to recognize updated prisma schema in node_modules
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@prisma/client", ".prisma/client"],
   devIndicators: false,
   async redirects() {
     return [
