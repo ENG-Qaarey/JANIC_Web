@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && opennextjs-cloudflare build",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
@@ -52,6 +53,8 @@
     "eslint-config-next": "16.3.8",
     "prisma": "^6.4.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@opennextjs/cloudflare": "^1.20.13",
+    "wrangler": "^4.154.0"
   }
 }
