@@ -1,10 +1,11 @@
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 enum Role {
@@ -61,12 +62,12 @@ model Project {
   id           String               @id @default(cuid())
   title        String
   slug         String               @unique
-  summary      String               @db.Text
-  problem      String               @db.Text
-  solution     String               @db.Text
-  technology   String               @db.Text
-  innovation   String?              @db.Text
-  outcomes     String?              @db.Text
+  summary      String
+  problem      String
+  solution     String
+  technology   String
+  innovation   String?
+  outcomes     String?
   category     String
   status       ContentStatus        @default(DRAFT)
   isFeatured   Boolean              @default(false)
@@ -74,7 +75,7 @@ model Project {
   demoUrl      String?
   videoUrl     String?
   githubUrl    String?
-  teamMembers  String?              @db.Text
+  teamMembers  String?
   order        Int                  @default(0)
   publishedAt  DateTime?
   createdAt    DateTime             @default(now())
@@ -105,8 +106,8 @@ model TrainingProgram {
   id            String            @id @default(cuid())
   title         String
   slug          String            @unique
-  summary       String            @db.Text
-  description   String            @db.Text
+  summary       String
+  description   String
   category      String
   level         String            @default("Intermediate")
   duration      String
@@ -117,10 +118,10 @@ model TrainingProgram {
   certification String?
   status        ContentStatus     @default(DRAFT)
   isFeatured    Boolean           @default(false)
-  coverImage    String?           @db.Text
+  coverImage    String?
   maxSeats      Int?
-  syllabus      String?           @db.Text
-  trainers      String?           @db.Text
+  syllabus      String?
+  trainers      String?
   allowComments Boolean           @default(true)
   allowInteractions Boolean       @default(true)
   createdAt     DateTime          @default(now())
@@ -140,8 +141,8 @@ model TrainingComment {
   trainingId String
   userId     String
   userName   String
-  userAvatar String?         @db.Text
-  message    String          @db.Text
+  userAvatar String?
+  message    String
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
   training   TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
@@ -166,7 +167,7 @@ model TrainingRating {
   trainingId String
   userId     String
   stars      Int             @default(5)
-  feedback   String?         @db.Text
+  feedback   String?
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
   training   TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
@@ -179,15 +180,15 @@ model ResearchPaper {
   id                  String            @id @default(cuid())
   title               String
   slug                String            @unique
-  abstract            String            @db.Text
-  content             String?           @db.Text
-  authors             String            @db.Text
-  authorsData         String?           @db.Text
+  abstract            String
+  content             String?
+  authors             String
+  authorsData         String?
   category            String
   publicationDate     DateTime?
   journalOrConference String?
   doi                 String?
-  pdfUrl              String?           @db.Text
+  pdfUrl              String?
   status              ContentStatus     @default(DRAFT)
   isFeatured          Boolean           @default(false)
   allowComments       Boolean           @default(true)
@@ -209,8 +210,8 @@ model ResearchComment {
   paperId    String
   userId     String
   userName   String
-  userAvatar String?       @db.Text
-  message    String        @db.Text
+  userAvatar String?
+  message    String
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
   paper      ResearchPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
@@ -235,7 +236,7 @@ model ResearchRating {
   paperId   String
   userId    String
   stars     Int           @default(5)
-  feedback  String?       @db.Text
+  feedback  String?
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   paper     ResearchPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
@@ -248,24 +249,24 @@ model Event {
   id              String        @id @default(cuid())
   title           String
   slug            String        @unique
-  summary         String        @db.Text
-  description     String        @db.Text
+  summary         String
+  description     String
   category        String
   eventDate       DateTime
   endDate         DateTime?
   location        String
   isVirtual       Boolean       @default(false)
-  registrationUrl String?       @db.Text
+  registrationUrl String?
   capacity        Int?
   status          ContentStatus @default(DRAFT)
   isFeatured      Boolean       @default(false)
-  coverImage      String?       @db.Text
-  videoUrl        String?       @db.Text
+  coverImage      String?
+  videoUrl        String?
   attendeesCount  Int?
-  gallery         String?       @db.Text
-  guests          String?       @db.Text
-  agenda          String?       @db.Text
-  keyHighlights   String?       @db.Text
+  gallery         String?
+  guests          String?
+  agenda          String?
+  keyHighlights   String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -278,18 +279,18 @@ model InnovationSubmission {
   id                   String           @id @default(cuid())
   title                String
   category             String
-  description          String           @db.Text
-  technologyStack      String?          @db.Text
+  description          String
+  technologyStack      String?
   submitterName        String
   submitterEmail       String
   submitterPhone       String
   studentId            String?
-  teamMembers          String?          @db.Text
+  teamMembers          String?
   prototypeUrl         String?
   videoUrl             String?
   attachmentUrl        String?
   status               SubmissionStatus @default(PENDING)
-  reviewNotes          String?          @db.Text
+  reviewNotes          String?
   convertedToProjectId String?
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
@@ -305,11 +306,11 @@ model PartnershipInquiry {
   email             String
   phone             String?
   collaborationArea String
-  proposalDetails   String   @db.Text
+  proposalDetails   String
   status            String   @default("NEW")
   isApproved        Boolean  @default(false)
   isRejected        Boolean  @default(false)
-  adminNotes        String?  @db.Text
+  adminNotes        String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -322,9 +323,9 @@ model ContactMessage {
   email      String
   phone      String?
   subject    String
-  message    String        @db.Text
+  message    String
   status     MessageStatus @default(UNREAD)
-  adminNotes String?       @db.Text
+  adminNotes String?
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
@@ -336,7 +337,7 @@ model TeamMember {
   name       String
   role       String
   department String   @default("Faculty of Computer Science & IT")
-  bio        String?  @db.Text
+  bio        String?
   avatar     String?
   email      String?
   linkedin   String?
@@ -354,7 +355,7 @@ model ProjectMember {
   name        String
   role        String   @default("Team Member")
   department  String   @default("Faculty of Computer Science & IT")
-  bio         String?  @db.Text
+  bio         String?
   avatar      String?
   projectId   String?
   project     Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
@@ -386,7 +387,7 @@ model Media {
   mimeType  String?
   sizeBytes Int?
   folder    String   @default("general")
-  caption   String?  @db.Text
+  caption   String?
   source    String   @default("post")
   createdAt DateTime @default(now())
   likes     MediaLike[]
@@ -408,7 +409,7 @@ model MediaComment {
   id        String   @id @default(cuid())
   mediaId   String
   name      String
-  message   String   @db.Text
+  message   String
   createdAt DateTime @default(now())
   media     Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
@@ -418,7 +419,7 @@ model MediaComment {
 model SiteSetting {
   id        String   @id @default(cuid())
   key       String   @unique
-  value     String   @db.Text
+  value     String
   group     String   @default("general")
   updatedAt DateTime @updatedAt
 
@@ -436,7 +437,7 @@ model CommentReaction {
   id        String   @id @default(cuid())
   commentId String
   visitorId String
-  emoji     String   @db.VarChar(32)
+  emoji     String
   createdAt DateTime @default(now())
 
   @@unique([commentId, visitorId, emoji], map: "uq_comment_visitor_emoji")
@@ -487,7 +488,7 @@ enum ServiceRequestPriority {
 model ServiceCategory {
   id          String     @id @default(cuid())
   name        String     @unique
-  description String?    @db.Text
+  description String?
   icon        String?
   order       Int        @default(0)
   isActive    Boolean    @default(true)
@@ -503,7 +504,7 @@ model Service {
   id          String          @id @default(cuid())
   categoryId  String
   name        String
-  description String?         @db.Text
+  description String?
   order       Int             @default(0)
   isActive    Boolean         @default(true)
   createdAt   DateTime        @default(now())
@@ -530,27 +531,27 @@ model ServiceRequest {
   serviceCategoryId         String              @map("serviceCategoryId")
   serviceId                 String              @map("serviceId")
   requestTitle              String
-  description               String              @db.Text
-  expectedOutcomes          String?             @db.Text
-  beneficiaries             String?             @db.Text
+  description               String
+  expectedOutcomes          String?
+  beneficiaries             String?
   startDate                 DateTime?
   preferredCompletionDate   DateTime?
   budget                    String?
   preferredContactMethod    String              @default("EMAIL")
   businessSector            String?
-  businessOutcome           String?             @db.Text
+  businessOutcome           String?
   isExistingBusiness        Boolean?
-  commercialRequirements    String?             @db.Text
-  organizationMission       String?             @db.Text
-  socialProblem             String?             @db.Text
-  targetBeneficiaries       String?             @db.Text
-  socialImpact              String?             @db.Text
+  commercialRequirements    String?
+  organizationMission       String?
+  socialProblem             String?
+  targetBeneficiaries       String?
+  socialImpact              String?
   fundingStatus             FundingStatus?
   isExistingCommunityProject Boolean?
-  additionalNotes           String?             @db.Text
+  additionalNotes           String?
   status                    ServiceRequestStatus @default(SUBMITTED)
   priority                  ServiceRequestPriority @default(MEDIUM)
-  rejectionReason           String?             @db.Text
+  rejectionReason           String?
   submittedById             String?
   assignedToId              String?
   createdAt                 DateTime            @default(now())
@@ -574,7 +575,7 @@ model ServiceRequestNote {
   id         String   @id @default(cuid())
   requestId  String
   authorId   String
-  content    String   @db.Text
+  content    String
   createdAt  DateTime @default(now())
   request    ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
 
@@ -602,7 +603,7 @@ model ServiceRequestHistory {
   fromStatus  ServiceRequestStatus?
   toStatus    ServiceRequestStatus?
   actorId     String
-  notes       String?             @db.Text
+  notes       String?
   createdAt   DateTime            @default(now())
   request     ServiceRequest     @relation(fields: [requestId], references: [id], onDelete: Cascade)
 
@@ -614,11 +615,11 @@ model Hub {
   name        String
   slug        String   @unique
   category    String
-  description String   @db.Text
+  description String
   icon        String?
   status      String   @default("Active")
   link        String?
-  tags        String?  @db.Text
+  tags        String?
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -634,8 +635,8 @@ model Opportunity {
   type        String
   deadline    String
   department  String
-  description String   @db.Text
-  eligibility String   @db.Text
+  description String
+  eligibility String
   actionUrl   String
   actionLabel String   @default("Apply Now")
   status      String   @default("Active")
@@ -653,8 +654,8 @@ model ResourceDocument {
   category    String
   format      String   @default("PDF")
   size        String   @default("500 KB")
-  description String   @db.Text
-  fileUrl     String?  @db.Text
+  description String
+  fileUrl     String?
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
