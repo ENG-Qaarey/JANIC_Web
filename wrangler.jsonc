@@ -14,7 +14,11 @@
 		"enabled": true
 	},
 	"vars": {
-		"NEXT_PUBLIC_APP_URL": "https://janic.muscabaxmed762.workers.dev"
+		"NEXT_PUBLIC_APP_URL": "https://janic.muscabaxmed762.workers.dev",
+		"DATABASE_URL": "postgresql://neondb_owner:npg_pQjr4A0VTwYf@ep-dawn-sea-b40enbve-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+		"AUTH_SECRET": "janic_super_secret_session_jwt_key_2026_XyZ987!@",
+		"NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_cHJpbWFyeS1mZWxpbmUtNDYyNy5jbGVyay5hY2NvdW50cy5kZXYk",
+		"CLERK_SECRET_KEY": "sk_test_Y1q4kLsystKPh57uhPSnRwgZOdixLUF7zmdiTE9rnT"
 	},
 	"hyperdrive": [
 		{
