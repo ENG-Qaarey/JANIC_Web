@@ -1,4 +1,5 @@
 /* eslint-disable */
+require("dotenv").config();
 const { PrismaClient, Role, ContentStatus } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 

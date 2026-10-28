@@ -12,5 +12,8 @@
   },
   "observability": {
     "enabled": true
+  },
+  "vars": {
+    "NEXT_PUBLIC_APP_URL": "https://janic.muscabaxmed762.workers.dev"
   }
 }
