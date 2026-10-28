@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "opennextjs-cloudflare build",
-    "build:next": "prisma generate && next build",
+    "build:next": "next build && node -e \"try{require('fs').cpSync('node_modules/pg-cloudflare/dist','.next/standalone/node_modules/pg-cloudflare/dist',{recursive:true})}catch(e){}\"",
     "build:worker": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && wrangler dev",
     "deploy": "opennextjs-cloudflare build && wrangler deploy",

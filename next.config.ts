@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 // Reloaded to recognize updated prisma schema in node_modules
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@prisma/client", ".prisma/client"],
+  outputFileTracingIncludes: {
+    "/**": ["./node_modules/pg-cloudflare/**/*"],
+  },
   devIndicators: false,
   async redirects() {
     return [
