@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getCurrentUser, signAuthToken, SESSION_COOKIE_NAME } from "@/lib/auth/jwt";
-import { getPrismaClient } from "@/lib/db/prisma";
+import prisma from "@/lib/db/prisma";
 import bcrypt from "bcryptjs";
 
 export async function GET() {
@@ -9,10 +9,12 @@ export async function GET() {
     return NextResponse.json({ success: false, user: null }, { status: 401 });
   }
 
-  const prisma = await getPrismaClient();
-  // Use prisma here for database operations
-  // const users = await prisma.user.findMany();
-  
+  const updatedUser = await prisma.user.update({
+    where: { id: user.id },
+    data: {},
+    select: { id: true, name: true, username: true, email: true, avatar: true, role: true }
+  });
+
   return NextResponse.json({ success: true, user });
 }
 
@@ -23,7 +25,6 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 });
     }
 
-    const prisma = await getPrismaClient();
     const body = await req.json();
     const { name, username, email, avatar, password } = body;
 
@@ -42,3 +43,9 @@ export async function PUT(req: NextRequest) {
       data: dataToUpdate,
       select: { id: true, name: true, username: true, email: true, avatar: true, role: true }
     });
+
+    return NextResponse.json({ success: true, user });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "INTERNAL ERROR" }, { status: 500 });
+  }
+}

@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPrismaClient } from "@/lib/db/prisma";
+import prisma from "@/lib/db/prisma";
 
 export async function GET() {
-  const prisma = await getPrismaClient();
-  const media = await prisma.media.findMany({
-    orderBy: { order: "asc" },
-  });
+  const media = await prisma.media.findMany();
   return NextResponse.json(media);
 }
 
 export async function POST(req: NextRequest) {
-  const prisma = await getPrismaClient();
   const body = await req.json();
   const media = await prisma.media.create({
     data: {
