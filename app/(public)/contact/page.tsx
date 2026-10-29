@@ -42,7 +42,7 @@ export default async function ContactPage({
   const campusLocation =
     settings["campus_location"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia";
   const contactEmail = settings["contact_email"] || "janic@jazeerauniversity.edu.so";
-  const contactPhone = settings["contact_phone"] || "+25213195111";
+  const contactPhone = settings["contact_phone"] || "+252613195111";
   const officeHours = settings["office_hours"] || "Saturday – Thursday: 8:00 AM – 5:00 PM\nFriday: Closed";
   const accreditationText =
     settings["accreditation_text"] ||
