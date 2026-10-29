@@ -3,9 +3,41 @@ import prisma from "@/lib/db/prisma";
 import { getCurrentUser } from "@/lib/auth/jwt";
 import { hasPermission } from "@/lib/permissions/roles";
 import { Role } from "@prisma/client";
-import fs from "fs";
-import path from "path";
-import { formatPostCaption } from "@/lib/media/post-media";
+import { ATTACHMENT_SOURCE, formatPostCaption } from "@/lib/media/post-media";
+
+/**
+ * Cloudflare Workers have no writable filesystem, so uploads can no longer be
+ * written to `public/uploads` (that threw `operation not permitted`). The bytes
+ * are stored in `Media.data` on Postgres instead and served by
+ * `GET /api/media/[id]/raw`.
+ */
+async function storeFile(
+  file: File,
+  bytes: Uint8Array<ArrayBuffer>,
+  folder: string,
+  alt: string,
+  source: string,
+  caption: string | null
+) {
+  // Generating the id up-front means the public URL is known before the insert.
+  const id = crypto.randomUUID();
+  return prisma.media.create({
+    data: {
+      id,
+      fileName: file.name,
+      url: `/api/media/${id}/raw`,
+      alt,
+      mimeType: file.type || null,
+      sizeBytes: file.size,
+      data: bytes,
+      folder,
+      caption,
+      source,
+    },
+    // Never echo the raw bytes back in the response.
+    omit: { data: true },
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -78,53 +110,42 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    // MULTI-IMAGE POST: If 2 or more images and grouped into one card
+    // MULTI-IMAGE POST: 2 or more images grouped into one card.
+    // Each image is persisted as its own hidden "attachment" row (that is what
+    // holds the bytes); the visible post is the row whose caption carries the
+    // gallery marker.
     if (groupPost && imageFiles.length > 1) {
       const uploadedUrls: string[] = [];
 
       for (const file of imageFiles) {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-
-        const safeName = file.name.replace(/[^\w.-]/g, "_");
-        const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${safeName}`;
-        const filePath = path.join(uploadDir, uniqueFileName);
-
-        await fs.promises.writeFile(filePath, buffer);
-        uploadedUrls.push(`/uploads/${uniqueFileName}`);
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const attachment = await storeFile(
+          file,
+          bytes,
+          folder,
+          alt || file.name,
+          ATTACHMENT_SOURCE,
+          null
+        );
+        uploadedUrls.push(attachment.url);
       }
 
       const primaryFile = imageFiles[0];
       const formattedCaption = formatPostCaption(caption, uploadedUrls);
 
-      const mediaData: Record<string, any> = {
-        fileName: `${primaryFile.name} (+${imageFiles.length - 1} photos)`,
-        url: uploadedUrls[0],
-        alt: alt || formattedCaption || primaryFile.name,
-        mimeType: primaryFile.type,
-        sizeBytes: imageFiles.reduce((acc, f) => acc + f.size, 0),
-        folder,
-      };
-
-      let mediaRecord;
-      try {
-        mediaRecord = await prisma.media.create({
-          data: { ...mediaData, source } as any,
-        });
-      } catch (createErr: any) {
-        if (createErr?.message?.includes("Unknown argument `source`")) {
-          mediaRecord = await prisma.media.create({
-            data: mediaData as any,
-          });
-        } else {
-          throw createErr;
-        }
-      }
+      const mediaRecord = await prisma.media.create({
+        data: {
+          fileName: `${primaryFile.name} (+${imageFiles.length - 1} photos)`,
+          url: uploadedUrls[0],
+          alt: alt || formattedCaption || primaryFile.name,
+          mimeType: primaryFile.type || null,
+          sizeBytes: imageFiles.reduce((acc, f) => acc + f.size, 0),
+          folder,
+          caption: formattedCaption,
+          source,
+        },
+        omit: { data: true },
+      });
 
       return NextResponse.json({
         success: true,
@@ -138,41 +159,15 @@ export async function POST(req: NextRequest) {
     const createdRecords = [];
 
     for (const file of allFiles) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const safeName = file.name.replace(/[^\w.-]/g, "_");
-      const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${safeName}`;
-      const filePath = path.join(uploadDir, uniqueFileName);
-
-      await fs.promises.writeFile(filePath, buffer);
-
-      const publicUrl = `/uploads/${uniqueFileName}`;
-
-      const mediaData: Record<string, any> = {
-        fileName: file.name,
-        url: publicUrl,
-        alt: alt || caption || file.name,
-        mimeType: file.type,
-        sizeBytes: file.size,
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const mediaRecord = await storeFile(
+        file,
+        bytes,
         folder,
-      };
-
-      let mediaRecord;
-      try {
-        mediaRecord = await prisma.media.create({
-          data: { ...mediaData, source } as any,
-        });
-      } catch (createErr: any) {
-        if (createErr?.message?.includes("Unknown argument `source`")) {
-          mediaRecord = await prisma.media.create({
-            data: mediaData as any,
-          });
-        } else {
-          throw createErr;
-        }
-      }
-
+        alt || caption || file.name,
+        source,
+        null
+      );
       createdRecords.push(mediaRecord);
     }
 

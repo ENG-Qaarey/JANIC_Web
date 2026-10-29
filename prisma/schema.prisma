@@ -115,6 +115,7 @@ model Media {
   height        Int?
   mimeType      String?
   sizeBytes     Int?
+  data          Bytes?
   folder        String         @default("general")
   caption       String?
   source        String         @default("post")

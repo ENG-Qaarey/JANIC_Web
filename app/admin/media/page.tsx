@@ -3,13 +3,17 @@ import React from "react";
 import prisma from "@/lib/db/prisma";
 import { MediaManager } from "@/components/admin/MediaManager";
 import { requireAuth } from "@/lib/permissions/roles";
+import { ATTACHMENT_SOURCE } from "@/lib/media/post-media";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminMediaPage() {
   await requireAuth(null, "media:read");
   const media = await prisma.media.findMany({
+    // Gallery child rows only exist to hold bytes for a multi-image post.
+    where: { source: { not: ATTACHMENT_SOURCE } },
     orderBy: { createdAt: "desc" },
+    omit: { data: true },
   });
 
   // Calculate detailed stats
