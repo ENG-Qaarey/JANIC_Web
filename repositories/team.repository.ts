@@ -3,40 +3,16 @@ import { Prisma } from "@prisma/client";
 
 export class TeamRepository {
   static async findActive() {
-    const items = await prisma.teamMember.findMany({
+    return prisma.teamMember.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
     });
-    try {
-      const founders = await prisma.$queryRawUnsafe<{ id: string; isFounder: number | boolean }[]>(
-        "SELECT id, isFounder FROM TeamMember"
-      );
-      const founderMap = new Map(founders.map((f) => [f.id, Boolean(f.isFounder)]));
-      return items.map((item) => ({
-        ...item,
-        isFounder: founderMap.get(item.id) ?? (item as any).isFounder ?? false,
-      }));
-    } catch {
-      return items.map((item) => ({ ...item, isFounder: false }));
-    }
   }
 
   static async findAllAdmin() {
-    const items = await prisma.teamMember.findMany({
+    return prisma.teamMember.findMany({
       orderBy: { order: "asc" },
     });
-    try {
-      const founders = await prisma.$queryRawUnsafe<{ id: string; isFounder: number | boolean }[]>(
-        "SELECT id, isFounder FROM TeamMember"
-      );
-      const founderMap = new Map(founders.map((f) => [f.id, Boolean(f.isFounder)]));
-      return items.map((item) => ({
-        ...item,
-        isFounder: founderMap.get(item.id) ?? (item as any).isFounder ?? false,
-      }));
-    } catch {
-      return items.map((item) => ({ ...item, isFounder: false }));
-    }
   }
 
   static async create(data: any) {

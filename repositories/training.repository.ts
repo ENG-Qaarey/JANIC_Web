@@ -17,62 +17,39 @@ export interface TrainerData {
 async function attachStatsToPrograms(programs: any[]) {
   if (!programs || programs.length === 0) return [];
   const programIds = programs.map((p) => p.id);
-  const inPlaceholders = programIds.map(() => "?").join(",");
 
-  const commentsMap: Record<string, number> = {};
-  const likesMap: Record<string, number> = {};
-  const ratingsMap: Record<string, number[]> = {};
-  const extraColsMap: Record<string, { trainers?: string; startDate?: Date | null; endDate?: Date | null; allowComments?: boolean; allowInteractions?: boolean }> = {};
+  const [commentCounts, likeCounts, ratings] = await Promise.all([
+    prisma.trainingComment.groupBy({
+      by: ["trainingId"],
+      where: { trainingId: { in: programIds } },
+      _count: { _all: true },
+    }),
+    prisma.trainingLike.groupBy({
+      by: ["trainingId"],
+      where: { trainingId: { in: programIds } },
+      _count: { _all: true },
+    }),
+    prisma.trainingRating.findMany({
+      where: { trainingId: { in: programIds } },
+      select: { trainingId: true, stars: true },
+    }),
+  ]);
 
-  try {
-    const [rawComments, rawLikes, rawRatings, rawExtras] = await Promise.all([
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT trainingId, COUNT(*) as cnt FROM trainingcomment WHERE trainingId IN (${inPlaceholders}) GROUP BY trainingId`,
-        ...programIds
-      ).catch(() => []),
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT trainingId, COUNT(*) as cnt FROM traininglike WHERE trainingId IN (${inPlaceholders}) GROUP BY trainingId`,
-        ...programIds
-      ).catch(() => []),
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT trainingId, stars FROM trainingrating WHERE trainingId IN (${inPlaceholders})`,
-        ...programIds
-      ).catch(() => []),
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT id, trainers, startDate, endDate, allowComments, allowInteractions FROM TrainingProgram WHERE id IN (${inPlaceholders})`,
-        ...programIds
-      ).catch(() => []),
-    ]);
+  const commentsMap = new Map<string, number>();
+  for (const c of commentCounts) commentsMap.set(c.trainingId, c._count._all);
 
-    for (const c of rawComments || []) {
-      if (c && c.trainingId) commentsMap[c.trainingId] = Number(c.cnt || 0);
-    }
-    for (const l of rawLikes || []) {
-      if (l && l.trainingId) likesMap[l.trainingId] = Number(l.cnt || 0);
-    }
-    for (const r of rawRatings || []) {
-      if (r && r.trainingId) {
-        if (!ratingsMap[r.trainingId]) ratingsMap[r.trainingId] = [];
-        ratingsMap[r.trainingId].push(Number(r.stars));
-      }
-    }
-    for (const x of rawExtras || []) {
-      if (x && x.id) {
-        extraColsMap[x.id] = {
-          trainers: x.trainers,
-          startDate: x.startDate,
-          endDate: x.endDate,
-          allowComments: x.allowComments !== undefined ? Boolean(x.allowComments) : true,
-          allowInteractions: x.allowInteractions !== undefined ? Boolean(x.allowInteractions) : true,
-        };
-      }
-    }
-  } catch {
-    // fallback
+  const likesMap = new Map<string, number>();
+  for (const l of likeCounts) likesMap.set(l.trainingId, l._count._all);
+
+  const ratingsMap = new Map<string, number[]>();
+  for (const r of ratings) {
+    const list = ratingsMap.get(r.trainingId);
+    if (list) list.push(r.stars);
+    else ratingsMap.set(r.trainingId, [r.stars]);
   }
 
   return programs.map((program) => {
-    const starsList = ratingsMap[program.id] || [];
+    const starsList = ratingsMap.get(program.id) || [];
     const avgRating =
       starsList.length > 0
         ? Number(
@@ -80,20 +57,13 @@ async function attachStatsToPrograms(programs: any[]) {
           )
         : 0;
 
-    const extra = extraColsMap[program.id];
-    const trainersRaw = program.trainers || extra?.trainers;
-    const startDate = program.startDate ?? extra?.startDate;
-    const endDate = program.endDate ?? extra?.endDate;
-    const allowComments = program.allowComments ?? extra?.allowComments ?? true;
-    const allowInteractions = program.allowInteractions ?? extra?.allowInteractions ?? true;
-
     let trainersList: TrainerData[] = [];
-    if (trainersRaw) {
+    if (program.trainers) {
       try {
         trainersList =
-          typeof trainersRaw === "string"
-            ? JSON.parse(trainersRaw)
-            : trainersRaw;
+          typeof program.trainers === "string"
+            ? JSON.parse(program.trainers)
+            : program.trainers;
       } catch {
         trainersList = [];
       }
@@ -101,15 +71,12 @@ async function attachStatsToPrograms(programs: any[]) {
 
     return {
       ...program,
-      startDate,
-      endDate,
-      trainers: trainersRaw,
       trainersList,
-      allowComments,
-      allowInteractions,
+      allowComments: program.allowComments ?? true,
+      allowInteractions: program.allowInteractions ?? true,
       stats: {
-        commentsCount: commentsMap[program.id] || 0,
-        likesCount: likesMap[program.id] || 0,
+        commentsCount: commentsMap.get(program.id) || 0,
+        likesCount: likesMap.get(program.id) || 0,
         ratingsCount: starsList.length,
         avgRating,
       },

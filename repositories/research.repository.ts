@@ -12,60 +12,39 @@ export interface ResearchAuthorData {
 async function attachStatsToPapers(papers: any[]) {
   if (!papers || papers.length === 0) return [];
   const paperIds = papers.map((p) => p.id);
-  const inPlaceholders = paperIds.map(() => "?").join(",");
 
-  const commentsMap: Record<string, number> = {};
-  const likesMap: Record<string, number> = {};
-  const ratingsMap: Record<string, number[]> = {};
-  const extraDataMap: Record<string, { authorsData?: string; allowComments?: boolean; allowInteractions?: boolean }> = {};
+  const [commentCounts, likeCounts, ratings] = await Promise.all([
+    prisma.researchComment.groupBy({
+      by: ["paperId"],
+      where: { paperId: { in: paperIds } },
+      _count: { _all: true },
+    }),
+    prisma.researchLike.groupBy({
+      by: ["paperId"],
+      where: { paperId: { in: paperIds } },
+      _count: { _all: true },
+    }),
+    prisma.researchRating.findMany({
+      where: { paperId: { in: paperIds } },
+      select: { paperId: true, stars: true },
+    }),
+  ]);
 
-  try {
-    const [rawComments, rawLikes, rawRatings, rawExtras] = await Promise.all([
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT paperId, COUNT(*) as cnt FROM researchcomment WHERE paperId IN (${inPlaceholders}) GROUP BY paperId`,
-        ...paperIds
-      ).catch(() => []),
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT paperId, COUNT(*) as cnt FROM researchlike WHERE paperId IN (${inPlaceholders}) GROUP BY paperId`,
-        ...paperIds
-      ).catch(() => []),
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT paperId, stars FROM researchrating WHERE paperId IN (${inPlaceholders})`,
-        ...paperIds
-      ).catch(() => []),
-      prisma.$queryRawUnsafe<any[]>(
-        `SELECT id, authorsData, allowComments, allowInteractions FROM ResearchPaper WHERE id IN (${inPlaceholders})`,
-        ...paperIds
-      ).catch(() => []),
-    ]);
+  const commentsMap = new Map<string, number>();
+  for (const c of commentCounts) commentsMap.set(c.paperId, c._count._all);
 
-    for (const c of rawComments || []) {
-      if (c && c.paperId) commentsMap[c.paperId] = Number(c.cnt || 0);
-    }
-    for (const l of rawLikes || []) {
-      if (l && l.paperId) likesMap[l.paperId] = Number(l.cnt || 0);
-    }
-    for (const r of rawRatings || []) {
-      if (r && r.paperId) {
-        if (!ratingsMap[r.paperId]) ratingsMap[r.paperId] = [];
-        ratingsMap[r.paperId].push(Number(r.stars));
-      }
-    }
-    for (const a of rawExtras || []) {
-      if (a && a.id) {
-        extraDataMap[a.id] = {
-          authorsData: a.authorsData,
-          allowComments: a.allowComments !== undefined ? Boolean(a.allowComments) : true,
-          allowInteractions: a.allowInteractions !== undefined ? Boolean(a.allowInteractions) : true,
-        };
-      }
-    }
-  } catch {
-    // fallback
+  const likesMap = new Map<string, number>();
+  for (const l of likeCounts) likesMap.set(l.paperId, l._count._all);
+
+  const ratingsMap = new Map<string, number[]>();
+  for (const r of ratings) {
+    const list = ratingsMap.get(r.paperId);
+    if (list) list.push(r.stars);
+    else ratingsMap.set(r.paperId, [r.stars]);
   }
 
   return papers.map((paper) => {
-    const starsList = ratingsMap[paper.id] || [];
+    const starsList = ratingsMap.get(paper.id) || [];
     const avgRating =
       starsList.length > 0
         ? Number(
@@ -73,10 +52,7 @@ async function attachStatsToPapers(papers: any[]) {
           )
         : 0;
 
-    const extra = extraDataMap[paper.id];
-    const rawAuthorsData = paper.authorsData || extra?.authorsData;
-    const allowComments = paper.allowComments ?? extra?.allowComments ?? true;
-    const allowInteractions = paper.allowInteractions ?? extra?.allowInteractions ?? true;
+    const rawAuthorsData = paper.authorsData;
 
     let authorsList: ResearchAuthorData[] = [];
     if (rawAuthorsData) {
@@ -100,13 +76,12 @@ async function attachStatsToPapers(papers: any[]) {
 
     return {
       ...paper,
-      authorsData: rawAuthorsData,
       authorsList,
-      allowComments,
-      allowInteractions,
+      allowComments: paper.allowComments ?? true,
+      allowInteractions: paper.allowInteractions ?? true,
       stats: {
-        commentsCount: commentsMap[paper.id] || 0,
-        likesCount: likesMap[paper.id] || 0,
+        commentsCount: commentsMap.get(paper.id) || 0,
+        likesCount: likesMap.get(paper.id) || 0,
         ratingsCount: starsList.length,
         avgRating,
       },
