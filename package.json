@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "opennextjs-cloudflare build",
-    "build:next": "next build && node -e \"try{require('fs').cpSync('node_modules/pg-cloudflare/dist','.next/standalone/node_modules/pg-cloudflare/dist',{recursive:true})}catch(e){}\"",
+    "build:next": "next build && node -e \"const f=require('fs'),p='.next/standalone/node_modules/.prisma/client/package.json';if(f.existsSync(p)){const j=JSON.parse(f.readFileSync(p,'utf8')),q=String.fromCharCode(34),a=q+'node'+q+':'+q+'./index.js'+q,b=q+'node'+q+':'+q+'./wasm.js'+q,o=JSON.stringify(j).split(a).join(b);f.writeFileSync(p,JSON.stringify(JSON.parse(o),null,2));}\" && node -e \"try{require('fs').cpSync('node_modules/pg-cloudflare/dist','.next/standalone/node_modules/pg-cloudflare/dist',{recursive:true})}catch(e){}\"",
     "build:worker": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && wrangler dev",
     "deploy": "opennextjs-cloudflare build && wrangler deploy",
