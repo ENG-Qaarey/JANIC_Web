@@ -2,7 +2,13 @@ import React from "react";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { MapPin, Mail, Phone, Clock, ShieldCheck } from "lucide-react";
+import { MapPin, Mail, Phone, Clock, ShieldCheck, Share2 } from "lucide-react";
+import {
+  LinkedInIcon,
+  TwitterIcon,
+  FacebookIcon,
+  GitHubIcon,
+} from "@/components/ui/social-icons";
 import { getSettingsMap } from "@/lib/settings";
 import styles from "./ContactSection.module.css";
 
@@ -25,11 +31,16 @@ export default async function ContactPage({
 
   const settings = await getSettingsMap();
 
+  const siteName = settings["site_name"] || "Jazeera Nexus Innovation Center (JANIC)";
   const institutionName = settings["institution_name"] || "Jazeera University";
-  const facultyName = settings["faculty_name"] || "Faculty of Computer Science & IT";
-  const campusTitle = settings["campus_title"] || `${institutionName} Main Campus`;
+  const facultyName =
+    settings["faculty_name"] || "Faculty of Computer Science & IT (FOCOSIT)";
   const campusWing = settings["campus_wing"] || `${facultyName}, 2nd Floor Innovation Wing`;
-  const campusAddress = settings["campus_address"] || "Faculty of Computer Science & IT (FOCOSIT), Jazeera University, Mogadishu, Somalia";
+  const campusAddress =
+    settings["campus_address"] ||
+    "Faculty of Computer Science & IT (FOCOSIT), Jazeera University, Mogadishu, Somalia";
+  const campusLocation =
+    settings["campus_location"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia";
   const contactEmail = settings["contact_email"] || "janic@jazeerauniversity.edu.so";
   const contactPhone = settings["contact_phone"] || "+25213195111";
   const officeHours = settings["office_hours"] || "Saturday – Thursday: 8:00 AM – 5:00 PM\nFriday: Closed";
@@ -37,6 +48,14 @@ export default async function ContactPage({
     settings["accreditation_text"] ||
     settings["accreditation_badge"] ||
     "Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.";
+
+  // Verified official links only — the block is hidden until an admin sets at least one.
+  const socialLinks = [
+    { key: "linkedin_url", label: "LinkedIn", href: (settings["linkedin_url"] || "").trim(), Icon: LinkedInIcon },
+    { key: "twitter_url", label: "X (Twitter)", href: (settings["twitter_url"] || "").trim(), Icon: TwitterIcon },
+    { key: "facebook_url", label: "Facebook", href: (settings["facebook_url"] || "").trim(), Icon: FacebookIcon },
+    { key: "github_url", label: "GitHub", href: (settings["github_url"] || "").trim(), Icon: GitHubIcon },
+  ].filter((s) => s.href.length > 0);
 
   const telHref = contactPhone.split("/")[0]?.trim() || contactPhone;
 
@@ -57,10 +76,24 @@ export default async function ContactPage({
               <aside className={styles.infoPanel} aria-labelledby="contact-information-title">
                 <header>
                   <p className={styles.eyebrow}>Contact Information</p>
-                  <h2 id="contact-information-title">{campusTitle}</h2>
-                  <p className={styles.campus}>{campusWing}</p>
+                  <h2 id="contact-information-title">{siteName}</h2>
+                  <p className={styles.campus}>{facultyName}</p>
+                  <p className={styles.campus}>
+                    {institutionName} · Mogadishu, Somalia
+                  </p>
                 </header>
                 <dl className={styles.details}>
+                  <div className={styles.detail}>
+                    <span className={styles.icon}><MapPin size={23} strokeWidth={1.8} aria-hidden="true" /></span>
+                    <div>
+                      <dt>Campus Location</dt>
+                      <dd>
+                        {campusLocation}
+                        <br />
+                        {campusWing}
+                      </dd>
+                    </div>
+                  </div>
                   <div className={styles.detail}>
                     <span className={styles.icon}><MapPin size={23} strokeWidth={1.8} aria-hidden="true" /></span>
                     <div><dt>Address</dt><dd>{campusAddress}</dd></div>
@@ -92,6 +125,30 @@ export default async function ContactPage({
                       </dd>
                     </div>
                   </div>
+                  {socialLinks.length > 0 && (
+                    <div className={styles.detail}>
+                      <span className={styles.icon}><Share2 size={23} strokeWidth={1.8} aria-hidden="true" /></span>
+                      <div>
+                        <dt>Social Media</dt>
+                        <dd>
+                          <div className={styles.socialRow}>
+                            {socialLinks.map(({ key, label, href, Icon }) => (
+                              <a
+                                key={key}
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.socialLink}
+                              >
+                                <Icon className="w-3.5 h-3.5" />
+                                {label}
+                              </a>
+                            ))}
+                          </div>
+                        </dd>
+                      </div>
+                    </div>
+                  )}
                 </dl>
                 <div className={styles.affiliationWrap}>
                   <div className={styles.affiliation}>

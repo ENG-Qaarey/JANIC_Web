@@ -67,6 +67,7 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
     contact_email: settingsMap["contact_email"] || "info@janic.edu.so",
     contact_phone: settingsMap["contact_phone"] || "+252 61 555 1234",
     campus_address: settingsMap["campus_address"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia",
+    campus_location: settingsMap["campus_location"] || "Jazeera University Main Campus, KM4, Mogadishu, Somalia",
     campus_wing: settingsMap["campus_wing"] || "Faculty of Computer Science & IT, 2nd Floor Innovation Wing",
     office_hours: settingsMap["office_hours"] || "Saturday – Thursday: 8:00 AM – 5:00 PM\nFriday: Closed",
     accreditation_text: settingsMap["accreditation_text"] || "Accredited by the Ministry of Education, Culture and Higher Education of the Federal Government of Somalia.",
@@ -98,7 +99,7 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
 
     try {
       const groupFor = (key: string) => {
-        if (key.includes("email") || key.includes("phone") || key.includes("address") || key.includes("hours") || key.includes("wing") || key.includes("accreditation_text")) return "contact";
+        if (key.includes("email") || key.includes("phone") || key.includes("address") || key.includes("location") || key.includes("hours") || key.includes("wing") || key.includes("accreditation_text")) return "contact";
         if (key.includes("url")) return "social";
         if (key.startsWith("hero_")) return "hero";
         if (key.startsWith("footer_") || key === "accreditation_badge") return "footer";
@@ -243,6 +244,12 @@ export function SettingsManager({ initialSettings, isAdmin = true }: SettingsMan
                   <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Campus Address
                 </label>
                 <textarea rows={2} value={form.campus_address} onChange={(e) => handleChange("campus_address", e.target.value)} className={`${inputCls} resize-none`} required />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Campus Location
+                </label>
+                <input type="text" value={form.campus_location} onChange={(e) => handleChange("campus_location", e.target.value)} className={inputCls} placeholder="e.g. Jazeera University Main Campus, KM4, Mogadishu, Somalia" />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">

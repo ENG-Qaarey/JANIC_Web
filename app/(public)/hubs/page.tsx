@@ -15,6 +15,7 @@ import {
   Users,
   Layers,
   ArrowRight,
+  ArrowLeft,
   CheckCircle2,
   Clock,
 } from "lucide-react";
@@ -51,6 +52,8 @@ interface HubItem {
   status: "Active" | "Upcoming";
   link?: string;
   tags: string[];
+  /** Mirrors the admin "Hub is Active & Visible publicly" toggle. */
+  isActive?: boolean;
 }
 
 const defaultHubs: HubItem[] = [
@@ -184,7 +187,7 @@ const defaultHubs: HubItem[] = [
 export default async function HubsPage() {
   let displayHubs: HubItem[] = defaultHubs;
   try {
-    const dbHubs = await HubRepository.findActive();
+    const dbHubs = await HubRepository.findDirectory();
     if (dbHubs && dbHubs.length > 0) {
       displayHubs = dbHubs.map((h: any) => ({
         id: h.slug || h.id,
@@ -195,6 +198,7 @@ export default async function HubsPage() {
         status: (h.status === "Upcoming" ? "Upcoming" : "Active") as "Active" | "Upcoming",
         link: h.link || undefined,
         tags: h.tags ? h.tags.split(",").map((t: string) => t.trim()).filter(Boolean) : [],
+        isActive: h.isActive !== false,
       }));
     }
   } catch (err) {
@@ -235,10 +239,17 @@ export default async function HubsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
           {displayHubs.map((hub) => {
             const Icon = hub.icon;
+            const isActive = hub.isActive !== false;
             const isExternal = hub.link?.startsWith("http");
 
             const CardContent = (
-              <div className="h-full flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 sm:p-7 transition-all duration-200 hover:shadow-lg hover:border-[#00A3E0]/50 group">
+              <div
+                className={`h-full flex flex-col justify-between bg-white dark:bg-slate-900 border rounded-2xl p-6 sm:p-7 transition-all duration-200 ${
+                  isActive
+                    ? "border-slate-200/90 dark:border-slate-800 hover:shadow-lg hover:border-[#00A3E0]/50 group"
+                    : "border-slate-200/70 dark:border-slate-800 opacity-75"
+                }`}
+              >
                 <div>
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/80 border border-sky-100 dark:border-sky-900 flex items-center justify-center text-[#00A3E0] group-hover:bg-[#00A3E0] group-hover:text-white transition-colors">
@@ -246,12 +257,14 @@ export default async function HubsPage() {
                     </div>
                     <span
                       className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
-                        hub.status === "Active"
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800"
-                          : "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700"
+                        !isActive
+                          ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-400 dark:border-amber-800"
+                          : hub.status === "Active"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800"
+                            : "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700"
                       }`}
                     >
-                      {hub.status}
+                      {isActive ? hub.status : "Inactive"}
                     </span>
                   </div>
 
@@ -278,13 +291,30 @@ export default async function HubsPage() {
                     ))}
                   </div>
 
-                  <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-[#00A3E0] group-hover:translate-x-1 transition-transform">
-                    <span>{hub.link ? "Explore Hub" : "Enquire With JANIC"}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
+                  {isActive ? (
+                    <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-[#00A3E0] group-hover:translate-x-1 transition-transform">
+                      <span>{hub.link ? "Explore Hub" : "Enquire With JANIC"}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  ) : (
+                    <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500">
+                      <span>Not Available</span>
+                      <ArrowLeft className="w-4 h-4" />
+                    </div>
+                  )}
                 </div>
               </div>
             );
+
+            // A hub whose "Active & Visible publicly" toggle is off stays listed,
+            // but is not clickable and shows a left arrow instead of a link affordance.
+            if (!isActive) {
+              return (
+                <div key={hub.id} className="h-full" aria-disabled="true">
+                  {CardContent}
+                </div>
+              );
+            }
 
             if (hub.link) {
               if (isExternal) {

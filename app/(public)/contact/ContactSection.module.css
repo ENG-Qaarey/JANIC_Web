@@ -19,6 +19,10 @@
 .detail a { color: #0075ff; }
 .detail a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .detail a:focus-visible { outline: 2px solid #0075ff; outline-offset: 3px; border-radius: 2px; }
+.socialRow { display: flex; flex-wrap: wrap; gap: 8px; }
+.socialLink { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; border: 1px solid #cfe2f9; background: #fff; font-size: 12px; font-weight: 700; color: #0075ff; text-decoration: none; transition: transform .25s ease-out, box-shadow .25s ease-out; }
+.socialLink:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgb(0 117 255 / 16%); }
+.socialLink:focus-visible { outline: 2px solid #0075ff; outline-offset: 3px; }
 .affiliationWrap { padding-top: 18px; border-top: 1px solid #cfe2f9; }
 .affiliation { display: flex; align-items: flex-start; gap: 14px; padding: 22px; border-radius: 20px; border: 1px solid rgb(207 230 255 / 75%); background: rgb(231 243 255 / 65%); backdrop-filter: blur(12px); }
 .affiliation > svg { flex-shrink: 0; color: #0085f4; }
@@ -37,6 +41,7 @@
 :global(.dark) .eyebrow, :global(.dark) .affiliation h3, :global(.dark) .detail a { color: #80c2ff; }
 :global(.dark) .campus, :global(.dark) .detail dd, :global(.dark) .affiliation p, :global(.dark) .formHeader > p:last-child { color: #acbfd9; }
 :global(.dark) .icon { background: #193c61; color: #80c2ff; }
+:global(.dark) .socialLink { background: #10294a; border-color: #2a486a; color: #80c2ff; }
 :global(.dark) .affiliationWrap { border-color: #2a486a; }
 :global(.dark) .affiliation { background: rgb(20 49 80 / 65%); border-color: #315374; }
 :global(.dark) .affiliation > svg { color: #80c2ff; }

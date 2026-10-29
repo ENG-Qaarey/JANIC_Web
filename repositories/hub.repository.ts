@@ -32,6 +32,16 @@ export class HubRepository {
       .map((h) => ({ name: h.name as string, href: (h.link as string).trim() }));
   }
 
+  /**
+   * Every hub for the public directory, ordered for display. Inactive hubs are
+   * included so the page can list them as non-clickable "Inactive" cards.
+   */
+  static async findDirectory() {
+    return (prisma as any).hub.findMany({
+      orderBy: { order: "asc" },
+    });
+  }
+
   static async findAllAdmin() {
     return (prisma as any).hub.findMany({
       orderBy: { order: "asc" },
