@@ -106,18 +106,18 @@ model InnovationSubmission {
 }
 
 model Media {
-  id           String         @id @default(cuid())
-  fileName     String
-  url          String
-  alt          String?
-  width        Int?
-  height       Int?
-  mimeType     String?
-  sizeBytes    Int?
-  folder       String         @default("general")
-  caption      String?
-  source       String         @default("post")
-  createdAt    DateTime       @default(now())
+  id            String         @id @default(cuid())
+  fileName      String
+  url           String
+  alt           String?
+  width         Int?
+  height        Int?
+  mimeType      String?
+  sizeBytes     Int?
+  folder        String         @default("general")
+  caption       String?
+  source        String         @default("post")
+  createdAt     DateTime       @default(now())
   mediaComments MediaComment[]
   mediaLikes    MediaLike[]
 }
@@ -190,29 +190,29 @@ model PartnershipInquiry {
 }
 
 model Project {
-  id                 String               @id @default(cuid())
-  title              String
-  slug               String               @unique
-  summary            String
-  problem            String
-  solution           String
-  technology         String
-  innovation         String?
-  outcomes           String?
-  category           String
-  status             ContentStatus        @default(DRAFT)
-  isFeatured         Boolean              @default(false)
-  heroImage          String?
-  demoUrl            String?
-  videoUrl           String?
-  githubUrl          String?
-  teamMembers        String?
-  order              Int                  @default(0)
-  publishedAt        DateTime?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  gallery            ProjectGalleryItem[]
-  members            ProjectMember[]
+  id          String               @id @default(cuid())
+  title       String
+  slug        String               @unique
+  summary     String
+  problem     String
+  solution    String
+  technology  String
+  innovation  String?
+  outcomes    String?
+  category    String
+  status      ContentStatus        @default(DRAFT)
+  isFeatured  Boolean              @default(false)
+  heroImage   String?
+  demoUrl     String?
+  videoUrl    String?
+  githubUrl   String?
+  teamMembers String?
+  order       Int                  @default(0)
+  publishedAt DateTime?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  gallery     ProjectGalleryItem[]
+  members     ProjectMember[]
 
   @@index([category])
   @@index([slug])
@@ -497,15 +497,15 @@ model TeamMember {
 }
 
 model TrainingComment {
-  id              String          @id @default(cuid())
-  trainingId      String
-  userId          String
-  userName        String
-  userAvatar      String?
-  message         String
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  training        TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  id         String          @id @default(cuid())
+  trainingId String
+  userId     String
+  userName   String
+  userAvatar String?
+  message    String
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  training   TrainingProgram @relation(fields: [trainingId], references: [id], onDelete: Cascade)
 
   @@index([trainingId])
   @@index([userId])
