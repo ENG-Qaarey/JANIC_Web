@@ -19,11 +19,13 @@ const hubSchema = z.object({
 
 export async function GET() {
   try {
+    await requireAuth();
     const items = await HubRepository.findAllAdmin();
     return NextResponse.json({ success: true, items });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Error";
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
+    const status = msg === "UNAUTHORIZED" ? 401 : msg === "FORBIDDEN" ? 403 : 500;
+    return NextResponse.json({ success: false, error: msg }, { status });
   }
 }
 

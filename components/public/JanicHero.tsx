@@ -18,7 +18,8 @@ const stats: StatItem[] = [
   { value: 2021, suffix: "", label: "Founded", icon: CalendarDays },
   { value: 18, suffix: "+", label: "Projects", icon: FileText },
   { value: 6, suffix: "", label: "Functions", icon: Layers },
-  { value: 2, suffix: "", label: "Hubs", icon: Building2, href: "https://juictgirls.org/" },
+  // Hub count/link is resolved at render time from the published hubs only.
+  { value: 2, suffix: "", label: "Hubs", icon: Building2 },
 ];
 
 function CountUp({ value, suffix }: { value: number; suffix: string }) {
@@ -61,9 +62,11 @@ interface JanicHeroProps {
   image: string;
   badgeValue: string;
   badgeLabel: string;
+  /** Published hub links ({ name, href }); hubs with the link toggle off are omitted. */
+  hubLinks?: { name: string; href: string }[];
 }
 
-export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel }: JanicHeroProps) {
+export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel, hubLinks = [] }: JanicHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -81,6 +84,15 @@ export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel }: Ja
   }, []);
 
   const defaultTitle = title.trim() === "Innovating Technology. Empowering the Future.";
+
+  // Hub links are admin-managed: a hub is absent here whenever its link toggle is off.
+  const hubStatHref = hubLinks.length > 0 ? hubLinks[0].href : undefined;
+  const statItems = stats.map((s) => (s.label === "Hubs" ? { ...s, href: hubStatHref } : s));
+  // The promo card only points at the Innovation Hub page while that hub is published.
+  const hubCardHref = hubLinks.some((h) => h.href === "/innovation-hub")
+    ? "/innovation-hub"
+    : "/hubs";
+
   return (
     <section ref={sectionRef} className={styles.hero} aria-labelledby="janic-hero-title">
       <div className={styles.background} aria-hidden="true">
@@ -115,14 +127,15 @@ export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel }: Ja
                 <div className={styles.eyebrow}>Innovation Hub</div>
                 <h2>Innovation Project <span>→</span> Prototypes <span>→</span> Solutions</h2>
                 <p>Bridging the gap between academic theory and real-world industrial impact through cutting-edge technology development.</p>
-                <Link href="/innovation-hub">Explore the Hub <ArrowRight size={21} aria-hidden="true" /></Link>
+                <Link href={hubCardHref}>Explore the Hub <ArrowRight size={21} aria-hidden="true" /></Link>
               </article>
             </div>
           </div>
         </div>
         <div data-reveal className={styles.statsEntrance}>
           <dl className={styles.stats}>
-            {stats.map(({ value, suffix, label, icon: Icon, href }) => {
+            {statItems.map(({ value, suffix, label, icon: Icon, href }) => {
+              const isExternal = Boolean(href && href.startsWith("http"));
               const inner = (
                 <>
                   <span className={styles.statIcon}><Icon size={29} strokeWidth={1.8} aria-hidden="true" /></span>
@@ -139,16 +152,27 @@ export function JanicHero({ title, subtitle, image, badgeValue, badgeLabel }: Ja
               return (
                 <div className={styles.stat} key={label}>
                   {href ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.statLink}
-                      title={`Visit ${label} (${href})`}
-                      aria-label={`${value}${suffix} ${label} - opens in a new tab`}
-                    >
-                      {inner}
-                    </a>
+                    isExternal ? (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.statLink}
+                        title={`Visit ${label} (${href})`}
+                        aria-label={`${value}${suffix} ${label} - opens in a new tab`}
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link
+                        href={href}
+                        className={styles.statLink}
+                        title={`Visit ${label} (${href})`}
+                        aria-label={`${value}${suffix} ${label}`}
+                      >
+                        {inner}
+                      </Link>
+                    )
                   ) : (
                     inner
                   )}

@@ -3,6 +3,7 @@ import { PublicHeader } from "@/components/layout/PublicHeader";
 import { PublicFooter } from "@/components/layout/PublicFooter";
 import { isEnabled, getSetting } from "@/lib/settings";
 import { getCurrentUser } from "@/lib/auth/jwt";
+import { HubRepository } from "@/repositories/hub.repository";
 import type { AuthUser } from "@/types/user";
 
 export const dynamic = "force-dynamic";
@@ -40,11 +41,19 @@ export default async function PublicLayout({
     currentUser = null;
   }
 
+  // Only hubs whose public link is switched on may appear in the main navigation.
+  let hubLinks: { name: string; href: string }[] = [];
+  try {
+    hubLinks = await HubRepository.findPublicLinks();
+  } catch {
+    hubLinks = [];
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <PublicHeader navLinks={navLinks} currentUser={currentUser} />
+      <PublicHeader navLinks={navLinks} hubLinks={hubLinks} currentUser={currentUser} />
       <div className="flex-1">{children}</div>
-      <PublicFooter />
+      <PublicFooter hubLinks={hubLinks} />
     </div>
   );
 }

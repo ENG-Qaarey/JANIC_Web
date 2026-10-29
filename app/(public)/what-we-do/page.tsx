@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SectionHero } from "@/components/layout/SectionHero";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
 import { JanicCta } from "@/components/public/JanicCta";
+import { HubRepository } from "@/repositories/hub.repository";
 // Same design system as the About JANIC page.
 import styles from "../about/AboutPage.module.css";
 import local from "./WhatWeDoPage.module.css";
@@ -69,7 +70,15 @@ const pillars = [
   },
 ];
 
-export default function WhatWeDoPage() {
+export default async function WhatWeDoPage() {
+  // The incubation pillar deep-links to the Innovation Hub page only while that
+  // hub's public link is switched on; otherwise it falls back to the directory.
+  const hubLinks = await HubRepository.findPublicLinks().catch(() => []);
+  const hasInnovationHub = hubLinks.some((h) => h.href === "/innovation-hub");
+  const resolvedPillars = hasInnovationHub
+    ? pillars
+    : pillars.map((p) => (p.href === "/innovation-hub" ? { ...p, href: "/hubs", cta: "Explore Hubs" } : p));
+
   return (
     <div className={styles.page}>
       {/* 1. HERO */}
@@ -164,7 +173,7 @@ export default function WhatWeDoPage() {
       <section className={styles.valuesSection} aria-label="Training, incubation, research and talent placement">
         <div className={styles.container}>
           <div className={`${styles.valuesGrid} ${local.valuesGrid4}`}>
-            {pillars.map((p, index) => {
+            {resolvedPillars.map((p, index) => {
               const Icon = p.icon;
               return (
                 <ScrollReveal key={p.title} animation="fade-up" duration={800} delay={(index % 4) * 110} className={styles.valueEntrance}>

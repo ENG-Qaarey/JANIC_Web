@@ -22,13 +22,15 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const item = await HubRepository.findById(id);
     if (!item) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
     return NextResponse.json({ success: true, item });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Error";
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
+    const status = msg === "UNAUTHORIZED" ? 401 : msg === "FORBIDDEN" ? 403 : 500;
+    return NextResponse.json({ success: false, error: msg }, { status });
   }
 }
 

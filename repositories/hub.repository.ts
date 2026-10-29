@@ -21,6 +21,17 @@ export class HubRepository {
     });
   }
 
+  /**
+   * Active hubs whose public link is switched on, ordered for public surfaces
+   * (main navigation, footer). A hub is absent here while its link toggle is off.
+   */
+  static async findPublicLinks(): Promise<{ name: string; href: string }[]> {
+    const hubs = (await this.findActive()) as any[];
+    return hubs
+      .filter((h) => typeof h.link === "string" && h.link.trim().length > 0)
+      .map((h) => ({ name: h.name as string, href: (h.link as string).trim() }));
+  }
+
   static async findAllAdmin() {
     return (prisma as any).hub.findMany({
       orderBy: { order: "asc" },

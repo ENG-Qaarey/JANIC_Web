@@ -4,7 +4,12 @@ import Image from "next/image";
 import { Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 import { getSettingsMap } from "@/lib/settings";
 
-export async function PublicFooter() {
+export async function PublicFooter({
+  hubLinks = [],
+}: {
+  /** Published hub links — a hub is absent while its link toggle is off. */
+  hubLinks?: { name: string; href: string }[];
+} = {}) {
   const settings = await getSettingsMap();
   const tagline = settings["footer_tagline"] || "Innovating Technology. Empowering the Future.";
   const founded = settings["founded_date"] || "October 25, 2021";
@@ -67,11 +72,24 @@ export async function PublicFooter() {
               <li>
                 <Link href="/project-members" className="text-slate-400 hover:text-white transition">Project Members & Teams</Link>
               </li>
-              <li>
-                <a href="https://juictgirls.org/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition inline-flex items-center gap-1">
-                  Jazeera ICT Girls Hub ↗
-                </a>
-              </li>
+              {hubLinks.map((hub) => (
+                <li key={hub.href}>
+                  {hub.href.startsWith("http") ? (
+                    <a
+                      href={hub.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-400 hover:text-white transition inline-flex items-center gap-1"
+                    >
+                      {hub.name} ↗
+                    </a>
+                  ) : (
+                    <Link href={hub.href} className="text-slate-400 hover:text-white transition">
+                      {hub.name}
+                    </Link>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
 

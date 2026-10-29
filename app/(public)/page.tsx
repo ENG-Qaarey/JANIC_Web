@@ -10,6 +10,7 @@ import { JanicPortfolio } from "@/components/public/JanicPortfolio";
 import { TrustedOrganizationsSection } from "@/components/public/TrustedOrganizationsSection";
 import { JanicCta } from "@/components/public/JanicCta";
 import { getSetting } from "@/lib/settings";
+import { HubRepository } from "@/repositories/hub.repository";
 
 export const dynamic = "force-dynamic";
 
@@ -27,9 +28,12 @@ export default async function HomePage() {
   const heroBadgeValue = await getSetting("hero_badge_value", "18+");
   const heroBadgeLabel = await getSetting("hero_badge_label", "STUDENT INNOVATION PROJECTS");
 
+  // Hero hub link follows the same admin toggle as the navigation and listings.
+  const hubLinks = await HubRepository.findPublicLinks().catch(() => []);
+
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950 overflow-x-clip">
-      <JanicHero title={heroTitle} subtitle={heroSubtitle} image={heroImage} badgeValue={heroBadgeValue} badgeLabel={heroBadgeLabel} />
+      <JanicHero title={heroTitle} subtitle={heroSubtitle} image={heroImage} badgeValue={heroBadgeValue} badgeLabel={heroBadgeLabel} hubLinks={hubLinks} />
       <JanicAbout />
 
       <JanicFunctions />

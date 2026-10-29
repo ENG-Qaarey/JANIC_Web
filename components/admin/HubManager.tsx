@@ -49,6 +49,8 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingHub, setEditingHub] = useState<HubItem | null>(null);
   const [loading, setLoading] = useState(false);
+  /** Hub cards only render a link when one is switched on. */
+  const [hasLink, setHasLink] = useState(false);
 
   // Categories are data-driven so editing a hub never overwrites its real category.
   const existingCategories = Array.from(
@@ -72,6 +74,7 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
 
   const handleOpenAdd = () => {
     setEditingHub(null);
+    setHasLink(false);
     setFormData({
       name: "",
       slug: "",
@@ -89,6 +92,7 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
 
   const handleOpenEdit = (item: HubItem) => {
     setEditingHub(item);
+    setHasLink(Boolean(item.link));
     setFormData({
       name: item.name,
       slug: item.slug,
@@ -126,10 +130,16 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
       const url = editingHub ? `/api/admin/hubs/${editingHub.id}` : "/api/admin/hubs";
       const method = editingHub ? "PUT" : "POST";
 
+      // A blank link is stored as null so the public hub card stays unlinked.
+      const payload = {
+        ...formData,
+        link: hasLink ? formData.link.trim() || null : null,
+      };
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -140,7 +150,7 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
 
       if (editingHub) {
         setHubs((prev) =>
-          prev.map((item) => (item.id === editingHub.id ? { ...item, ...formData } : item))
+          prev.map((item) => (item.id === editingHub.id ? { ...item, ...payload } : item))
         );
       } else {
         setHubs((prev) => [...prev, data.item]);
@@ -338,23 +348,34 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
 
       {/* Add / Edit Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-card border border-border rounded-2xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-            <button
-              onClick={() => setModalOpen(false)}
-              className="absolute top-4 right-4 p-1.5 text-muted-foreground hover:text-foreground rounded-lg transition"
-            >
-              <X className="w-5 h-5" />
-            </button>
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <button
+            type="button"
+            aria-label="Close drawer"
+            onClick={() => setModalOpen(false)}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+          />
 
-            <h2 className="text-lg font-bold text-foreground mb-1">
-              {editingHub ? "Edit Innovation Hub" : "Create New Innovation Hub"}
-            </h2>
-            <p className="text-xs text-muted-foreground mb-4">
-              Configure hub details, category, focus tags, and display visibility.
-            </p>
+          <div className="relative h-full w-full max-w-md bg-card border-l border-border shadow-2xl overflow-y-auto animate-[drawer-slide-in_0.22s_ease-out]">
+            <div className="sticky top-0 z-10 flex items-start justify-between gap-4 bg-card border-b border-border px-5 sm:px-6 py-4">
+              <div>
+                <h2 className="text-lg font-bold text-foreground">
+                  {editingHub ? "Edit Innovation Hub" : "Create New Innovation Hub"}
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configure hub details, category, focus tags, and display visibility.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                className="p-1.5 text-muted-foreground hover:text-foreground rounded-lg transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3.5">
+            <form onSubmit={handleSubmit} className="space-y-3.5 px-5 sm:px-6 py-5">
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1">
                   Hub Name *
@@ -430,30 +451,61 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-foreground mb-1">
-                    External / Detail Link
-                  </label>
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">
+                  Display Order
+                </label>
+                <input
+                  type="number"
+                  value={formData.order}
+                  onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                  className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D1]/30"
+                />
+              </div>
+
+              <div className="rounded-xl border border-border bg-muted/30 p-3.5">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">
+                      External / Detail Link
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
+                      {hasLink
+                        ? "The hub card links visitors to this address."
+                        : "No link — the hub card shows “Enquire With JANIC” instead."}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={hasLink}
+                    aria-label="Toggle hub link"
+                    onClick={() => {
+                      const next = !hasLink;
+                      if (!next) setFormData((prev) => ({ ...prev, link: "" }));
+                      setHasLink(next);
+                    }}
+                    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer ${
+                      hasLink ? "bg-[#0875D1]" : "bg-slate-300 dark:bg-slate-700"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                        hasLink ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {hasLink && (
                   <input
                     type="text"
                     value={formData.link}
                     onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                     placeholder="/hubs or https://..."
-                    className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D1]/30"
+                    className="mt-3 w-full px-3 py-2 bg-card border border-border rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D1]/30"
                   />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-foreground mb-1">
-                    Display Order
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.order}
-                    onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D1]/30"
-                  />
-                </div>
+                )}
               </div>
 
               <div className="flex items-center gap-2 pt-1">
@@ -469,18 +521,18 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
                 </label>
               </div>
 
-              <div className="pt-4 border-t border-border flex items-center justify-end gap-2.5">
+              <div className="sticky bottom-0 -mx-5 sm:-mx-6 mt-2 px-5 sm:px-6 py-4 bg-card border-t border-border flex items-center justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 border border-border text-foreground hover:bg-muted rounded-xl text-xs font-semibold transition"
+                  className="px-4 py-2 border border-border text-foreground hover:bg-muted rounded-xl text-xs font-semibold transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2 bg-[#0875D1] hover:bg-[#065b9e] text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition disabled:opacity-50"
+                  className="px-5 py-2 bg-[#0875D1] hover:bg-[#065b9e] text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
                 >
                   {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   {editingHub ? "Update Hub" : "Create Hub"}

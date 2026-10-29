@@ -45,10 +45,9 @@ export const defaultNavStructure: NavItem[] = [
     id: "hubs",
     name: "Hubs & Programmes",
     href: "/hubs",
-    subLinks: [
-      { name: "All Hubs & Programmes", href: "/hubs" },
-      { name: "Innovation Pipeline", href: "/innovation-hub" },
-    ],
+    // Hub entries are injected from the database so a hub disappears from the
+    // menu the moment its public link toggle is switched off.
+    subLinks: [{ name: "All Hubs & Programmes", href: "/hubs" }],
   },
   {
     id: "projects",
@@ -92,6 +91,8 @@ export const defaultNavStructure: NavItem[] = [
 
 interface PublicHeaderProps {
   navLinks?: { name: string; href: string }[];
+  /** Published hub links managed from the admin Hubs drawer. */
+  hubLinks?: SubNavItem[];
   currentUser?: AuthUser | null;
 }
 
@@ -212,7 +213,7 @@ function UserAvatarMenu({ user, loggingOut, onLogout }: UserAvatarMenuProps) {
   );
 }
 
-export function PublicHeader({ currentUser }: PublicHeaderProps) {
+export function PublicHeader({ hubLinks, currentUser }: PublicHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -313,6 +314,19 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
     return isLinkActive(item.href);
   };
 
+  // Hub links are admin-managed: a hub only reaches the nav while its link toggle is on.
+  const navItems: NavItem[] = defaultNavStructure.map((item) =>
+    item.id === "hubs"
+      ? {
+          ...item,
+          subLinks: [
+            { name: "All Hubs & Programmes", href: "/hubs" },
+            ...(hubLinks ?? []),
+          ],
+        }
+      : item
+  );
+
   return (
     <header
       className={cn(
@@ -345,7 +359,7 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
 
         {/* Desktop Navigation Links (Clean single-word names, non-rounded dropdowns) */}
         <nav className="hidden lg:flex items-center gap-4 xl:gap-6 2xl:gap-8">
-          {defaultNavStructure.map((item) => {
+          {navItems.map((item) => {
             const isGroupActive = isNavGroupActive(item);
             const hasSubLinks = Boolean(item.subLinks && item.subLinks.length > 0);
 
@@ -388,18 +402,36 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
                   >
                     <div className="bg-white dark:bg-slate-900 rounded-none border border-slate-200 dark:border-slate-800 p-1 shadow-lg space-y-0.5">
                       {item.subLinks.map((sub) => {
-                        const isSubActive = isLinkActive(sub.href);
+                        const isExternal = sub.href.startsWith("http");
+                        const isSubActive = !isExternal && isLinkActive(sub.href);
+                        const subClassName = cn(
+                          "block px-3.5 py-2.5 rounded-none text-xs font-semibold tracking-wide transition-colors whitespace-nowrap",
+                          isSubActive
+                            ? "bg-sky-50 dark:bg-sky-950/70 text-sky-600 dark:text-sky-400 font-bold"
+                            : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
+                        );
+
+                        if (isExternal) {
+                          return (
+                            <a
+                              key={sub.href}
+                              href={sub.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setOpenDropdown(null)}
+                              className={subClassName}
+                            >
+                              {sub.name} ↗
+                            </a>
+                          );
+                        }
+
                         return (
                           <Link
                             key={sub.href}
                             href={sub.href}
                             onClick={() => setOpenDropdown(null)}
-                            className={cn(
-                              "block px-3.5 py-2.5 rounded-none text-xs font-semibold tracking-wide transition-colors whitespace-nowrap",
-                              isSubActive
-                                ? "bg-sky-50 dark:bg-sky-950/70 text-sky-600 dark:text-sky-400 font-bold"
-                                : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
-                            )}
+                            className={subClassName}
                           >
                             {sub.name}
                           </Link>
@@ -497,7 +529,7 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
 
           {/* Mobile Navigation Links (Non-rounded dropdowns, without icons) */}
           <div className="space-y-1.5">
-            {defaultNavStructure.map((item) => {
+            {navItems.map((item) => {
               if (item.subLinks && item.subLinks.length > 0) {
                 const isExpanded = mobileExpandedSections[item.id] ?? false;
                 const isGroupActive = isNavGroupActive(item);
@@ -534,18 +566,36 @@ export function PublicHeader({ currentUser }: PublicHeaderProps) {
                     {isExpanded && (
                       <div className="px-2 pb-2 pt-0.5 space-y-1 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
                         {item.subLinks.map((sub) => {
-                          const isSubActive = isLinkActive(sub.href);
+                          const isExternal = sub.href.startsWith("http");
+                          const isSubActive = !isExternal && isLinkActive(sub.href);
+                          const subClassName = cn(
+                            "block px-3 py-2 rounded-none text-xs font-medium transition-colors",
+                            isSubActive
+                              ? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 font-bold"
+                              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-sky-600"
+                          );
+
+                          if (isExternal) {
+                            return (
+                              <a
+                                key={sub.href}
+                                href={sub.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={subClassName}
+                              >
+                                {sub.name} ↗
+                              </a>
+                            );
+                          }
+
                           return (
                             <Link
                               key={sub.href}
                               href={sub.href}
                               onClick={() => setMobileMenuOpen(false)}
-                              className={cn(
-                                "block px-3 py-2 rounded-none text-xs font-medium transition-colors",
-                                isSubActive
-                                  ? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 font-bold"
-                                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-sky-600"
-                              )}
+                              className={subClassName}
                             >
                               {sub.name}
                             </Link>
