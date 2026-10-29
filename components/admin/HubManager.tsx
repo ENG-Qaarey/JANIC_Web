@@ -33,8 +33,8 @@ export interface HubItem {
   updatedAt?: string | Date;
 }
 
-const CATEGORIES = [
-  "All Categories",
+/** Only used before any hub exists; otherwise categories come from the hubs themselves. */
+const FALLBACK_CATEGORIES = [
   "Technology & Development",
   "Incubation & Startup Support",
   "Research & Academic Innovation",
@@ -49,6 +49,13 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingHub, setEditingHub] = useState<HubItem | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Categories are data-driven so editing a hub never overwrites its real category.
+  const existingCategories = Array.from(
+    new Set(hubs.map((h) => h.category).filter(Boolean))
+  ).sort();
+  const categoryOptions =
+    existingCategories.length > 0 ? existingCategories : FALLBACK_CATEGORIES;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -68,7 +75,7 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
     setFormData({
       name: "",
       slug: "",
-      category: "Technology & Development",
+      category: categoryOptions[0],
       description: "",
       icon: "Layers",
       status: "Active",
@@ -211,7 +218,7 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="w-full sm:w-auto px-3 py-2 bg-muted/50 border border-border rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0875D1]/30"
           >
-            {CATEGORIES.map((cat) => (
+            {["All Categories", ...categoryOptions].map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
               </option>
@@ -380,16 +387,19 @@ export function HubManager({ initialHubs }: { initialHubs: HubItem[] }) {
                   <label className="block text-xs font-semibold text-foreground mb-1">
                     Category *
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    required
+                    list="hub-category-options"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     className="w-full px-3 py-2 bg-muted/40 border border-border rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0875D1]/30"
-                  >
-                    <option value="Technology & Development">Technology & Development</option>
-                    <option value="Incubation & Startup Support">Incubation & Startup Support</option>
-                    <option value="Research & Academic Innovation">Research & Academic Innovation</option>
-                    <option value="Community & Social Impact">Community & Social Impact</option>
-                  </select>
+                  />
+                  <datalist id="hub-category-options">
+                    {categoryOptions.map((cat) => (
+                      <option key={cat} value={cat} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
 

@@ -1,5 +1,48 @@
+/**
+ * Seeds the "new model" content: Hubs, Opportunities and Resource Documents.
+ *
+ * This database is PostgreSQL (Neon), so the script uses Prisma upserts instead
+ * of raw SQL — MySQL placeholders (`?`), backticks and `ON DUPLICATE KEY UPDATE`
+ * do not work here and previously left these tables empty.
+ *
+ * Safe to re-run: rows are keyed by a stable id and upserted.
+ */
+const fs = require("fs");
+const path = require("path");
+
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const { PrismaPg } = require("@prisma/adapter-pg");
+
+/** Minimal .env reader so the script works without a dotenv dependency. */
+function loadEnv() {
+  const envPath = path.join(__dirname, "..", ".env");
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, "utf8").split(/\r?\n/)) {
+    const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/i);
+    if (!match) continue;
+    const key = match[1];
+    let value = match[2].trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = value;
+  }
+}
+
+loadEnv();
+
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  console.error("DATABASE_URL is not set (checked the environment and .env).");
+  process.exit(1);
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString, maxUses: 1 }),
+});
 
 const initialHubs = [
   {
@@ -259,66 +302,45 @@ const initialDocuments = [
 async function main() {
   console.log("Seeding Hubs...");
   for (const hub of initialHubs) {
-    await prisma.$executeRawUnsafe(
-      `INSERT INTO Hub (id, name, slug, category, description, icon, status, link, tags, \`order\`, isActive, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-       ON DUPLICATE KEY UPDATE name = VALUES(name), description = VALUES(description), category = VALUES(category), status = VALUES(status), tags = VALUES(tags)`,
-      `hub_${hub.slug}`,
-      hub.name,
-      hub.slug,
-      hub.category,
-      hub.description,
-      hub.icon,
-      hub.status,
-      hub.link,
-      hub.tags,
-      hub.order,
-      hub.isActive ? 1 : 0
-    );
+    const id = `hub_${hub.slug}`;
+    await prisma.hub.upsert({
+      where: { id },
+      update: hub,
+      create: { id, ...hub },
+    });
   }
 
   console.log("Seeding Opportunities...");
   for (let i = 0; i < initialOpportunities.length; i++) {
+    const id = `opp_${i + 1}`;
     const opp = initialOpportunities[i];
-    await prisma.$executeRawUnsafe(
-      `INSERT INTO Opportunity (id, title, type, deadline, department, description, eligibility, actionUrl, actionLabel, status, \`order\`, isActive, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-       ON DUPLICATE KEY UPDATE title = VALUES(title), description = VALUES(description)`,
-      `opp_${i + 1}`,
-      opp.title,
-      opp.type,
-      opp.deadline,
-      opp.department,
-      opp.description,
-      opp.eligibility,
-      opp.actionUrl,
-      opp.actionLabel,
-      opp.status,
-      opp.order,
-      opp.isActive ? 1 : 0
-    );
+    await prisma.opportunity.upsert({
+      where: { id },
+      update: opp,
+      create: { id, ...opp },
+    });
   }
 
   console.log("Seeding Resource Documents...");
   for (let i = 0; i < initialDocuments.length; i++) {
+    const id = `doc_${i + 1}`;
     const doc = initialDocuments[i];
-    await prisma.$executeRawUnsafe(
-      `INSERT INTO ResourceDocument (id, title, category, format, size, description, fileUrl, \`order\`, isActive, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-       ON DUPLICATE KEY UPDATE title = VALUES(title), description = VALUES(description)`,
-      `doc_${i + 1}`,
-      doc.title,
-      doc.category,
-      doc.format,
-      doc.size,
-      doc.description,
-      doc.fileUrl,
-      doc.order,
-      doc.isActive ? 1 : 0
-    );
+    await prisma.resourceDocument.upsert({
+      where: { id },
+      update: doc,
+      create: { id, ...doc },
+    });
   }
 
-  console.log("Seed completed successfully!");
+  const [hubs, opportunities, documents] = await Promise.all([
+    prisma.hub.count(),
+    prisma.opportunity.count(),
+    prisma.resourceDocument.count(),
+  ]);
+
+  console.log(
+    `Seed completed: ${hubs} hubs, ${opportunities} opportunities, ${documents} resource documents.`
+  );
 }
 
 main()
